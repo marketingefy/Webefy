@@ -12,7 +12,13 @@ for path in sorted(site.rglob("*")):
     relative = path.relative_to(site).as_posix()
     route = "" if relative == "index.html" else urllib.parse.quote(relative)
     url = "https://www.efyseguros.com/" + route + "?efy_publish=" + str(time.time_ns())
-    request = urllib.request.Request(url, headers={"Cache-Control": "no-cache"})
+    # HostGator rejects Python's default client identifier with HTTP 406.
+    # Use browser-compatible request headers; retain HTTPS/TLS and exact-content checks.
+    request = urllib.request.Request(url, headers={
+        "Cache-Control": "no-cache",
+        "Accept": "*/*",
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    })
     with urllib.request.urlopen(request, timeout=45) as response:
         if response.status != 200:
             raise RuntimeError("Unexpected HTTP status for " + relative)
