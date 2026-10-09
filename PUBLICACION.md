@@ -1,73 +1,68 @@
-# EFY Seguros: página temporal y publicación
+# EFY Seguros: desarrollo y publicación automática
 
-El sitio está en `public/`. No requiere instalar paquetes ni un servidor de aplicaciones.
+El sitio está en `public/`. Es una web estática; no requiere instalar paquetes ni
+un servidor de aplicaciones. No incluye formularios ni recopila datos.
 
-## Vista local
+## Desarrollo local
 
-Desde el checkout existente (no crear otro worktree):
+Usar el checkout existente en `/workspace/Webefy`; no crear worktrees adicionales.
 
 ```sh
+cd /workspace/Webefy
 python3 -m http.server 8080 --bind 127.0.0.1 --directory public
 ```
 
-## Publicación manual inicial
+Comprobar el mensaje principal, la carga de la imagen y el diseño en móvil.
 
-Subir `EFY-proximamente.zip` a `public_html` y extraerlo allí usando cPanel.
-`index.html` y `assets/nuevo-comienzo.png` deben quedar directamente en esa carpeta,
-sin una carpeta `public` intermedia. Comprobar por HTTPS el texto «Próximamente» y la imagen.
-La carpeta raíz del dominio se confirmó en las capturas de cPanel.
+## Publicación en HostGator
 
-## Publicación automática por GitHub Actions
+El workflow `Publicar EFY en HostGator` se ejecuta cuando se incorporan cambios a
+`main` en los archivos del sitio, scripts de publicación o configuración del workflow.
+También puede ejecutarse manualmente desde GitHub Actions → Run workflow.
 
-El workflow `Publicar EFY en HostGator` permanece desactivado hasta verificar la conexión
-y configurar `DEPLOY_ENABLED=true`.
+Antes de subir archivos comprueba la autenticación SFTP y el acceso al directorio.
+No borra archivos ajenos; sube los recursos primero y reemplaza `index.html` tras
+transferirlo completamente. Después comprueba por HTTPS el contenido de cada archivo
+frente a esta versión para detectar fallos de publicación o caché.
 
-Confirmar con HostGator que SSH/SFTP esté habilitado y obtener hostname, puerto y la
-clave pública o huella del servidor. «Manage SSH Keys» por sí solo no confirma acceso activo.
-No asumir el puerto predeterminado.
+La conexión SFTP y el directorio del dominio se validaron desde GitHub Actions.
+Datos no secretos predeterminados, obtenidos del cPanel del usuario y pruebas reales:
 
-La comprobación `Comprobar acceso a HostGator` verificó que la clave guardada en GitHub
-puede desbloquearse y que la IP pública suministrada por cPanel responde por SSH en
-2222 y 22. No realizó login ni modificó el hospedaje. Las claves de servidor obtenidas
-con `ssh-keyscan` son observaciones: requieren verificación con HostGator antes de usarse.
+- Host: `162.241.61.73`
+- Puerto: `2222`
+- Usuario: `brayanez`
+- Directorio: `/home1/brayanez/public_html`
 
-Valores no secretos predeterminados del workflow, derivados de las capturas de cPanel
-y la comprobación de puertos: host `162.241.61.73`, puerto `2222`, usuario `brayanez`,
-directorio `/home1/brayanez/public_html`. Las variables de GitHub pueden sobrescribirlos.
+Las variables opcionales `SSH_HOST`, `SSH_PORT`, `SSH_USER` y `SSH_DIRECTORY` de GitHub
+Actions permiten cambiar esos datos si HostGator traslada la cuenta.
 
-Autorizar la clave pública dedicada en cPanel → SSH Access → Manage SSH Keys → Import Key.
-Importar únicamente la parte pública y autorizarla. La clave privada se guarda como GitHub
-Secret, nunca en el repositorio ni en el chat.
+## Credenciales y confianza del servidor
 
-En GitHub: Settings → Secrets and variables → Actions.
+En GitHub Settings → Secrets and variables → Actions están los secretos:
 
-Variables:
+- `SSH_PRIVATE_KEY`: clave privada dedicada, creada y autorizada por el usuario en cPanel.
+- `SSH_KEY_PASSPHRASE`: contraseña de esa clave.
 
-- `SSH_HOST`: hostname de conexión confirmado, sin esquema.
-- `SSH_PORT`: puerto SSH confirmado por HostGator.
-- `SSH_USER`: usuario cPanel confirmado.
-- `SSH_DIRECTORY`: ruta absoluta confirmada del sitio, terminada en `/public_html`.
-- `DEPLOY_ENABLED`: `true` únicamente después de verificar los datos y el acceso.
+El script desbloquea la clave mediante un agente temporal. No imprime claves ni contraseñas.
+Nunca guardar valores secretos en el repositorio o en el chat.
 
-Secrets:
+La clave pública ED25519 del servidor está en `.github/hostgator_known_hosts`.
+Su huella se verificó comparando la observación desde GitHub con una consulta a
+`127.0.0.1` ejecutada por el usuario dentro de su cPanel autenticado:
 
-- `SSH_PRIVATE_KEY`: clave privada dedicada a este despliegue.
-- `SSH_KEY_PASSPHRASE`: contraseña que protege esa clave, si se generó cifrada en cPanel.
-  No es la contraseña de la cuenta HostGator. Se utiliza mediante un agente SSH temporal.
-- `SSH_KNOWN_HOSTS`: entrada OpenSSH cuya huella se haya verificado con una fuente confiable
-  de HostGator. Para puerto distinto de 22 debe incluir `[host]:puerto`.
+`SHA256:Qj34DMRb4Ys/Ek8ctq5pS5K97hHcjHPGyihSntn4w/0`
 
-La verificación de identidad del servidor es obligatoria. No usar `StrictHostKeyChecking=no`
-ni confiar en `ssh-keyscan` sin verificar la huella. El script no borra archivos ajenos y
-publica la página de entrada después de transferir los recursos.
+La verificación estricta de identidad del servidor permanece activada. Si cambia la
+clave del servidor, detener la publicación y verificar la nueva con una fuente confiable
+antes de actualizarla. El secreto opcional `SSH_KNOWN_HOSTS` puede sobrescribir el archivo;
+no es necesario configurarlo para esta instalación.
 
-Primera ejecución: Actions → Publicar EFY en HostGator → Run workflow.
-Después, los cambios incorporados a `main` se publican automáticamente.
-El workflow comprueba la página y la imagen por HTTPS. Hasta ese primer éxito, el despliegue
-automático no está validado.
+`Comprobar acceso a HostGator` queda disponible para ejecución manual: consulta puertos,
+valida la clave e inicia una sesión de solo lectura para diagnosticar problemas.
+No interpreta una respuesta a `ssh-keyscan` como una clave confiable por sí sola.
 
-Si SSH/SFTP no está disponible, usar la publicación manual mientras se prepara una
-alternativa con FTPS verificado. FTP sin cifrado no es la alternativa recomendada.
+## Publicación manual de respaldo
 
-La página temporal no recopila datos. Los formularios del futuro sitio deben desarrollarse
-y verificarse antes de publicarlos.
+El paquete `EFY-proximamente.zip` contiene `index.html` y `assets/nuevo-comienzo.png`.
+Subirlo y extraerlo directamente en `public_html`, sin una carpeta `public` intermedia.
+No usar ese paquete antiguo para sobrescribir una versión posterior del sitio.

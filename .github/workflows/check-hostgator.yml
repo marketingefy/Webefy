@@ -2,12 +2,6 @@ name: Comprobar acceso a HostGator
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/check-hostgator.yml'
-      - 'scripts/check_hostgator.py'
-      - '.github/hostgator_known_hosts'
 
 permissions:
   contents: read
