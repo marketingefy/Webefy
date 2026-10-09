@@ -21,5 +21,7 @@ Mantener sus proporciones y evitar redibujar el símbolo en CSS o sustituirlo po
 iconos genéricos. Una futura entrega de un original vectorial puede reemplazarlo.
 
 Comprobaciones: logo y fuentes cargados, mensaje visible, sin desbordamiento en
-320px, 390px y escritorio. La página no usa animaciones continuas ni formularios.
+320px, 390px y escritorio. El logo tiene una entrada suave de 4,4 segundos,
+sin sonido y sin repetición; permanece visible al finalizar. Si el navegador
+bloquea la reproducción o se prefiere movimiento reducido, muestra el logo estático.
 La verificación de publicación compara el contenido de todos los archivos por HTTPS.
