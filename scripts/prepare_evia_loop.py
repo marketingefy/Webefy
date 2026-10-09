@@ -16,7 +16,7 @@ assets = Path(__file__).resolve().parents[1] / "public" / "assets"
 
 for filename, sizing, quality in [
     ("evia-workshop-loop.mp4", "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720", "23"),
-    ("evia-workshop-loop-mobile.mp4", "crop=trunc(ih*0.9/2)*2:ih:iw*0.43:0,scale=720:800", "24"),
+    ("evia-workshop-loop-mobile.mp4", "crop=trunc(ih*0.9/2)*2:ih:iw-ow:0,scale=720:800", "24"),
 ]:
     graph = (
         f"[0:v]fps=24,{sizing},setsar=1,split=2[forward][to_reverse];"
@@ -30,3 +30,18 @@ for filename, sizing, quality in [
         "-movflags", "+faststart", str(assets / filename),
     ], check=True)
     print(filename, (assets / filename).stat().st_size, "bytes")
+
+    # Use the same first frame and framing for the static fallback and video.
+    poster = filename.replace("-loop", "").replace(".mp4", ".webp")
+    subprocess.run([
+        args.ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+        "-i", str(assets / filename), "-frames:v", "1",
+        "-quality", "86", str(assets / poster),
+    ], check=True)
+    if filename == "evia-workshop-loop.mp4":
+        subprocess.run([
+            args.ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+            "-i", str(assets / filename), "-frames:v", "1",
+            "-vf", "scale=1200:675", "-q:v", "2",
+            str(assets / "evia-workshop-social.jpg"),
+        ], check=True)

@@ -20,7 +20,7 @@
 
   function loadSource() {
     if (video.getAttribute('src')) return;
-    video.src = mobile.matches ? 'assets/evia-workshop-loop-mobile.mp4' : 'assets/evia-workshop-loop.mp4';
+    video.src = mobile.matches ? 'assets/evia-workshop-loop-mobile.mp4?v=evia-reference-20261009' : 'assets/evia-workshop-loop.mp4?v=evia-reference-20261009';
     video.muted = true;
   }
 

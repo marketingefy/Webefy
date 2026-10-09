@@ -1,4 +1,4 @@
-# EFY Seguros: el próximo capítulo
+# Efy Seguros: el próximo capítulo
 
 Brief vigente: una página informativa de espera con EVIA construyendo la futura
 web en un taller digital espacial. El propietario autorizó este rediseño y la
@@ -14,16 +14,21 @@ El contenido explica que el sitio está en preparación, sin fecha de lanzamient
 porcentajes, testimonios ni funcionalidades no confirmadas.
 
 Identidad: grafito `#080E1D`, blanco `#F8F9FC`, texto secundario `#B2BBCE` y rosa
-claro `#FF91B2` para lectura sobre oscuro. La escena utiliza magenta y azul EFY.
+claro `#FF91B2` para lectura sobre oscuro. La escena utiliza magenta y azul Efy.
 Nunito Sans 700 e IBM Plex Sans 400 se alojan localmente, con sus licencias.
 La página sigue siendo estática, sin dependencias de aplicaciones ni fuentes externas.
 
 ## Escena de EVIA
 
-- Referencia de identidad: creación Higgsfield `d4fbf617-7ded-4148-9898-814969f9d830`.
+- Referencia de identidad vigente: foto aportada por el propietario, conservada en
+  [EVIA-reference.jpg](tooling/efy/EVIA-reference.jpg). Visor negro liso, traje crema
+  con detalles rosados, emblema de la llama y nombre EVIA en el pecho.
+  Medio Higgsfield: `da0e9bd7-d662-47a4-90b0-62910e21f20e`.
 - Imagen del taller: `53e25b36-b0be-4f2f-bc35-ee89614862de`, GPT Image 2.5.
-- Animación: `096b68bc-0947-4801-bb36-4437c93cc576`, Kling 3.0 Pro, sin sonido.
-- Fuente de video: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261009_180942_096b68bc-0947-4801-bb36-4437c93cc576.mp4
+- Animación original: `096b68bc-0947-4801-bb36-4437c93cc576`, Kling 3.0 Pro, sin sonido.
+- Sustitución del astronauta: `e2281818-023c-4d28-9b9c-65b7a08565ae`,
+  Higgsfield Genjutsu; adapta a EVIA a la escena del taller digital.
+- Fuente de video: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261009_200737_e2281818-023c-4d28-9b9c-65b7a08565ae.mp4
 
 `scripts/prepare_evia_loop.py` une los fotogramas originales y su secuencia inversa
 con FFmpeg, a 24 fps. Cada ciclo dura aproximadamente 12,08 segundos. El comienzo
@@ -31,7 +36,8 @@ y el final representan el mismo fotograma; los puntos de retorno también coinci
 Se publica MP4/H.264 sin audio y con faststart: 1280×720 para escritorio y 720×800
 con encuadre de EVIA para móvil. El original no se sube al sitio.
 
-Las imágenes WebP se ven antes del video, sin JavaScript y si falla la reproducción.
+Las imágenes WebP proceden del primer fotograma del video final, con el mismo
+encuadre en cada formato. Se ven antes del video, sin JavaScript y si falla la reproducción.
 El botón permite pausar y reanudar. La preferencia de movimiento reducido y el
 ahorro de datos evitan la descarga automática del video. La reproducción se pausa
 cuando la escena sale de pantalla o la pestaña queda oculta, respetando una pausa
