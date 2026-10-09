@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="EFY Seguros está renovando su sitio web. Estamos construyendo algo nuevo para ti. Muy pronto podrás descubrirlo.">
+  <meta name="theme-color" content="#173e35">
+  <title>Próximamente · EFY Seguros</title>
+  <style>
+    :root { color-scheme: light; --ink:#173e35; --paper:#f7f6ef; --muted:#596b63; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:Arial, Helvetica, sans-serif; }
+    .page { max-width:1440px; margin:auto; min-height:100svh; padding:36px 6vw 24px; display:flex; flex-direction:column; }
+    header { display:flex; justify-content:space-between; align-items:center; gap:24px; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .wordmark { font-size:39px; font-weight:800; letter-spacing:-3px; line-height:1; }
+    .brand-label { border-left:1px solid #bcc7bc; padding-left:13px; font-size:10px; letter-spacing:3px; }
+    .header-note { font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+    main { flex:1; display:grid; grid-template-columns:1.12fr 1fr; align-items:center; gap:6vw; padding:64px 0; }
+    .status { display:inline-flex; align-items:center; gap:9px; border:1px solid #ccd4c9; padding:10px 15px; border-radius:30px; font-size:11px; letter-spacing:2px; text-transform:uppercase; }
+    .dot { width:6px; height:6px; border-radius:50%; background:#408e65; box-shadow:0 0 0 4px #408e6514; }
+    h1 { font-size:clamp(42px,5.25vw,76px); font-weight:500; line-height:1.06; letter-spacing:-3px; margin:28px 0 24px; }
+    h1 em { font-family:Georgia, 'Times New Roman', serif; font-weight:400; }
+    .intro { color:var(--muted); font-size:16px; line-height:1.8; max-width:360px; margin:0; }
+    .signature { display:flex; align-items:center; gap:16px; margin-top:36px; font-size:11px; letter-spacing:1px; }
+    .signature::before { content:''; width:38px; height:1px; background:#84988c; }
+    .art { margin:0; position:relative; }
+    .art img { width:100%; height:auto; display:block; aspect-ratio:1; object-fit:cover; border-radius:46% 46% 8px 8px; background:#173e35; }
+    .art figcaption { display:flex; justify-content:space-between; gap:12px; margin-top:16px; color:var(--muted); font-size:9px; letter-spacing:2px; text-transform:uppercase; }
+    footer { border-top:1px solid #d9dfd4; display:flex; justify-content:space-between; gap:16px; padding-top:20px; color:var(--muted); font-size:11px; line-height:1.6; }
+    footer p { margin:0; }
+    @media (min-width:1600px) { .page { padding-left:86px; padding-right:86px; } }
+    @media (max-width:760px) {
+      .page { padding:26px 24px 22px; }
+      .wordmark { font-size:34px; }
+      .header-note { font-size:8px; letter-spacing:1px; text-align:right; max-width:85px; line-height:1.6; }
+      main { grid-template-columns:1fr; padding:48px 0 34px; gap:38px; }
+      h1 { font-size:clamp(42px,10.7vw,65px); letter-spacing:-2px; }
+      .intro { font-size:15px; }
+      .signature { margin-top:24px; }
+      .art { max-width:440px; width:100%; justify-self:center; }
+      footer { font-size:10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand" aria-label="EFY Seguros"><span class="wordmark">EFY</span><span class="brand-label">SEGUROS</span></div>
+      <span class="header-note">Un nuevo comienzo</span>
+    </header>
+    <main>
+      <section aria-labelledby="headline">
+        <span class="status"><span class="dot" aria-hidden="true"></span>Próximamente</span>
+        <h1 id="headline">Estamos<br>construyendo<br>algo nuevo<br><em>para ti.</em></h1>
+        <p class="intro">Nos estamos renovando. Muy pronto podrás descubrir el nuevo sitio de EFY Seguros.</p>
+        <p class="signature">Gracias por acompañarnos.</p>
+      </section>
+      <figure class="art">
+        <img src="assets/nuevo-comienzo.png" alt="" width="1024" height="1024" fetchpriority="high">
+        <figcaption><span>EFY Seguros</span><span>Una nueva etapa</span></figcaption>
+      </figure>
+    </main>
+    <footer><p>EFY Seguros · Todos los derechos reservados.</p><p>efyseguros.com</p></footer>
+  </div>
+</body>
+</html>

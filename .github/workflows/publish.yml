@@ -1,0 +1,49 @@
+name: Publicar EFY en HostGator
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'public/**'
+      - 'scripts/deploy_sftp.py'
+      - '.github/workflows/publish.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hostgator-production
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publicar mediante SFTP seguro
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_PORT: ${{ vars.SSH_PORT || '22' }}
+          SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY }}
+          SSH_USER: ${{ vars.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: python3 scripts/deploy_sftp.py
+      - name: Verificar página publicada
+        run: |
+          python3 - <<'PY'
+          import urllib.request
+          import time
+          url = 'https://www.efyseguros.com/?deploy=' + str(int(time.time()))
+          with urllib.request.urlopen(url, timeout=30) as response:
+              html = response.read().decode('utf-8')
+              if response.status != 200 or 'Próximamente · EFY Seguros' not in html:
+                  raise RuntimeError('La página pública no coincide con la publicación esperada')
+          with urllib.request.urlopen('https://www.efyseguros.com/assets/nuevo-comienzo.png', timeout=30) as response:
+              if response.status != 200 or response.read(8) != b'\x89PNG\r\n\x1a\n':
+                  raise RuntimeError('La imagen publicada no está disponible')
+          print('Página e imagen verificadas por HTTPS')
+          PY
