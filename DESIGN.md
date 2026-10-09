@@ -1,27 +1,43 @@
-# EFY Seguros: página temporal
+# EFY Seguros: el próximo capítulo
 
-Brief vigente: una página de espera más limpia, con la identidad del logo aportado
-por la usuaria. Este brief prevalece sobre ejemplos grafito del CRM adjuntos al paquete.
+Brief vigente: una página informativa de espera con EVIA construyendo la futura
+web en un taller digital espacial. El propietario autorizó este rediseño y la
+integración de un video de Higgsfield con reproducción de ida y vuelta.
 
-Composición: una columna centrada sobre blanco, logo horizontal, «Próximamente»,
-un único titular y una frase explicativa. El dominio aparece discretamente al pie.
-No añadir tarjetas, imágenes decorativas, contadores, porcentajes, testimonios ni
-botones sin un destino real. No usar la ilustración verde del primer borrador.
+Composición: escena cinematográfica de fondo, mensaje a la izquierda en escritorio,
+EVIA y los paneles de la web a la derecha. En móvil, escena superior con encuadre
+propio y texto debajo. El encabezado conserva el logo oficial a color sobre blanco.
+El contenido explica que el sitio está en preparación, sin fecha de lanzamiento,
+porcentajes, testimonios ni funcionalidades no confirmadas.
 
-Paleta: blanco #FFFFFF, tinta #17233D, azul EFY #445EA5, magenta de texto #C61649,
-texto secundario #606B7E. El magenta #EC245B permanece como referencia de marca;
-para texto pequeño se usa su variante profunda por contraste.
+Identidad: grafito `#080E1D`, blanco `#F8F9FC`, texto secundario `#B2BBCE` y rosa
+claro `#FF91B2` para lectura sobre oscuro. La escena utiliza magenta y azul EFY.
+Nunito Sans 700 e IBM Plex Sans 400 se alojan localmente, con sus licencias.
+La página sigue siendo estática, sin dependencias de aplicaciones ni fuentes externas.
 
-Tipografía: Nunito Sans 700 para el titular e IBM Plex Sans 400 para lectura.
-Archivos WOFF2 alojados localmente con sus licencias. No depender de Google Fonts
-ni introducir React u otras bibliotecas en esta página estática.
+## Escena de EVIA
 
-El recurso raster del logo se preparó a partir de las imágenes enviadas en el chat.
-Mantener sus proporciones y evitar redibujar el símbolo en CSS o sustituirlo por
-iconos genéricos. Una futura entrega de un original vectorial puede reemplazarlo.
+- Referencia de identidad: creación Higgsfield `d4fbf617-7ded-4148-9898-814969f9d830`.
+- Imagen del taller: `53e25b36-b0be-4f2f-bc35-ee89614862de`, GPT Image 2.5.
+- Animación: `096b68bc-0947-4801-bb36-4437c93cc576`, Kling 3.0 Pro, sin sonido.
+- Fuente de video: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261009_180942_096b68bc-0947-4801-bb36-4437c93cc576.mp4
 
-Comprobaciones: logo y fuentes cargados, mensaje visible, sin desbordamiento en
-320px, 390px y escritorio. El logo tiene una entrada suave de 4,4 segundos,
-sin sonido y sin repetición; permanece visible al finalizar. Si el navegador
-bloquea la reproducción o se prefiere movimiento reducido, muestra el logo estático.
-La verificación de publicación compara el contenido de todos los archivos por HTTPS.
+`scripts/prepare_evia_loop.py` une los fotogramas originales y su secuencia inversa
+con FFmpeg, a 24 fps. Cada ciclo dura aproximadamente 12,08 segundos. El comienzo
+y el final representan el mismo fotograma; los puntos de retorno también coinciden.
+Se publica MP4/H.264 sin audio y con faststart: 1280×720 para escritorio y 720×800
+con encuadre de EVIA para móvil. El original no se sube al sitio.
+
+Las imágenes WebP se ven antes del video, sin JavaScript y si falla la reproducción.
+El botón permite pausar y reanudar. La preferencia de movimiento reducido y el
+ahorro de datos evitan la descarga automática del video. La reproducción se pausa
+cuando la escena sale de pantalla o la pestaña queda oculta, respetando una pausa
+manual. Se puede activar explícitamente aun con movimiento reducido.
+
+## Comprobación
+
+Revisar 320, 390, 768 y 1440 px, carga de recursos, teclado, controles, anclas,
+movimiento reducido, ausencia de JavaScript y fallo del video. Comprobar los
+fotogramas en los dos puntos de retorno y el peso de ambas versiones del bucle.
+Los cambios de `public/` en `main` se publican mediante el workflow existente de
+HostGator; no cambiar el hosting. La verificación HTTPS compara todos los recursos.

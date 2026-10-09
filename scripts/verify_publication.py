@@ -25,4 +25,4 @@ for path in sorted(site.rglob("*")):
         if hashlib.sha256(response.read()).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise RuntimeError("Published file differs from this version: " + relative)
     print("HTTPS verified:", relative)
-print("Página e imagen verificadas por HTTPS; coinciden con la versión publicada.")
+print("Página y recursos verificados por HTTPS; coinciden con la versión publicada.")

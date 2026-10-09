@@ -1,0 +1,4 @@
+# Local browser verification artifacts and Python caches
+.playwright*/
+output/
+__pycache__/
