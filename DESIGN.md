@@ -26,9 +26,13 @@ La página sigue siendo estática, sin dependencias de aplicaciones ni fuentes e
   Medio Higgsfield: `da0e9bd7-d662-47a4-90b0-62910e21f20e`.
 - Imagen del taller: `53e25b36-b0be-4f2f-bc35-ee89614862de`, GPT Image 2.5.
 - Animación original: `096b68bc-0947-4801-bb36-4437c93cc576`, Kling 3.0 Pro, sin sonido.
-- Sustitución del astronauta: `e2281818-023c-4d28-9b9c-65b7a08565ae`,
-  Higgsfield Genjutsu; adapta a EVIA a la escena del taller digital.
-- Fuente de video: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261009_200737_e2281818-023c-4d28-9b9c-65b7a08565ae.mp4
+- Plano amplio restaurado por petición del propietario: mantiene la mesa, los
+  paneles holográficos y a EVIA de cuerpo completo junto a ellos. El primer
+  fotograma original se editó con la foto del personaje como referencia; medio
+  Higgsfield de esa composición: `72d8b14f-8265-4267-bf90-be88a9814e55`.
+- Sustitución vigente: `fddeb75d-d981-40db-89b8-53c04af1e038`, Higgsfield Genjutsu,
+  usando el video original y la composición completa para conservar el plano amplio.
+- Fuente de video: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261009_202817_fddeb75d-d981-40db-89b8-53c04af1e038.mp4
 
 `scripts/prepare_evia_loop.py` une los fotogramas originales y su secuencia inversa
 con FFmpeg, a 24 fps. Cada ciclo dura aproximadamente 12,08 segundos. El comienzo

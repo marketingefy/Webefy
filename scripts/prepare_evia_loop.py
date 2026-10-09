@@ -16,7 +16,7 @@ assets = Path(__file__).resolve().parents[1] / "public" / "assets"
 
 for filename, sizing, quality in [
     ("evia-workshop-loop.mp4", "scale=1280:720:force_original_aspect_ratio=increase,crop=1280:720", "23"),
-    ("evia-workshop-loop-mobile.mp4", "crop=trunc(ih*0.9/2)*2:ih:iw-ow:0,scale=720:800", "24"),
+    ("evia-workshop-loop-mobile.mp4", "crop=trunc(ih*0.9/2)*2:ih:iw*0.43:0,scale=720:800", "24"),
 ]:
     graph = (
         f"[0:v]fps=24,{sizing},setsar=1,split=2[forward][to_reverse];"
