@@ -20,7 +20,18 @@ se contrastaron con el texto del servicio y no sólo con enlaces `tel:`: algunos
 sitios incluyen destinos de plantilla o destinos que discrepan del número visible.
 
 Ecuasanitas confirma su call center 24/7 en su perfil oficial de LinkedIn. El logo
-se obtuvo del directorio de su propia web. Assist Card muestra su WhatsApp de
+corresponde a la identidad presentada en 2025, con el símbolo de cintas y el
+nombre EcuaSanitas, en su archivo oficial de la web actual. Se conserva la versión
+blanca original sobre una superficie oscura. Se retiró el antiguo logo verde y
+azul, que su archivo heredado todavía denominaba «nuevo». Referencia del cambio:
+[anuncio oficial de Ecuasanitas](https://es.linkedin.com/posts/ecuasanitas_evoluci%C3%B3nqueinspira-tubienestarnuestraprioridad-activity-7323751621824319488-Wwmu).
+
+Assist Card usa su SVG oficial con el cuadrado rojo y la marca blanca; Alianza usa
+la versión naranja y gris enlazada por la cabecera de su web. No se recolorean las
+versiones blancas ni se reconstruyen los símbolos. Los tres assets corregidos
+tienen nombres nuevos para evitar conservar las imágenes anteriores en caché.
+
+Assist Card muestra su WhatsApp de
 asistencia en viaje y reintegros en el listado oficial; se usa el número visible
 confirmado en su documentación, pues el enlace móvil de la página difiere.
 Aseguradora del Sur documenta la línea de asistencia hogar en el folleto Mi Hogar;
@@ -49,17 +60,17 @@ origen: véase [SINIESTROS.md](SINIESTROS.md).
 | Seguros Unidos | [Logo](https://segurosunidos.ec/wp-content/uploads/2022/08/Seguros-Unidos.svg) | [Web](https://segurosunidos.ec/) |
 | MAPFRE | [Logo](https://www.mapfre.com.ec/media/logo-mapfre.png) | [Web](https://www.mapfre.com.ec/) |
 | Seguros Atlántida | [Logo](https://www.segurosatlantida.ec/_next/static/media/logo-rojo.2fpq9u-mq4ix8.webp) | [Web](https://www.segurosatlantida.ec/) |
-| Ecuasanitas | [Logo](https://www.ecuasanitas.com/assets/img/ecuasanitas/Logo_Ecuasanitas_nuevo.png) | [Web](https://www.ecuasanitas.com/) |
+| Ecuasanitas | [Logo](https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/Logo-Ecuasanitas-Blanco.svg) | [Web](https://www.ecuasanitas.com/) |
 | Saludsa | [Logo](https://www.saludsa.com/wp-content/uploads/2021/03/logo_saludsa_home.svg) | [Web](https://www.saludsa.com/) |
 | Humana | [Logo](https://humana.med.ec/wp-content/uploads/2025/03/humana-medicina-prepagada-logo-2025.png) | [Web](https://humana.med.ec/) |
 | BMI | [Logo](https://www.bmicos.com/ecuador/wp-content/uploads/sites/9/2024/05/Logo-BMI_RGB_blanco.png) | [Web](https://www.bmicos.com/ecuador/) |
-| Seguros Alianza | [Logo](https://www.segurosalianza.com/wp-content/uploads/2023/05/Logo-blanco.png) | [Web](https://www.segurosalianza.com/) |
+| Seguros Alianza | [Logo](https://www.segurosalianza.com/wp-content/uploads/2023/08/logoalianza_color.webp) | [Web](https://www.segurosalianza.com/) |
 | Seguros del Pichincha | [Logo](https://segurosdelpichincha.com/images/shared/logo-sdp.png) | [Web](https://segurosdelpichincha.com/) |
 | Interoceánica | [Logo](https://segurosinteroceanica.com/wp-content/themes/interoceanica/images/logo-default.png) | [Web](https://segurosinteroceanica.com/) |
 | Generali | [Logo](https://www.generali.com/.resources/generalicom-templating-light/webresources/images/generali-logo-small.svg) | [Web](https://www.generali.com.ec/) |
 | Equisuiza | [Logo](https://equisuiza.com/wp-content/uploads/2025/09/logo.svg) | [Web](https://equisuiza.com/) |
 | Bupa | [Logo](https://www.bupasalud.com.ec/sites/default/files/2025-06/media/bupa-seguro-medico.svg) | [Web](https://www.bupasalud.com.ec/) |
-| Assist Card | [Logo](https://aboutus.assistcard.com/template/assist_card.png) | [Web](https://www.assistcard.com/ec) |
+| Assist Card | [Logo](https://www.assistcard.com/ImagesIT/assistcard.svg) | [Web](https://www.assistcard.com/ec) |
 | Hispana | [Logo](https://www.hispanadeseguros.com/wp-content/uploads/2024/08/Logo-hispana-transparente-1.png) | [Web](https://www.hispanadeseguros.com/) |
 | Latina Seguros | [Logo](https://latinaseguros.com.ec/wp-content/uploads/2021/11/logotipo-latina.png) | [Web](https://latinaseguros.com.ec/) |
 | AIG | [Logo](https://www.aig.com.ec/content/experience-fragments/aig/lac/ecuador/es/header-nextgen/master/_jcr_content/root/responsivegrid_19588/responsivegrid_copy/container_copy_copy_/container_897891850/image_409587976.coreimg.png/1778871201638/icon-aig-logo-white.png) | [Web](https://www.aig.com.ec/) |

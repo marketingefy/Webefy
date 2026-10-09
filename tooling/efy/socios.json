@@ -136,8 +136,8 @@
     "id": "ecuasanitas",
     "name": "Ecuasanitas",
     "website": "https://www.ecuasanitas.com/",
-    "logo": "assets/site/partners/ecuasanitas.png",
-    "logo_source": "https://www.ecuasanitas.com/assets/img/ecuasanitas/Logo_Ecuasanitas_nuevo.png",
+    "logo": "assets/site/partners/ecuasanitas-actual.svg",
+    "logo_source": "https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/Logo-Ecuasanitas-Blanco.svg",
     "checked_at": "2026-10-09",
     "assistance": [
       {
@@ -145,7 +145,8 @@
         "label": "Call center · 24/7",
         "source": "https://www.linkedin.com/company/ecuasanitas/"
       }
-    ]
+    ],
+    "logo_dark": true
   },
   {
     "id": "saludsa",
@@ -212,10 +213,9 @@
     "id": "alianza",
     "name": "Seguros Alianza",
     "website": "https://www.segurosalianza.com/",
-    "logo": "assets/site/partners/alianza.png",
-    "logo_source": "https://www.segurosalianza.com/wp-content/uploads/2023/05/Logo-blanco.png",
+    "logo": "assets/site/partners/alianza-color.webp",
+    "logo_source": "https://www.segurosalianza.com/wp-content/uploads/2023/08/logoalianza_color.webp",
     "checked_at": "2026-10-09",
-    "logo_dark": true,
     "assistance": [
       {
         "phone": "02 516 9932",
@@ -312,10 +312,9 @@
     "id": "assist-card",
     "name": "Assist Card",
     "website": "https://www.assistcard.com/ec",
-    "logo": "assets/site/partners/assist-card.png",
-    "logo_source": "https://aboutus.assistcard.com/template/assist_card.png",
+    "logo": "assets/site/partners/assist-card-color.svg",
+    "logo_source": "https://www.assistcard.com/ImagesIT/assistcard.svg",
     "checked_at": "2026-10-09",
-    "logo_dark": true,
     "assistance": [
       {
         "phone": "+54 9 11 2703 9665",
