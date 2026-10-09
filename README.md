@@ -4,9 +4,10 @@ Web con páginas estáticas y recepción de siniestros en PHP, publicada en http
 SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican automáticamente.
 
 - Sitio: `public/`.
-- Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Ayuda y Siniestros).
+- Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Siniestros).
 - Catálogo de seguros confirmado: `tooling/efy/servicios.json`; pendiente de la lista del propietario.
 - Aseguradoras asociadas: `tooling/efy/socios.json`; pendiente de los nombres del propietario.
+- Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Diseño y contenido de la vista previa: [brief de la web](tooling/efy/WEB-BRIEF.md).
 - Recepción de reportes: [módulo de siniestros](tooling/efy/SINIESTROS.md).

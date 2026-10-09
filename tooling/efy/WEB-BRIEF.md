@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Ayuda y Siniestros
+# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Siniestros
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -24,6 +24,7 @@ Conócenos:  navegación / identidad / EVIA / principios / acceso a contacto
 Ayuda:     navegación / búsqueda / categorías / respuestas / acceso a contacto
 Servicios: navegación / introducción / catálogo / guía para comparar / consulta
 Socios:    navegación / aseguradoras / guía de póliza / acceso a siniestros
+Reseñas:   navegación / presentación / opiniones de clientes / conocer Efy
 ```
 
 Revisión previa: se descartó una parrilla genérica de pólizas, cifras y logos de
@@ -73,6 +74,28 @@ un panel oscuro reúne las preguntas que debe resolver antes de decidir. Se
 conservan los tokens y las tipografías compartidas. Se descartaron iconos de ramos
 y tarjetas de productos ficticios; las fichas aparecerán con contenido real.
 
+## Reseñas de clientes
+
+El propietario solicitó un apartado de reseñas. Se añade `resenas.html` con
+accesos desde el menú, Inicio, el pie y EVIA. Se ha solicitado una fuente o las
+reseñas reales. Mientras faltan, se muestra «Próximamente», sin nombres, citas,
+estrellas, puntuaciones agregadas ni cantidades inventadas.
+
+El contenido se carga de `tooling/efy/resenas.json`: `profile_url` es el enlace
+opcional al perfil oficial de reseñas; `items` contiene las opiniones reales.
+Cada opinión necesita `id` único, `author` (nombre público) y `text` (texto original).
+Puede incluir `rating` (entero de 1 a 5), `date` (`YYYY-MM-DD`) y `source_url`
+(enlace HTTPS a la reseña original). Los campos ausentes no se rellenan ni se
+deducen. El texto se conserva, incluyendo saltos de línea, y se escapa para HTML.
+Las URLs se validan, sin esquemas ejecutables ni credenciales. No hay descarga
+automática de Google, widgets externos, formulario de recepción ni publicación
+automática de comentarios. La fuente enlazada se abre con navegación normal.
+
+Dirección: titular oscuro con el rosa de Efy, seguido de opiniones en superficies
+claras. Las citas y sus autores llevan la jerarquía visual; se descartó una nota
+global o una reseña destacada hasta tener datos reales. Se conservan las fuentes,
+el logo blanco, EVIA y la escena aprobada de Inicio.
+
 ## Validación
 
 Navegación entre las páginas y menú móvil, búsqueda y filtros de preguntas,
@@ -95,3 +118,10 @@ recursos locales y vistas de 320/390/768/1440 px. No enviar mensajes reales en p
   1280 y 1440 px sin desbordamiento; menú con siete accesos, cierre con Escape,
   navegación sin JavaScript, preguntas nuevas en Ayuda y enlaces de EVIA a los
   módulos. Sin errores de JavaScript. Revisión visual de capturas móvil y escritorio.
+- Reseñas: ocho páginas y el menú comprobados a 320, 390, 768, 1101, 1440 y
+  1600 px sin desbordamiento ni errores de JavaScript. Acceso desde EVIA, búsqueda
+  de la nueva pregunta en Ayuda, cierre con Escape y navegación sin JavaScript.
+  Capturas revisadas en móvil y escritorio. Renderizado de una reseña de prueba
+  comprobado en un directorio temporal: conserva el texto y sus saltos, escapa
+  HTML y muestra sólo fecha y calificación suministradas. Las fuentes no HTTPS
+  y las URLs con credenciales son rechazadas. No se publican datos de prueba.

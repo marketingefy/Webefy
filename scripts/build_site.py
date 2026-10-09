@@ -1,8 +1,10 @@
 """Build the Efy website preview with shared navigation, services and FAQ data."""
 import json
 import re
+from datetime import date
 from html import escape
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public' / 'nueva'
@@ -29,7 +31,37 @@ for partner in PARTNERS:
         raise ValueError('Partner name must contain confirmed text')
     partner_ids.add(partner['id'])
 partner_answer = ('Las aseguradoras con las que trabaja Efy son: ' + ', '.join(partner['name'] for partner in PARTNERS) + '. Puedes verlas en Socios estratégicos.' if PARTNERS else 'Estamos preparando la presentación de las aseguradoras con las que trabaja Efy en Socios estratégicos. Si necesitas identificar tu aseguradora actual, revisa tu póliza o certificado.')
+REVIEW_DATA = json.loads((ROOT / 'tooling/efy/resenas.json').read_text())
+REVIEWS = REVIEW_DATA['items']
+def review_url(value):
+    if value is None:
+        return None
+    if not isinstance(value, str) or any(char.isspace() or ord(char) < 32 for char in value):
+        raise ValueError('Review source must be a valid HTTPS URL')
+    parsed = urlsplit(value)
+    if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password:
+        raise ValueError('Review source must be a valid HTTPS URL without credentials')
+    return value
+
+REVIEW_PROFILE = review_url(REVIEW_DATA.get('profile_url'))
+review_ids = set()
+for review in REVIEWS:
+    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', review['id']) or review['id'] in review_ids:
+        raise ValueError('Every review needs a unique URL-safe id')
+    for field in ('author', 'text'):
+        if not isinstance(review[field], str) or not review[field].strip():
+            raise ValueError(f'Review {field} must contain real customer text')
+    rating = review.get('rating')
+    if rating is not None and (type(rating) is not int or not 1 <= rating <= 5):
+        raise ValueError('Review rating must be an integer from 1 to 5, or omitted')
+    if review.get('date') is not None:
+        if date.fromisoformat(review['date']).isoformat() != review['date']:
+            raise ValueError('Review date must use YYYY-MM-DD')
+    review_url(review.get('source_url'))
+    review_ids.add(review['id'])
+review_answer = ('Puedes leer las opiniones de clientes en el apartado Reseñas.' if REVIEWS or REVIEW_PROFILE else 'El apartado Reseñas está preparado para compartir las opiniones de clientes de Efy. Estamos reuniendo las reseñas para publicarlas allí.')
 FAQ = [
+    {'id':'resenas','category':'Sobre Efy','question':'¿Dónde puedo leer las reseñas de clientes de Efy?','answer':review_answer},
     {'id':'socios','category':'Sobre Efy','question':'¿Con qué aseguradoras trabaja Efy?','answer':partner_answer},
     {'id':'servicios','category':'Sobre Efy','question':'¿Qué tipos de seguros ofrece Efy?','answer':service_answer},
     {'id':'elegir','category':'Antes de elegir','question':'¿Por dónde empiezo para elegir un seguro?','answer':'Empieza por lo que quieres proteger y por los riesgos que te preocupan. Después compara coberturas, exclusiones, deducibles, límites y costo. Una propuesta debe ayudarte a entender qué incluye y qué queda fuera.'},
@@ -66,6 +98,7 @@ home = f'''
     <a class="editorial-link" href="servicios.html"><div><p class="small-label">SERVICIOS</p><h3>Empieza por lo que quieres proteger.</h3><p>Conoce nuestro apartado de seguros y qué revisar antes de elegir.</p></div>{ARROW}</a>
     <a class="editorial-link" href="nosotros.html"><div><p class="small-label">CONÓCENOS</p><h3>Conoce el mundo de Efy.</h3><p>Nuestra identidad, lo que nos mueve y EVIA, nuestra guía digital.</p></div>{ARROW}</a>
     <a class="editorial-link" href="socios.html"><div><p class="small-label">SOCIOS ESTRATÉGICOS</p><h3>Las aseguradoras con las que trabajamos.</h3><p>Un espacio para conocer a nuestros socios estratégicos.</p></div>{ARROW}</a>
+    <a class="editorial-link" href="resenas.html"><div><p class="small-label">RESEÑAS</p><h3>La experiencia de nuestros clientes.</h3><p>Un espacio para sus opiniones sobre Efy.</p></div>{ARROW}</a>
     <a class="editorial-link" href="ayuda.html"><div><p class="small-label">AYUDA</p><h3>Entiende antes de decidir.</h3><p>Respuestas sobre coberturas, deducibles y conceptos de tu póliza.</p></div>{ARROW}</a>
     <a class="editorial-link" href="siniestros.html"><div><p class="small-label">SINIESTROS</p><h3>Reporta lo ocurrido.</h3><p>Envía los datos del evento y sus adjuntos al equipo de siniestros de Efy.</p></div>{ARROW}</a>
     <a class="editorial-link" href="contactos.html"><div><p class="small-label">CONTACTOS</p><h3>Encuentra tu siguiente paso.</h3><p>Prepara tus preguntas y conoce los canales de atención de Efy.</p></div>{ARROW}</a>
@@ -107,6 +140,25 @@ partners_page = f'''
 <section class="section container help-cta"><div><p class="eyebrow">SI NECESITAS REPORTAR UN EVENTO</p><h2>Cuéntale a Efy lo ocurrido.</h2><p>Puedes enviar tu reporte desde Siniestros. Sigue también los canales y plazos indicados por tu aseguradora.</p></div><a class="button blue" href="siniestros.html">Reportar un siniestro {ARROW}</a></section>
 '''
 
+review_cards = []
+months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+for review in REVIEWS:
+    rating = (f'<p class="review-rating"><span aria-hidden="true">★</span> Calificación: {review["rating"]} de 5</p>' if review.get('rating') is not None else '')
+    published = ''
+    if review.get('date'):
+        day = date.fromisoformat(review['date'])
+        published = f'<time datetime="{day.isoformat()}">{day.day} de {months[day.month-1]} de {day.year}</time>'
+    source = (f'<a class="text-link" href="{escape(review["source_url"], quote=True)}" rel="noopener noreferrer">Ver reseña original {ARROW}</a>' if review.get('source_url') else '')
+    review_cards.append(f'<figure class="review-card" id="resena-{review["id"]}">{rating}<blockquote><p>{escape(review["text"])}</p></blockquote><figcaption><strong>{escape(review["author"])}</strong>{published}</figcaption>{source}</figure>')
+review_catalog = ('<div class="review-grid">' + ''.join(review_cards) + '</div>' if REVIEWS else '''<div class="catalog-pending review-pending"><p class="small-label">PRÓXIMAMENTE</p><h3>Las experiencias de nuestros clientes,<br>en sus propias palabras.</h3><p>Estamos reuniendo opiniones para compartirlas aquí.</p></div>''')
+review_profile_label = 'Ver más reseñas' if REVIEWS else 'Leer reseñas en el perfil de Efy'
+review_profile_link = (f'<a class="button blue" href="{escape(REVIEW_PROFILE, quote=True)}" rel="noopener noreferrer">{review_profile_label} {ARROW}</a>' if REVIEW_PROFILE else '')
+reviews_page = f'''
+<section class="reviews-hero"><div class="container"><p class="eyebrow light">RESEÑAS DE CLIENTES</p><h1 id="page-title">Tu experiencia<br><span>también cuenta.</span></h1><p class="large-copy">Un espacio para conocer las opiniones de quienes han vivido su experiencia con Efy.</p></div></section>
+<section class="section container reviews-section" aria-labelledby="reviews-title"><div class="section-heading"><p class="eyebrow">EN SUS PROPIAS PALABRAS</p><h2 id="reviews-title">Voces de nuestros clientes.</h2></div>{review_catalog}{f'<div class="review-source">{review_profile_link}</div>' if REVIEW_PROFILE else ''}</section>
+<section class="soft-section"><div class="container help-cta"><div><p class="eyebrow">CONOCE MÁS DE EFY</p><h2>Una conversación<br>puede ser el comienzo.</h2><p>Conoce nuestra marca o prepara lo que te gustaría consultar.</p></div><div class="actions"><a class="button blue" href="nosotros.html">Conócenos {ARROW}</a><a class="text-link" href="contactos.html">Ir a Contactos {ARROW}</a></div></div></section>
+'''
+
 categories = ['Todas', 'Antes de elegir', 'Tu póliza', 'Si ocurre un evento', 'Sobre Efy']
 filters = ''.join(f'<button class="filter-button" type="button" data-category="{c}" aria-pressed="{str(i==0).lower()}">{c}</button>' for i,c in enumerate(categories))
 faq_rows = ''.join(f'<details class="faq-item" data-category="{f["category"]}" id="faq-{f["id"]}"><summary>{f["question"]}<span aria-hidden="true"></span></summary><div><p class="faq-category">{f["category"]}</p><p>{f["answer"]}</p></div></details>' for f in FAQ)
@@ -135,6 +187,7 @@ pages = [
     ('contactos.html','Contactos','Contactos · Efy Seguros',contact),
     ('nosotros.html','Conócenos','Conócenos · Efy Seguros',about),
     ('socios.html','Socios estratégicos','Socios estratégicos · Efy Seguros',partners_page),
+    ('resenas.html','Reseñas','Reseñas de clientes · Efy Seguros',reviews_page),
     ('ayuda.html','Ayuda','Ayuda · Efy Seguros',help_page),
     ('siniestros.html','Siniestros','Reportar un siniestro · Efy Seguros',claim_page),
 ]
@@ -153,7 +206,7 @@ for filename, label, title, content in pages:
 </body></html>'''
     if filename == 'siniestros.html':
         document = document.replace('</head>', '<script src="../assets/site/siniestros.js?v=claims-20261009" defer></script></head>')
-    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=services-partners-20261009').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=services-partners-20261009')
+    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=reviews-20261009').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=reviews-20261009')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
     document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#claim-form,.claim-progress,#claim-availability{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)

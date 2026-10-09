@@ -24,6 +24,7 @@
   const fab = document.querySelector('.chat-fab');
   let lastTrigger;
   const intents = [
+    ['resenas', ['resena', 'opinion', 'testimonio', 'valoracion', 'experiencias de clientes']],
     ['socios', ['socios', 'aliados', 'aseguradoras trabajan', 'aseguradoras trabaja', 'aseguradoras tienen', 'aseguradoras cuentan', 'con que aseguradora']],
     ['servicios', ['servicio', 'seguros ofrecen', 'seguros tienen', 'seguros cuentan', 'tipos de seguros', 'catalogo', 'ramos']],
     ['deducible', ['deducible', 'deducibles', 'franquicia']],
@@ -85,6 +86,12 @@
         partnersLink.href = 'socios.html';
         partnersLink.textContent = 'Ver Socios estratégicos →';
         entry.append(partnersLink);
+      }
+      if (faqId === 'resenas') {
+        const reviewsLink = document.createElement('a');
+        reviewsLink.href = 'resenas.html';
+        reviewsLink.textContent = 'Ver Reseñas →';
+        entry.append(reviewsLink);
       }
     }
     messages.append(entry);
