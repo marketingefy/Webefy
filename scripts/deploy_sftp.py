@@ -81,7 +81,7 @@ def publish(check_only=False):
     if not directory.startswith("/") or not re.fullmatch(r"[A-Za-z0-9_/.-]+", directory) or ".." in directory.split("/"):
         raise ValueError("SSH_DIRECTORY must be a confirmed absolute site path")
     site = Path(__file__).resolve().parents[1] / "public"
-    if not (site / "index.html").is_file() or not (site / "assets/nuevo-comienzo.png").is_file():
+    if not (site / "index.html").is_file():
         raise ValueError("Required site files are missing")
     if any(p.is_symlink() for p in site.rglob("*")):
         raise ValueError("Symlinks are not allowed in published files")

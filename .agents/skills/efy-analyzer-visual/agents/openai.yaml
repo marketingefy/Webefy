@@ -1,0 +1,4 @@
+interface:
+  display_name: "EfyAnalyzer Visual"
+  short_description: "Estética y QA móvil del CRM EfyAnalyzer"
+  default_prompt: "Usa $efy-analyzer-visual para mejorar esta pantalla sin alterar la funcionalidad existente."

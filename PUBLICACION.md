@@ -63,6 +63,6 @@ No interpreta una respuesta a `ssh-keyscan` como una clave confiable por sí sol
 
 ## Publicación manual de respaldo
 
-El paquete `EFY-proximamente.zip` contiene `index.html` y `assets/nuevo-comienzo.png`.
+El paquete actualizado `EFY-espera-limpia.zip` contiene `index.html`, el logo y las fuentes en `assets/`.
 Subirlo y extraerlo directamente en `public_html`, sin una carpeta `public` intermedia.
 No usar ese paquete antiguo para sobrescribir una versión posterior del sitio.
