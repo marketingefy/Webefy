@@ -48,10 +48,9 @@
     "id": "aseguradora-del-sur",
     "name": "Aseguradora del Sur",
     "website": "https://aseguradoradelsur.com/",
-    "logo": "assets/site/partners/aseguradora-del-sur.png",
-    "logo_source": "https://aseguradoradelsur.com/static/images/logoCP.png",
+    "logo": "assets/site/partners/aseguradora-del-sur-color.png",
+    "logo_source": "https://aseguradoradelsur.com/static/images/logos/session.png",
     "checked_at": "2026-10-09",
-    "logo_dark": true,
     "assistance": [
       {
         "phone": "099 555 3333",
@@ -136,8 +135,8 @@
     "id": "ecuasanitas",
     "name": "Ecuasanitas",
     "website": "https://www.ecuasanitas.com/",
-    "logo": "assets/site/partners/ecuasanitas-actual.svg",
-    "logo_source": "https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/Logo-Ecuasanitas-Blanco.svg",
+    "logo": "assets/site/partners/ecuasanitas-color.png",
+    "logo_source": "https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/ecuasanitasLogo.png",
     "checked_at": "2026-10-09",
     "assistance": [
       {
@@ -145,8 +144,7 @@
         "label": "Call center · 24/7",
         "source": "https://www.linkedin.com/company/ecuasanitas/"
       }
-    ],
-    "logo_dark": true
+    ]
   },
   {
     "id": "saludsa",

@@ -21,22 +21,23 @@ sitios incluyen destinos de plantilla o destinos que discrepan del número visib
 
 Ecuasanitas confirma su call center 24/7 en su perfil oficial de LinkedIn. El logo
 corresponde a la identidad presentada en 2025, con el símbolo de cintas y el
-nombre EcuaSanitas, en su archivo oficial de la web actual. Se conserva la versión
-blanca original sobre una superficie oscura. Se retiró el antiguo logo verde y
+nombre EcuaSanitas, en el PNG oficial a color de la web actual. Se conserva el
+símbolo turquesa y el texto azul petróleo sobre una superficie clara. Se retiró el antiguo logo verde y
 azul, que su archivo heredado todavía denominaba «nuevo». Referencia del cambio:
 [anuncio oficial de Ecuasanitas](https://es.linkedin.com/posts/ecuasanitas_evoluci%C3%B3nqueinspira-tubienestarnuestraprioridad-activity-7323751621824319488-Wwmu).
 
 Assist Card usa su SVG oficial con el cuadrado rojo y la marca blanca; Alianza usa
 la versión naranja y gris enlazada por la cabecera de su web. No se recolorean las
-versiones blancas ni se reconstruyen los símbolos. Los tres assets corregidos
-tienen nombres nuevos para evitar conservar las imágenes anteriores en caché.
+versiones blancas ni se reconstruyen los símbolos. Los assets corregidos tienen nombres nuevos para evitar conservar las imágenes
+anteriores en caché.
 
 Assist Card muestra su WhatsApp de
 asistencia en viaje y reintegros en el listado oficial; se usa el número visible
 confirmado en su documentación, pues el enlace móvil de la página difiere.
 Aseguradora del Sur documenta la línea de asistencia hogar en el folleto Mi Hogar;
-no se generaliza esa línea a vehículos. El logo procede de la imagen configurada
-como «Aseguradora logo» en su aplicación pública, no de iconos de la plantilla.
+no se generaliza esa línea a vehículos. El logo a color procede de `/static/images/logos/session.png`, configurado como
+`appLogo2` en su aplicación pública: estrella azul y celeste y texto azul oscuro
+sobre superficie clara. Se retiró la variante blanca del panel oscuro.
 
 No se confirmó un teléfono vigente y apropiado para Generali o Mediken en las
 fuentes revisadas. Ambas fichas enlazan a su sitio oficial y a la recomendación de
@@ -55,12 +56,12 @@ origen: véase [SINIESTROS.md](SINIESTROS.md).
 | --- | --- | --- |
 | Sweaden | [Logo](https://sweadenseguros.com/wp-content/uploads/2020/01/logo-sweaden.png) | [Web](https://sweadenseguros.com/) |
 | Chubb | [Logo](https://www.chubb.com/content/dam/chubb-sites/chubb/us-en/home_page/chubb-logo-black.png) | [Web](https://www.chubb.com/ec-es/) |
-| Aseguradora del Sur | [Logo](https://aseguradoradelsur.com/static/images/logoCP.png) | [Web](https://aseguradoradelsur.com/) |
+| Aseguradora del Sur | [Logo](https://aseguradoradelsur.com/static/images/logos/session.png) | [Web](https://aseguradoradelsur.com/) |
 | Zurich | [Logo](https://amicovered.zurich.com/images/zurichLogo_EN.svg) | [Web](https://www.zurichseguros.com.ec/) |
 | Seguros Unidos | [Logo](https://segurosunidos.ec/wp-content/uploads/2022/08/Seguros-Unidos.svg) | [Web](https://segurosunidos.ec/) |
 | MAPFRE | [Logo](https://www.mapfre.com.ec/media/logo-mapfre.png) | [Web](https://www.mapfre.com.ec/) |
 | Seguros Atlántida | [Logo](https://www.segurosatlantida.ec/_next/static/media/logo-rojo.2fpq9u-mq4ix8.webp) | [Web](https://www.segurosatlantida.ec/) |
-| Ecuasanitas | [Logo](https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/Logo-Ecuasanitas-Blanco.svg) | [Web](https://www.ecuasanitas.com/) |
+| Ecuasanitas | [Logo](https://www.ecuasanitas.com/ecuasanitas-web/assets/img/ecuasanitas/ecuasanitasLogo.png) | [Web](https://www.ecuasanitas.com/) |
 | Saludsa | [Logo](https://www.saludsa.com/wp-content/uploads/2021/03/logo_saludsa_home.svg) | [Web](https://www.saludsa.com/) |
 | Humana | [Logo](https://humana.med.ec/wp-content/uploads/2025/03/humana-medicina-prepagada-logo-2025.png) | [Web](https://humana.med.ec/) |
 | BMI | [Logo](https://www.bmicos.com/ecuador/wp-content/uploads/sites/9/2024/05/Logo-BMI_RGB_blanco.png) | [Web](https://www.bmicos.com/ecuador/) |
