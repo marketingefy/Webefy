@@ -1,7 +1,10 @@
 # EFY Seguros: desarrollo y publicación automática
 
 El sitio está en `public/`. Es una web estática; no requiere instalar paquetes ni
-un servidor de aplicaciones. No incluye formularios ni recopila datos.
+un servidor de aplicaciones. La portada de espera no recopila datos. La vista previa `/nueva/` incluye una guía
+de preguntas frecuentes y un formulario que prepara consultas sólo en el navegador;
+no envía ni almacena información. WhatsApp se incorporará cuando el propietario
+confirme el número.
 
 ## Desarrollo local
 
@@ -13,6 +16,9 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory public
 ```
 
 Comprobar el mensaje principal, la carga de la imagen y el diseño en móvil.
+La nueva web se revisa en `/nueva/`; sus páginas compartidas se regeneran con
+`python3 scripts/build_site.py`. El script de publicación incluye los `index.html`
+de subdirectorios y reemplaza la portada raíz al finalizar.
 
 ## Publicación en HostGator
 

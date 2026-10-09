@@ -85,7 +85,7 @@ def publish(check_only=False):
         raise ValueError("Required site files are missing")
     if any(p.is_symlink() for p in site.rglob("*")):
         raise ValueError("Symlinks are not allowed in published files")
-    files = sorted(p for p in site.rglob("*") if p.is_file() and p.name != "index.html")
+    files = sorted(p for p in site.rglob("*") if p.is_file() and p != site / "index.html")
     temporary = ".efy-index-" + uuid.uuid4().hex + ".html"
     commands = ['cd "' + directory + '"']
     directories = sorted((p for p in site.rglob("*") if p.is_dir()), key=lambda p: len(p.parts))
