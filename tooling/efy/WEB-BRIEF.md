@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Contactos, Nosotros, Ayuda y Siniestros
+# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Ayuda y Siniestros
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -20,8 +20,10 @@ La composición de la escena aprobada se conserva y no hay botón de pausa.
 ```
 Inicio:    navegación / mensaje + taller EVIA / accesos a información / cierre
 Contactos: navegación / introducción / canales oficiales / preparar consulta
-Nosotros:  navegación / identidad / EVIA / principios / acceso a contacto
+Conócenos:  navegación / identidad / EVIA / principios / acceso a contacto
 Ayuda:     navegación / búsqueda / categorías / respuestas / acceso a contacto
+Servicios: navegación / introducción / catálogo / guía para comparar / consulta
+Socios:    navegación / aseguradoras / guía de póliza / acceso a siniestros
 ```
 
 Revisión previa: se descartó una parrilla genérica de pólizas, cifras y logos de
@@ -40,9 +42,40 @@ El módulo Siniestros se añadió por petición posterior y envía al correo
 `siniestros@efyseguros.com`, confirmado por el propietario. Su recepción, datos
 y pruebas se documentan en [SINIESTROS.md](SINIESTROS.md).
 
+## Servicios
+
+El propietario pidió desglosar los tipos de seguros de Efy. Se ha solicitado su
+lista; todavía no hay ramos confirmados. Servicios incluye un estado de catálogo
+próximo, una guía para comparar propuestas y enlaces reales a Ayuda, Contactos y
+EVIA. No publica los ejemplos de la pregunta como productos de Efy.
+
+El catálogo se prepara en `tooling/efy/servicios.json` y se regenera con el resto
+de páginas. Cada entrada contiene `id` (único, minúsculas y guiones), `name`,
+`description` y `details` (lista de textos confirmados; puede estar vacía).
+Los detalles se muestran en acordeones nativos y los textos se escapan como HTML.
+La respuesta de EVIA sobre servicios usa esa misma lista y enlaza al catálogo.
+No agregar precios, coberturas o condiciones que el propietario no haya confirmado.
+
+## Socios estratégicos y Conócenos
+
+El propietario pidió renombrar «Nosotros» a «Conócenos» y mostrar las aseguradoras
+con las que trabaja Efy. El nombre se actualiza en todos los accesos, conservando
+la URL `nosotros.html` para que los enlaces existentes sigan funcionando.
+
+`socios.html` queda integrado en la navegación y la portada. Sus nombres proceden
+de `tooling/efy/socios.json`: cada entrada contiene `id` único y `name` confirmado.
+No hay aseguradoras confirmadas todavía; se solicitaron los nombres al propietario.
+El estado próximo es explícito. No se inventan asociaciones ni logotipos. EVIA usa
+la misma lista. Los logos oficiales se incorporarán cuando estén disponibles.
+
+Dirección del módulo: el titular pone lo que el cliente quiere proteger primero;
+un panel oscuro reúne las preguntas que debe resolver antes de decidir. Se
+conservan los tokens y las tipografías compartidas. Se descartaron iconos de ramos
+y tarjetas de productos ficticios; las fichas aparecerán con contenido real.
+
 ## Validación
 
-Navegación entre cuatro páginas y menú móvil, búsqueda y filtros de preguntas,
+Navegación entre las páginas y menú móvil, búsqueda y filtros de preguntas,
 acordeones, borrador de consulta y copia, teclado, preferencias de movimiento,
 recursos locales y vistas de 320/390/768/1440 px. No enviar mensajes reales en pruebas.
 
@@ -58,3 +91,7 @@ recursos locales y vistas de 320/390/768/1440 px. No enviar mensajes reales en p
 - Sin JavaScript, la navegación y los acordeones siguen funcionando.
 - Publicación: se corrigió la exclusión de los `index.html` anidados; comprobado con
   una ejecución simulada de SFTP, sin conexión ni uso de credenciales reales.
+- Servicios, Conócenos y Socios: siete páginas comprobadas a 320, 390, 768, 1101,
+  1280 y 1440 px sin desbordamiento; menú con siete accesos, cierre con Escape,
+  navegación sin JavaScript, preguntas nuevas en Ayuda y enlaces de EVIA a los
+  módulos. Sin errores de JavaScript. Revisión visual de capturas móvil y escritorio.

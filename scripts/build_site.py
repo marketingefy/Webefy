@@ -1,13 +1,37 @@
-"""Build the five-page Efy website preview with shared navigation and FAQ data."""
+"""Build the Efy website preview with shared navigation, services and FAQ data."""
 import json
 import re
+from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
+SERVICES = json.loads((ROOT / 'tooling/efy/servicios.json').read_text())
+service_ids = set()
+for service in SERVICES:
+    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', service['id']) or service['id'] in service_ids:
+        raise ValueError('Every service needs a unique URL-safe id')
+    for field in ('name', 'description'):
+        if not isinstance(service[field], str) or not service[field].strip():
+            raise ValueError(f'Service {field} must contain confirmed text')
+    if not isinstance(service.get('details'), list) or not all(isinstance(item, str) and item.strip() for item in service['details']):
+        raise ValueError('Service details must be a list of confirmed text')
+    service_ids.add(service['id'])
+service_answer = ('En Servicios puedes consultar estos tipos de seguros: ' + ', '.join(service['name'] for service in SERVICES) + '. Revisa el detalle de cada uno y prepara tus preguntas para Efy. Las condiciones dependen de la propuesta y de la póliza.' if SERVICES else 'Estamos preparando el catálogo de seguros de Efy. En Servicios encontrarás el detalle de cada tipo cuando esté disponible. Mientras tanto, puedes revisar qué preguntar antes de elegir y preparar tu consulta en Contactos.')
+PARTNERS = json.loads((ROOT / 'tooling/efy/socios.json').read_text())
+partner_ids = set()
+for partner in PARTNERS:
+    if not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', partner['id']) or partner['id'] in partner_ids:
+        raise ValueError('Every partner needs a unique URL-safe id')
+    if not isinstance(partner['name'], str) or not partner['name'].strip():
+        raise ValueError('Partner name must contain confirmed text')
+    partner_ids.add(partner['id'])
+partner_answer = ('Las aseguradoras con las que trabaja Efy son: ' + ', '.join(partner['name'] for partner in PARTNERS) + '. Puedes verlas en Socios estratégicos.' if PARTNERS else 'Estamos preparando la presentación de las aseguradoras con las que trabaja Efy en Socios estratégicos. Si necesitas identificar tu aseguradora actual, revisa tu póliza o certificado.')
 FAQ = [
+    {'id':'socios','category':'Sobre Efy','question':'¿Con qué aseguradoras trabaja Efy?','answer':partner_answer},
+    {'id':'servicios','category':'Sobre Efy','question':'¿Qué tipos de seguros ofrece Efy?','answer':service_answer},
     {'id':'elegir','category':'Antes de elegir','question':'¿Por dónde empiezo para elegir un seguro?','answer':'Empieza por lo que quieres proteger y por los riesgos que te preocupan. Después compara coberturas, exclusiones, deducibles, límites y costo. Una propuesta debe ayudarte a entender qué incluye y qué queda fuera.'},
     {'id':'cotizar','category':'Antes de elegir','question':'¿Qué información preparo para pedir una cotización?','answer':'Anota qué quieres proteger, qué cobertura buscas y las preguntas que necesitas resolver. Los datos y documentos necesarios dependen del tipo de seguro y de la aseguradora. Confirma los requisitos por un canal oficial antes de enviar información personal.'},
     {'id':'cobertura','category':'Tu póliza','question':'¿Qué es una cobertura?','answer':'Es la protección que la póliza ofrece para un riesgo o una situación determinada. Su alcance depende de las condiciones, los límites y las exclusiones que aparecen en el contrato.'},
@@ -31,7 +55,7 @@ home = f'''
     <p class="eyebrow light">EFY SEGUROS · TU MEJOR ELECCIÓN</p>
     <h1 id="page-title">Elegir bien.<br>Vivir con<br><span>tranquilidad.</span></h1>
     <p class="hero-lead">Elegir un seguro empieza por entenderlo.<br>Conoce Efy y encuentra el próximo paso para ti.</p>
-    <div class="actions"><a class="button primary" href="nosotros.html">Conoce Efy {ARROW}</a><button class="button ghost" type="button" data-open-chat>Habla con EVIA</button></div>
+    <div class="actions"><a class="button primary" href="nosotros.html">Conócenos {ARROW}</a><button class="button ghost" type="button" data-open-chat>Habla con EVIA</button></div>
     <p class="hero-note">Una nueva experiencia de Efy, desde Quito.</p>
   </div>
   <p class="scene-note"><span></span>EVIA, dando forma a nuestro universo digital.</p>
@@ -39,7 +63,9 @@ home = f'''
 <section class="section container" aria-labelledby="start-title">
   <div class="section-heading"><p class="eyebrow">A TU RITMO</p><h2 id="start-title">La información que necesitas.<br><span>Un lugar para encontrarla.</span></h2></div>
   <div class="editorial-links">
-    <a class="editorial-link" href="nosotros.html"><div><p class="small-label">NOSOTROS</p><h3>Conoce el mundo de Efy.</h3><p>Nuestra identidad, lo que nos mueve y EVIA, nuestra guía digital.</p></div>{ARROW}</a>
+    <a class="editorial-link" href="servicios.html"><div><p class="small-label">SERVICIOS</p><h3>Empieza por lo que quieres proteger.</h3><p>Conoce nuestro apartado de seguros y qué revisar antes de elegir.</p></div>{ARROW}</a>
+    <a class="editorial-link" href="nosotros.html"><div><p class="small-label">CONÓCENOS</p><h3>Conoce el mundo de Efy.</h3><p>Nuestra identidad, lo que nos mueve y EVIA, nuestra guía digital.</p></div>{ARROW}</a>
+    <a class="editorial-link" href="socios.html"><div><p class="small-label">SOCIOS ESTRATÉGICOS</p><h3>Las aseguradoras con las que trabajamos.</h3><p>Un espacio para conocer a nuestros socios estratégicos.</p></div>{ARROW}</a>
     <a class="editorial-link" href="ayuda.html"><div><p class="small-label">AYUDA</p><h3>Entiende antes de decidir.</h3><p>Respuestas sobre coberturas, deducibles y conceptos de tu póliza.</p></div>{ARROW}</a>
     <a class="editorial-link" href="siniestros.html"><div><p class="small-label">SINIESTROS</p><h3>Reporta lo ocurrido.</h3><p>Envía los datos del evento y sus adjuntos al equipo de siniestros de Efy.</p></div>{ARROW}</a>
     <a class="editorial-link" href="contactos.html"><div><p class="small-label">CONTACTOS</p><h3>Encuentra tu siguiente paso.</h3><p>Prepara tus preguntas y conoce los canales de atención de Efy.</p></div>{ARROW}</a>
@@ -49,7 +75,7 @@ home = f'''
 '''
 
 about = f'''
-<section class="about-hero"><div class="container about-grid"><div><p class="eyebrow light">NOSOTROS</p><h1 id="page-title">Efy Seguros.<br><span>Tu mejor elección.</span></h1><p class="large-copy">Una marca con una idea clara: acercarte al mundo de los seguros con información sencilla y una experiencia más cercana.</p><p class="location-line"><span class="location-dot"></span>Desde Quito.</p></div><figure class="portrait-panel"><img src="../assets/site/evia-portrait.jpg" alt="EVIA, astronauta de traje crema con detalles rosados y el nombre EVIA en el pecho" width="960" height="1280" fetchpriority="high"><figcaption><span>EVIA</span>Una nueva forma de acompañarte.</figcaption></figure></div></section>
+<section class="about-hero"><div class="container about-grid"><div><p class="eyebrow light">CONÓCENOS</p><h1 id="page-title">Efy Seguros.<br><span>Tu mejor elección.</span></h1><p class="large-copy">Una marca con una idea clara: acercarte al mundo de los seguros con información sencilla y una experiencia más cercana.</p><p class="location-line"><span class="location-dot"></span>Desde Quito.</p></div><figure class="portrait-panel"><img src="../assets/site/evia-portrait.jpg" alt="EVIA, astronauta de traje crema con detalles rosados y el nombre EVIA en el pecho" width="960" height="1280" fetchpriority="high"><figcaption><span>EVIA</span>Una nueva forma de acompañarte.</figcaption></figure></div></section>
 <section class="section container" aria-labelledby="principles-title"><div class="section-heading"><p class="eyebrow">LO QUE NOS MUEVE</p><h2 id="principles-title">Más claridad.<br><span>Más cerca de ti.</span></h2></div><div class="principles"><article><h3>Entender primero.</h3><p>Una decisión empieza con preguntas. Queremos que los conceptos sean claros y que sepas qué revisar antes de elegir.</p></article><article><h3>Hablar sencillo.</h3><p>Explicar coberturas, condiciones y exclusiones con palabras que puedas reconocer en tu día a día.</p></article><article><h3>Acompañar con propósito.</h3><p>Crear un espacio útil para conocer Efy, resolver dudas generales y preparar tu siguiente consulta.</p></article></div></section>
 <section class="soft-section"><div class="container story-grid"><p class="eyebrow">NUESTRO UNIVERSO DIGITAL</p><div><h2>EVIA abre la conversación.</h2><p class="large-copy">Nuestra astronauta representa la curiosidad de explorar, construir y encontrar respuestas. En esta web, te orienta entre las preguntas frecuentes.</p><p>El chat ofrece información general. Las condiciones de cada seguro se revisan en su póliza y con la aseguradora correspondiente.</p><a class="text-link" href="ayuda.html">Explora el centro de ayuda {ARROW}</a></div></div></section>
 '''
@@ -58,6 +84,27 @@ contact = f'''
 <section class="page-intro container"><p class="eyebrow">CONTACTOS</p><h1 id="page-title">Toda conversación<br>empieza con <span>una pregunta.</span></h1><p class="large-copy intro-copy">Cuéntale a EVIA qué te gustaría entender o prepara tus preguntas para Efy.</p></section>
 <section class="container contact-grid" aria-label="Orientación y contacto"><div class="contact-info"><p class="small-label">ESTAMOS EN</p><h2>Quito.</h2><p>Los canales oficiales de atención y WhatsApp se incorporarán próximamente.</p><div class="contact-rule"></div><p class="small-label">ANTES DE CONSULTAR</p><p>Ten a mano el tema que quieres resolver y las preguntas que necesitas hacer. Los requisitos de una cotización dependen del seguro y de la aseguradora.</p><a class="text-link" href="ayuda.html">Ver preguntas frecuentes {ARROW}</a></div><div class="contact-chat"><div class="avatar-row"><img src="../assets/site/evia-portrait.jpg" alt="" width="56" height="56"><div><strong>Conversa con EVIA</strong><span>Guía de Efy</span></div></div><h2>Empecemos<br>por lo que necesitas.</h2><p>Información general sobre seguros, conceptos de tu póliza y cómo preparar una consulta.</p><button class="button primary" type="button" data-open-chat>Abrir el chat {ARROW}</button><p class="fine-print">EVIA responde con la guía de preguntas frecuentes. No recibe reportes ni envía solicitudes al equipo.</p></div></section>
 <section class="section container consult-section" aria-labelledby="consult-title"><div><p class="eyebrow">PREPARA TU CONSULTA</p><h2 id="consult-title">Ordena tus ideas.<br><span>Lleva las preguntas claras.</span></h2><p>Escribe qué necesitas y genera un resumen que puedas copiar para tu próxima conversación.</p></div><form id="consult-form"><label for="consult-topic">¿Sobre qué quieres consultar?</label><select id="consult-topic" name="topic" required><option value="">Selecciona un tema</option><option>Elegir un seguro</option><option>Solicitar información para una cotización</option><option>Entender mi póliza</option><option>Consultar una renovación</option><option>Otra consulta</option></select><label for="consult-question">¿Qué te gustaría saber?</label><textarea id="consult-question" name="question" rows="4" maxlength="1200" required placeholder="Por ejemplo: quiero saber qué revisar al comparar dos propuestas."></textarea><p class="form-hint">El resumen se prepara aquí, sin enviarlo ni guardarlo. Evita incluir datos personales.</p><button class="button blue" type="submit">Preparar mi consulta {ARROW}</button><div id="consult-result" class="consult-result" hidden><label for="consult-summary">Tu consulta preparada</label><textarea id="consult-summary" rows="5" readonly></textarea><button class="text-link" type="button" id="copy-consult">Copiar consulta {ARROW}</button><p id="copy-status" role="status"></p></div></form></section>
+'''
+
+service_cards = []
+for service in SERVICES:
+    details = ''.join(f'<li>{escape(item)}</li>' for item in service['details'])
+    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}"><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="contactos.html#consult-title">Preparar una consulta {ARROW}</a></article>''')
+catalog = ('<div class="service-catalog">' + ''.join(service_cards) + '</div>' if SERVICES else '''<div class="catalog-pending"><p class="small-label">PRÓXIMAMENTE</p><h3>Nuestro catálogo,<br>con todos sus detalles.</h3><p>Estamos preparando la información sobre los tipos de seguros que puedes consultar con Efy.</p></div>''')
+services_page = f'''
+<section class="services-hero"><div class="container services-hero-grid"><div><p class="eyebrow light">SERVICIOS</p><h1 id="page-title">Empieza por<br>lo que quieres<br><span>proteger.</span></h1><p class="large-copy">Cada elección empieza con algo que importa. Aquí reunimos la información para ayudarte a dar el siguiente paso.</p><a class="button primary" href="#catalogo">Explorar servicios {ARROW}</a></div><aside class="services-compass" aria-labelledby="compass-title"><p class="small-label">ANTES DE DECIDIR</p><h2 id="compass-title">Una elección clara<br>empieza contigo.</h2><p>¿Qué quieres proteger?</p><p>¿Qué necesitas que incluya?</p><p>¿Qué condiciones debes revisar?</p><a class="text-link" href="ayuda.html#faq-elegir">Encuentra por dónde empezar {ARROW}</a></aside></div></section>
+<section class="section container services-section" id="catalogo" aria-labelledby="catalog-title"><div class="section-heading"><p class="eyebrow">SEGUROS CON EFY</p><h2 id="catalog-title">Conoce las opciones.<br><span>Pregunta por los detalles.</span></h2></div>{catalog}</section>
+<section class="soft-section"><div class="container"><div class="section-heading"><p class="eyebrow">PARA COMPARAR MEJOR</p><h2>Hay más que un precio<br><span>en cada propuesta.</span></h2></div><div class="principles service-checklist"><article><h3>Qué incluye.</h3><p>Revisa los riesgos cubiertos y los límites de cada cobertura. Pide que te expliquen cualquier concepto que no esté claro.</p><a class="text-link" href="ayuda.html#faq-cobertura">Entender las coberturas {ARROW}</a></article><article><h3>Qué asumes tú.</h3><p>Comprueba cómo se aplica el deducible y qué parte de un evento cubierto te corresponde pagar.</p><a class="text-link" href="ayuda.html#faq-deducible">Entender el deducible {ARROW}</a></article><article><h3>Qué queda fuera.</h3><p>Lee las exclusiones y las condiciones que debes cumplir. La protección concreta se define en la póliza.</p><a class="text-link" href="ayuda.html#faq-exclusiones">Revisar las exclusiones {ARROW}</a></article></div></div></section>
+<section class="section container help-cta"><div><p class="eyebrow">TU SIGUIENTE PASO</p><h2>Lleva tus preguntas claras.</h2><p>Prepara tu consulta o conversa con EVIA sobre conceptos generales.</p></div><div class="actions"><a class="button blue" href="contactos.html#consult-title">Preparar mi consulta {ARROW}</a><button class="text-link" type="button" data-open-chat>Consultar a EVIA {ARROW}</button></div></section>
+'''
+
+partner_rows = ''.join(f'<li id="socio-{partner["id"]}"><h3>{escape(partner["name"])}</h3><span>Aseguradora</span></li>' for partner in PARTNERS)
+partner_catalog = (f'<ul class="partner-list">{partner_rows}</ul>' if PARTNERS else '''<div class="catalog-pending"><p class="small-label">PRÓXIMAMENTE</p><h3>Conoce a nuestras<br>aseguradoras aliadas.</h3><p>Estamos preparando la presentación de los socios estratégicos con los que trabaja Efy.</p></div>''')
+partners_page = f'''
+<section class="page-intro container partners-intro"><p class="eyebrow">SOCIOS ESTRATÉGICOS</p><h1 id="page-title">Conoce a quienes<br><span>trabajan con Efy.</span></h1><p class="large-copy intro-copy">Las aseguradoras con las que trabajamos, reunidas en un mismo lugar.</p></section>
+<section class="container partner-section" aria-labelledby="partners-title"><h2 id="partners-title">Nuestras aseguradoras.</h2>{partner_catalog}</section>
+<section class="guide-section"><div class="container partner-guide"><div><p class="eyebrow light">TU ASEGURADORA Y TU PÓLIZA</p><h2>La información correcta.<br><span>En el lugar correcto.</span></h2></div><div><p>El nombre de tu aseguradora, las coberturas y los canales de asistencia se encuentran en tu póliza o certificado. Consúltalos para conocer las condiciones de tu seguro.</p><a class="button primary" href="ayuda.html#faq-documentos">Revisar la guía de asistencia {ARROW}</a></div></div></section>
+<section class="section container help-cta"><div><p class="eyebrow">SI NECESITAS REPORTAR UN EVENTO</p><h2>Cuéntale a Efy lo ocurrido.</h2><p>Puedes enviar tu reporte desde Siniestros. Sigue también los canales y plazos indicados por tu aseguradora.</p></div><a class="button blue" href="siniestros.html">Reportar un siniestro {ARROW}</a></section>
 '''
 
 categories = ['Todas', 'Antes de elegir', 'Tu póliza', 'Si ocurre un evento', 'Sobre Efy']
@@ -84,8 +131,10 @@ claim_page = f'''
 
 pages = [
     ('index.html','Inicio','Efy Seguros · Tu mejor elección',home),
+    ('servicios.html','Servicios','Servicios · Efy Seguros',services_page),
     ('contactos.html','Contactos','Contactos · Efy Seguros',contact),
-    ('nosotros.html','Nosotros','Nosotros · Efy Seguros',about),
+    ('nosotros.html','Conócenos','Conócenos · Efy Seguros',about),
+    ('socios.html','Socios estratégicos','Socios estratégicos · Efy Seguros',partners_page),
     ('ayuda.html','Ayuda','Ayuda · Efy Seguros',help_page),
     ('siniestros.html','Siniestros','Reportar un siniestro · Efy Seguros',claim_page),
 ]
@@ -104,6 +153,7 @@ for filename, label, title, content in pages:
 </body></html>'''
     if filename == 'siniestros.html':
         document = document.replace('</head>', '<script src="../assets/site/siniestros.js?v=claims-20261009" defer></script></head>')
+    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=services-partners-20261009').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=services-partners-20261009')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
     document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#claim-form,.claim-progress,#claim-availability{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)

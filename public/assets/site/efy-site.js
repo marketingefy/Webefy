@@ -24,6 +24,8 @@
   const fab = document.querySelector('.chat-fab');
   let lastTrigger;
   const intents = [
+    ['socios', ['socios', 'aliados', 'aseguradoras trabajan', 'aseguradoras trabaja', 'aseguradoras tienen', 'aseguradoras cuentan', 'con que aseguradora']],
+    ['servicios', ['servicio', 'seguros ofrecen', 'seguros tienen', 'seguros cuentan', 'tipos de seguros', 'catalogo', 'ramos']],
     ['deducible', ['deducible', 'deducibles', 'franquicia']],
     ['exclusiones', ['exclusion', 'exclusiones', 'no cubre', 'no cubierto']],
     ['cobertura', ['cobertura', 'coberturas', 'cubre', 'proteccion']],
@@ -33,7 +35,7 @@
     ['ubicacion', ['donde', 'ubicacion', 'direccion', 'quito', 'ciudad']],
     ['contacto', ['contactar', 'contacto', 'whatsapp', 'correo', 'telefono', 'horario']],
     ['cotizar', ['cotizar', 'cotizacion', 'precio', 'costo', 'cuesta', 'documentos', 'requisitos']],
-    ['elegir', ['elegir', 'empiezo', 'comparar', 'necesito un seguro', 'seguros ofrecen', 'tipos de seguros']],
+    ['elegir', ['elegir', 'empiezo', 'comparar', 'necesito un seguro']],
     ['evia', ['evia', 'quien eres', 'como funciona', 'inteligencia artificial', 'eres ia', 'eres un bot']]
   ];
   function answerFor(question) {
@@ -71,6 +73,18 @@
         reportLink.href = 'siniestros.html';
         reportLink.textContent = 'Ir al módulo Siniestros →';
         entry.append(reportLink);
+      }
+      if (faqId === 'servicios') {
+        const servicesLink = document.createElement('a');
+        servicesLink.href = 'servicios.html#catalogo';
+        servicesLink.textContent = 'Explorar Servicios →';
+        entry.append(servicesLink);
+      }
+      if (faqId === 'socios') {
+        const partnersLink = document.createElement('a');
+        partnersLink.href = 'socios.html';
+        partnersLink.textContent = 'Ver Socios estratégicos →';
+        entry.append(partnersLink);
       }
     }
     messages.append(entry);
