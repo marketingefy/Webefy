@@ -2,3 +2,5 @@
 .playwright*/
 output/
 __pycache__/
+
+.efy-siniestros/

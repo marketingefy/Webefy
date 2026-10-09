@@ -66,6 +66,12 @@
       link.href = `ayuda.html#faq-${faqId}`;
       link.textContent = 'Ver en el centro de ayuda →';
       entry.append(link);
+      if (faqId === 'siniestro') {
+        const reportLink = document.createElement('a');
+        reportLink.href = 'siniestros.html';
+        reportLink.textContent = 'Ir al módulo Siniestros →';
+        entry.append(reportLink);
+      }
     }
     messages.append(entry);
     messages.scrollTop = messages.scrollHeight;

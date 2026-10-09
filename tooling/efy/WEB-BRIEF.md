@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Contactos, Nosotros y Ayuda
+# Primera web Efy: Inicio, Contactos, Nosotros, Ayuda y Siniestros
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -36,6 +36,9 @@ No inventar esos datos. No simular envíos ni confirmar consultas sin destino re
 EVIA responde con una base local de preguntas frecuentes; no es una integración
 generativa ni recibe pólizas o reportes. Los borradores se preparan en el navegador, sin enviar ni almacenar
 información. La vista previa requiere completar esos datos antes de pasar a portada.
+El módulo Siniestros se añadió por petición posterior y envía al correo
+`siniestros@efyseguros.com`, confirmado por el propietario. Su recepción, datos
+y pruebas se documentan en [SINIESTROS.md](SINIESTROS.md).
 
 ## Validación
 

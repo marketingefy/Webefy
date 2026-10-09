@@ -1,9 +1,11 @@
 # EFY Seguros: desarrollo y publicación automática
 
-El sitio está en `public/`. Es una web estática; no requiere instalar paquetes ni
-un servidor de aplicaciones. La portada de espera no recopila datos. La vista previa `/nueva/` incluye una guía
+El sitio está en `public/`. Las páginas no requieren paquetes ni un servidor de
+aplicaciones. El módulo de siniestros usa el PHP nativo y correo local de HostGator. La portada de espera no recopila datos. La vista previa `/nueva/` incluye una guía
 de preguntas frecuentes y un formulario que prepara consultas sólo en el navegador;
-no envía ni almacena información. WhatsApp se incorporará cuando el propietario
+no envía ni almacena información. El módulo Siniestros sí envía datos y adjuntos
+al correo autorizado `siniestros@efyseguros.com`, con validación del servidor y
+referencia después de la aceptación del transporte de correo. Véase [Siniestros](tooling/efy/SINIESTROS.md). WhatsApp se incorporará cuando el propietario
 confirme el número.
 
 ## Desarrollo local

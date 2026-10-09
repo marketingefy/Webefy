@@ -24,6 +24,22 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Validar recepción de siniestros sin enviar correos reales
+        run: |
+          chmod +x tests/claims/fake-sendmail.sh
+          trap 'docker rm -f efy-claims-test efy-claims-fail >/dev/null 2>&1 || true' EXIT
+          docker run -d --name efy-claims-test -p 127.0.0.1:8088:8088 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/public,dst=/site/public,readonly" \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/claims,dst=/tests,readonly" \
+            -e EFY_CLAIMS_STATE_DIR=/tmp/efy-state \
+            php:8.3-cli php -d sendmail_path=/tests/fake-sendmail.sh -S 0.0.0.0:8088 -t /site/public
+          docker run -d --name efy-claims-fail -p 127.0.0.1:8089:8088 \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/public,dst=/site/public,readonly" \
+            --mount "type=bind,src=$GITHUB_WORKSPACE/tests/claims,dst=/tests,readonly" \
+            -e EFY_CLAIMS_STATE_DIR=/tmp/efy-state -e EFY_TEST_MAIL_EXIT=1 \
+            php:8.3-cli php -d sendmail_path=/tests/fake-sendmail.sh -S 0.0.0.0:8088 -t /site/public
+          docker exec efy-claims-test php -l /site/public/nueva/api/siniestros.php
+          python3 tests/claims/test_api.py
       - name: Publicar mediante SFTP seguro
         env:
           SSH_HOST: ${{ vars.SSH_HOST || '162.241.61.73' }}

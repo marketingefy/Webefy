@@ -1,12 +1,13 @@
 # Webefy · EFY Seguros
 
-Sitio estático publicado en https://www.efyseguros.com/ mediante GitHub Actions y
+Web con páginas estáticas y recepción de siniestros en PHP, publicada en https://www.efyseguros.com/ mediante GitHub Actions y
 SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican automáticamente.
 
 - Sitio: `public/`.
-- Vista previa de la nueva web: `public/nueva/` (Inicio, Contactos, Nosotros y Ayuda).
+- Vista previa de la nueva web: `public/nueva/` (Inicio, Contactos, Nosotros, Ayuda y Siniestros).
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Diseño y contenido de la vista previa: [brief de la web](tooling/efy/WEB-BRIEF.md).
+- Recepción de reportes: [módulo de siniestros](tooling/efy/SINIESTROS.md).
 - Desarrollo local: `python3 -m http.server 8080 --bind 127.0.0.1 --directory public`.
 - Identidad y página de espera: [DESIGN.md](DESIGN.md).
 - Publicación y diagnóstico: [PUBLICACION.md](PUBLICACION.md).

@@ -1,5 +1,6 @@
 """Verify the deployed static site against the files in this GitHub commit."""
 import hashlib
+import json
 from pathlib import Path
 import time
 import urllib.parse
@@ -22,7 +23,21 @@ for path in sorted(site.rglob("*")):
     with urllib.request.urlopen(request, timeout=45) as response:
         if response.status != 200:
             raise RuntimeError("Unexpected HTTP status for " + relative)
-        if hashlib.sha256(response.read()).digest() != hashlib.sha256(path.read_bytes()).digest():
+        content = response.read()
+        if relative == "nueva/api/siniestros.php":
+            data = json.loads(content)
+            if not (data.get("ok") is True and data.get("ready") is True
+                    and data.get("version") == "claims-20261009"
+                    and data.get("recipient") == "siniestros@efyseguros.com"
+                    and len(data.get("csrf", "")) == 64
+                    and data.get("limits", {}).get("max_files") == 3):
+                raise RuntimeError("Claim intake is not ready on the deployed server")
+            cookies = response.headers.get("Set-Cookie", "").lower()
+            if "secure" not in cookies or "httponly" not in cookies:
+                raise RuntimeError("Claim form session cookie is not protected")
+        elif path.suffix == ".php":
+            raise RuntimeError("A new PHP endpoint needs an explicit runtime check: " + relative)
+        elif hashlib.sha256(content).digest() != hashlib.sha256(path.read_bytes()).digest():
             raise RuntimeError("Published file differs from this version: " + relative)
     print("HTTPS verified:", relative)
 print("Página y recursos verificados por HTTPS; coinciden con la versión publicada.")
