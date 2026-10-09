@@ -24,6 +24,8 @@
   const fab = document.querySelector('.chat-fab');
   let lastTrigger;
   const intents = [
+    ['estado', ['estado', 'reembolso', 'seguimiento de siniestro', 'seguimiento de mi siniestro']],
+    ['lineas', ['lineas de asistencia', 'linea de asistencia', 'telefono de asistencia', 'asistencia vehicular', 'asistencia medica']],
     ['resenas', ['resena', 'opinion', 'testimonio', 'valoracion', 'experiencias de clientes']],
     ['socios', ['socios', 'aliados', 'aseguradoras trabajan', 'aseguradoras trabaja', 'aseguradoras tienen', 'aseguradoras cuentan', 'con que aseguradora']],
     ['servicios', ['servicio', 'seguros ofrecen', 'seguros tienen', 'seguros cuentan', 'tipos de seguros', 'catalogo', 'ramos']],
@@ -71,8 +73,8 @@
       entry.append(link);
       if (faqId === 'siniestro') {
         const reportLink = document.createElement('a');
-        reportLink.href = 'siniestros.html';
-        reportLink.textContent = 'Ir al módulo Siniestros →';
+        reportLink.href = 'asistencia.html#reportar';
+        reportLink.textContent = 'Reportar en Asistencia →';
         entry.append(reportLink);
       }
       if (faqId === 'servicios') {
@@ -92,6 +94,12 @@
         reviewsLink.href = 'resenas.html';
         reviewsLink.textContent = 'Ver Reseñas →';
         entry.append(reviewsLink);
+      }
+      if (faqId === 'estado' || faqId === 'lineas') {
+        const assistanceLink = document.createElement('a');
+        assistanceLink.href = faqId === 'estado' ? 'asistencia.html#consultar-estado' : 'asistencia.html#lineas-asistencia';
+        assistanceLink.textContent = faqId === 'estado' ? 'Consultar por mi caso →' : 'Ver líneas de asistencia →';
+        entry.append(assistanceLink);
       }
     }
     messages.append(entry);
@@ -136,6 +144,25 @@
   });
 
   const search = document.querySelector('#faq-search');
+  function providerDirectory(inputId, itemSelector, countId, emptyId) {
+    const input = document.querySelector(inputId);
+    if (!input) return;
+    const items = [...document.querySelectorAll(itemSelector)];
+    function filter() {
+      const query = normalize(input.value);
+      let count = 0;
+      items.forEach(item => {
+        item.hidden = !normalize(item.dataset.provider).includes(query);
+        if (!item.hidden) count++;
+      });
+      document.querySelector(countId).textContent = `${count} ${count === 1 ? 'socio encontrado' : 'socios encontrados'}`;
+      document.querySelector(emptyId).hidden = count !== 0;
+    }
+    input.addEventListener('input', filter);
+    filter();
+  }
+  providerDirectory('#partner-search', '.partner-card', '#partner-count', '#partner-empty');
+  providerDirectory('#assistance-search', '.assistance-card', '#assistance-count', '#assistance-empty');
   if (search) {
     const filters = [...document.querySelectorAll('[data-category].filter-button')];
     const items = [...document.querySelectorAll('.faq-item')];

@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Siniestros
+# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -23,12 +23,14 @@ Contactos: navegación / introducción / canales oficiales / preparar consulta
 Conócenos:  navegación / identidad / EVIA / principios / acceso a contacto
 Ayuda:     navegación / búsqueda / categorías / respuestas / acceso a contacto
 Servicios: navegación / introducción / catálogo / guía para comparar / consulta
-Socios:    navegación / aseguradoras / guía de póliza / acceso a siniestros
+Socios:    navegación / búsqueda / 26 logos y nombres / guía de póliza / asistencia
 Reseñas:   navegación / presentación / opiniones de clientes / conocer Efy
+Asistencia: acceso a reporte / consulta de estados pendiente / líneas oficiales
 ```
 
-Revisión previa: se descartó una parrilla genérica de pólizas, cifras y logos de
-aseguradoras porque no hay ramos, cifras o asociaciones confirmados. La firma
+Revisión previa: se descartó una parrilla genérica de pólizas y cifras porque no
+hay ramos o cifras confirmados. Los 26 socios se incorporan con nombres confirmados
+por el propietario y logos de sus fuentes oficiales. La firma
 visual está concentrada en EVIA y el taller. La jerarquía de contenido guía el resto.
 
 ## Contenido pendiente
@@ -39,7 +41,7 @@ No inventar esos datos. No simular envíos ni confirmar consultas sin destino re
 EVIA responde con una base local de preguntas frecuentes; no es una integración
 generativa ni recibe pólizas o reportes. Los borradores se preparan en el navegador, sin enviar ni almacenar
 información. La vista previa requiere completar esos datos antes de pasar a portada.
-El módulo Siniestros se añadió por petición posterior y envía al correo
+El reporte de siniestros, ahora en el módulo Asistencia, envía al correo
 `siniestros@efyseguros.com`, confirmado por el propietario. Su recepción, datos
 y pruebas se documentan en [SINIESTROS.md](SINIESTROS.md).
 
@@ -64,10 +66,18 @@ con las que trabaja Efy. El nombre se actualiza en todos los accesos, conservand
 la URL `nosotros.html` para que los enlaces existentes sigan funcionando.
 
 `socios.html` queda integrado en la navegación y la portada. Sus nombres proceden
-de `tooling/efy/socios.json`: cada entrada contiene `id` único y `name` confirmado.
-No hay aseguradoras confirmadas todavía; se solicitaron los nombres al propietario.
-El estado próximo es explícito. No se inventan asociaciones ni logotipos. EVIA usa
-la misma lista. Los logos oficiales se incorporarán cuando estén disponibles.
+de `tooling/efy/socios.json`: cada entrada contiene `id` único, `name` confirmado,
+sitio oficial, logo local original, fuente del logo y fecha de revisión.
+El propietario confirmó 26 socios de seguros, medicina prepagada y asistencia de
+viaje. Todos aparecen con sus logos, buscador por nombre y enlace oficial.
+EVIA usa la misma lista. Las líneas de Asistencia proceden de las fuentes oficiales
+de cada proveedor; su etiqueta distingue el servicio y el enlace permite comprobarlo.
+Fuentes y mantenimiento: [SOCIOS-Y-ASISTENCIA.md](SOCIOS-Y-ASISTENCIA.md).
+
+La consulta de siniestros y reembolsos queda en preparación: falta el nombre y URL
+del sistema donde se registran los estados, solicitado al propietario. Los campos
+de cédula y placa están deshabilitados. No se hace una búsqueda ficticia ni se
+publica información por un identificador sin verificar la identidad del cliente.
 
 Dirección del módulo: el titular pone lo que el cliente quiere proteger primero;
 un panel oscuro reúne las preguntas que debe resolver antes de decidir. Se
@@ -125,3 +135,12 @@ recursos locales y vistas de 320/390/768/1440 px. No enviar mensajes reales en p
   comprobado en un directorio temporal: conserva el texto y sus saltos, escapa
   HTML y muestra sólo fecha y calificación suministradas. Las fuentes no HTTPS
   y las URLs con credenciales son rechazadas. No se publican datos de prueba.
+
+- Asistencia y 26 socios: las ocho páginas pasan a 320, 390, 768, 1101, 1440 y
+  1600 px sin desbordamientos o errores de JavaScript. Todos los logos decodifican;
+  versiones blancas sobre superficie oscura. Búsquedas por nombre con acentos,
+  estados vacíos, 38 líneas con fuentes, y directorios visibles sin JavaScript.
+  Cédula y placa permanecen deshabilitadas; reembolsos y otros siniestros no ofrecen
+  placa. Comprobado el recorrido del reporte hasta revisión y vuelta para corregir,
+  sin enviar correos. La URL antigua sigue mostrando el módulo Asistencia. EVIA
+  dirige a líneas y consulta pendiente sin inventar resultados.

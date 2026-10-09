@@ -30,7 +30,30 @@ for partner in PARTNERS:
     if not isinstance(partner['name'], str) or not partner['name'].strip():
         raise ValueError('Partner name must contain confirmed text')
     partner_ids.add(partner['id'])
-partner_answer = ('Las aseguradoras con las que trabaja Efy son: ' + ', '.join(partner['name'] for partner in PARTNERS) + '. Puedes verlas en Socios estratégicos.' if PARTNERS else 'Estamos preparando la presentación de las aseguradoras con las que trabaja Efy en Socios estratégicos. Si necesitas identificar tu aseguradora actual, revisa tu póliza o certificado.')
+partner_answer = ('Los socios estratégicos con los que trabaja Efy son: ' + ', '.join(partner['name'] for partner in PARTNERS) + '. Puedes conocerlos en Socios estratégicos y revisar sus canales oficiales en Asistencia.' if PARTNERS else 'Estamos preparando la presentación de los socios estratégicos con los que trabaja Efy. Si necesitas identificar tu aseguradora actual, revisa tu póliza o certificado.')
+def official_url(value):
+    parsed = urlsplit(value)
+    if parsed.scheme != 'https' or not parsed.hostname or parsed.username or parsed.password or any(char.isspace() or ord(char) < 32 for char in value):
+        raise ValueError('Official source must be a valid HTTPS URL without credentials')
+
+for partner in PARTNERS:
+    if partner.get('website'):
+        official_url(partner['website'])
+    if partner.get('logo_source'):
+        official_url(partner['logo_source'])
+    if partner.get('logo'):
+        if not re.fullmatch(r'assets/site/partners/[a-z0-9-]+\.(?:png|jpg|jpeg|webp|svg)', partner['logo']):
+            raise ValueError('Partner logo must be a local image asset')
+        if not (ROOT / 'public' / partner['logo']).is_file():
+            raise ValueError('Partner logo asset is missing')
+    for line in partner.get('assistance', []):
+        if not re.fullmatch(r'\+?[0-9 ()-]{7,24}', line['phone']) or not 7 <= len(re.sub(r'\D', '', line['phone'])) <= 15:
+            raise ValueError('Assistance line needs a valid phone number')
+        official_url(line['source'])
+        if not line['label'].strip():
+            raise ValueError('Assistance line needs an official source and service label')
+        if line.get('channel', 'phone') not in ('phone','whatsapp'):
+            raise ValueError('Unsupported assistance channel')
 REVIEW_DATA = json.loads((ROOT / 'tooling/efy/resenas.json').read_text())
 REVIEWS = REVIEW_DATA['items']
 def review_url(value):
@@ -61,8 +84,10 @@ for review in REVIEWS:
     review_ids.add(review['id'])
 review_answer = ('Puedes leer las opiniones de clientes en el apartado Reseñas.' if REVIEWS or REVIEW_PROFILE else 'El apartado Reseñas está preparado para compartir las opiniones de clientes de Efy. Estamos reuniendo las reseñas para publicarlas allí.')
 FAQ = [
+    {'id':'lineas','category':'Si ocurre un evento','question':'¿Dónde encuentro las líneas de asistencia?','answer':'En Asistencia puedes buscar tu aseguradora o proveedor y consultar sus canales oficiales. Cada línea indica a qué servicio corresponde y enlaza a su fuente. Si hay una emergencia en Ecuador, llama al 911. Verifica en tu póliza o plan las condiciones de la asistencia.'},
+    {'id':'estado','category':'Si ocurre un evento','question':'¿Puedo consultar el estado de mi siniestro o reembolso?','answer':'La consulta en línea está en preparación en Asistencia. Permitirá localizar un siniestro o reembolso por cédula, y un siniestro vehicular por placa, con verificación de identidad antes de mostrar información. Por ahora puedes escribir a siniestros@efyseguros.com para consultar al equipo. EVIA no accede a los estados de los casos.'},
     {'id':'resenas','category':'Sobre Efy','question':'¿Dónde puedo leer las reseñas de clientes de Efy?','answer':review_answer},
-    {'id':'socios','category':'Sobre Efy','question':'¿Con qué aseguradoras trabaja Efy?','answer':partner_answer},
+    {'id':'socios','category':'Sobre Efy','question':'¿Cuáles son los socios estratégicos de Efy?','answer':partner_answer},
     {'id':'servicios','category':'Sobre Efy','question':'¿Qué tipos de seguros ofrece Efy?','answer':service_answer},
     {'id':'elegir','category':'Antes de elegir','question':'¿Por dónde empiezo para elegir un seguro?','answer':'Empieza por lo que quieres proteger y por los riesgos que te preocupan. Después compara coberturas, exclusiones, deducibles, límites y costo. Una propuesta debe ayudarte a entender qué incluye y qué queda fuera.'},
     {'id':'cotizar','category':'Antes de elegir','question':'¿Qué información preparo para pedir una cotización?','answer':'Anota qué quieres proteger, qué cobertura buscas y las preguntas que necesitas resolver. Los datos y documentos necesarios dependen del tipo de seguro y de la aseguradora. Confirma los requisitos por un canal oficial antes de enviar información personal.'},
@@ -70,7 +95,7 @@ FAQ = [
     {'id':'deducible','category':'Tu póliza','question':'¿Qué significa deducible?','answer':'Es la parte del costo de un evento cubierto que corresponde asumir al asegurado, cuando así lo establece la póliza. Puede expresarse como un valor, un porcentaje o una combinación. Revisa cuándo se aplica y cómo se calcula.'},
     {'id':'exclusiones','category':'Tu póliza','question':'¿Qué son las exclusiones?','answer':'Son las situaciones o los riesgos que la póliza no cubre. Antes de elegir, revisa las exclusiones junto con las coberturas y pregunta por cualquier condición que no entiendas.'},
     {'id':'renovar','category':'Tu póliza','question':'¿Qué reviso antes de renovar mi seguro?','answer':'Comprueba la fecha de vencimiento, las coberturas, los límites, los deducibles, el costo y los cambios en tus necesidades. Confirma las condiciones de la nueva vigencia antes de aceptarla.'},
-    {'id':'siniestro','category':'Si ocurre un evento','question':'¿Qué hago si necesito reportar un siniestro?','answer':'Prioriza tu seguridad. Si hay una emergencia, llama al 911 en Ecuador. Puedes informar a Efy desde el módulo Siniestros; el reporte se envía a siniestros@efyseguros.com. También debes seguir los canales y plazos de tu aseguradora indicados en la póliza. Este aviso a Efy no confirma cobertura ni sustituye el aviso exigido por la aseguradora.'},
+    {'id':'siniestro','category':'Si ocurre un evento','question':'¿Qué hago si necesito reportar un siniestro?','answer':'Prioriza tu seguridad. Si hay una emergencia, llama al 911 en Ecuador. Puedes informar a Efy desde el apartado Asistencia; el reporte se envía a siniestros@efyseguros.com. También debes seguir los canales y plazos de tu aseguradora indicados en la póliza. Este aviso a Efy no confirma cobertura ni sustituye el aviso exigido por la aseguradora.'},
     {'id':'documentos','category':'Si ocurre un evento','question':'¿Dónde encuentro los canales de asistencia de mi seguro?','answer':'Consulta tu póliza, certificado o documentación de la aseguradora. Allí debes verificar los teléfonos y el procedimiento aplicable. La guía de EVIA no recibe reportes ni reemplaza los canales de asistencia de tu aseguradora.'},
     {'id':'ubicacion','category':'Sobre Efy','question':'¿Dónde está Efy?','answer':'Efy está en Quito. La dirección y los canales oficiales de atención se incorporarán cuando estén confirmados.'},
     {'id':'contacto','category':'Sobre Efy','question':'¿Cómo puedo contactar a Efy?','answer':'Estamos preparando los canales oficiales de contacto, incluido WhatsApp. Mientras tanto, puedes consultar esta guía o preparar tu consulta en el módulo Contactos. EVIA no envía mensajes ni solicitudes al equipo.'},
@@ -100,7 +125,7 @@ home = f'''
     <a class="editorial-link" href="socios.html"><div><p class="small-label">SOCIOS ESTRATÉGICOS</p><h3>Las aseguradoras con las que trabajamos.</h3><p>Un espacio para conocer a nuestros socios estratégicos.</p></div>{ARROW}</a>
     <a class="editorial-link" href="resenas.html"><div><p class="small-label">RESEÑAS</p><h3>La experiencia de nuestros clientes.</h3><p>Un espacio para sus opiniones sobre Efy.</p></div>{ARROW}</a>
     <a class="editorial-link" href="ayuda.html"><div><p class="small-label">AYUDA</p><h3>Entiende antes de decidir.</h3><p>Respuestas sobre coberturas, deducibles y conceptos de tu póliza.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="siniestros.html"><div><p class="small-label">SINIESTROS</p><h3>Reporta lo ocurrido.</h3><p>Envía los datos del evento y sus adjuntos al equipo de siniestros de Efy.</p></div>{ARROW}</a>
+    <a class="editorial-link" href="asistencia.html#reportar"><div><p class="small-label">ASISTENCIA</p><h3>Encuentra tu siguiente paso.</h3><p>Reporta un siniestro, consulta por tu caso y encuentra líneas de atención.</p></div>{ARROW}</a>
     <a class="editorial-link" href="contactos.html"><div><p class="small-label">CONTACTOS</p><h3>Encuentra tu siguiente paso.</h3><p>Prepara tus preguntas y conoce los canales de atención de Efy.</p></div>{ARROW}</a>
   </div>
 </section>
@@ -131,13 +156,24 @@ services_page = f'''
 <section class="section container help-cta"><div><p class="eyebrow">TU SIGUIENTE PASO</p><h2>Lleva tus preguntas claras.</h2><p>Prepara tu consulta o conversa con EVIA sobre conceptos generales.</p></div><div class="actions"><a class="button blue" href="contactos.html#consult-title">Preparar mi consulta {ARROW}</a><button class="text-link" type="button" data-open-chat>Consultar a EVIA {ARROW}</button></div></section>
 '''
 
-partner_rows = ''.join(f'<li id="socio-{partner["id"]}"><h3>{escape(partner["name"])}</h3><span>Aseguradora</span></li>' for partner in PARTNERS)
+def partner_logo(partner):
+    if not partner.get('logo'):
+        return ''
+    background = ' on-dark' if partner.get('logo_dark') else ''
+    return f'<div class="partner-logo{background}"><img src="../{partner["logo"]}" alt="{escape(partner["name"], quote=True)}" width="240" height="100" loading="lazy"></div>'
+
+def partner_card(partner):
+    website = (f'<a class="text-link" href="{escape(partner["website"], quote=True)}" rel="noopener noreferrer">Sitio oficial {ARROW}</a>' if partner.get('website') else '')
+    name = escape(partner['name'])
+    return f'<li class="partner-card" id="socio-{partner["id"]}" data-provider="{escape(partner["name"], quote=True)}">{partner_logo(partner)}<h3>{name}</h3>{website}</li>'
+
+partner_rows = ''.join(partner_card(partner) for partner in PARTNERS)
 partner_catalog = (f'<ul class="partner-list">{partner_rows}</ul>' if PARTNERS else '''<div class="catalog-pending"><p class="small-label">PRÓXIMAMENTE</p><h3>Conoce a nuestras<br>aseguradoras aliadas.</h3><p>Estamos preparando la presentación de los socios estratégicos con los que trabaja Efy.</p></div>''')
 partners_page = f'''
-<section class="page-intro container partners-intro"><p class="eyebrow">SOCIOS ESTRATÉGICOS</p><h1 id="page-title">Conoce a quienes<br><span>trabajan con Efy.</span></h1><p class="large-copy intro-copy">Las aseguradoras con las que trabajamos, reunidas en un mismo lugar.</p></section>
-<section class="container partner-section" aria-labelledby="partners-title"><h2 id="partners-title">Nuestras aseguradoras.</h2>{partner_catalog}</section>
+<section class="page-intro container partners-intro"><p class="eyebrow">SOCIOS ESTRATÉGICOS</p><h1 id="page-title">Conoce a quienes<br><span>trabajan con Efy.</span></h1><p class="large-copy intro-copy">Seguros, salud y asistencia de viaje. Nuestros socios estratégicos, reunidos en un mismo lugar.</p></section>
+<section class="container partner-section" aria-labelledby="partners-title"><h2 id="partners-title">Nuestros socios.</h2>{'<label for="partner-search">Encuentra un socio</label><input id="partner-search" type="search" placeholder="Escribe el nombre…" autocomplete="off"><p id="partner-count" class="form-hint" role="status"></p><p id="partner-empty" class="form-hint" hidden>No encontramos ese nombre. Prueba con otra palabra.</p>' if PARTNERS else ''}{partner_catalog}</section>
 <section class="guide-section"><div class="container partner-guide"><div><p class="eyebrow light">TU ASEGURADORA Y TU PÓLIZA</p><h2>La información correcta.<br><span>En el lugar correcto.</span></h2></div><div><p>El nombre de tu aseguradora, las coberturas y los canales de asistencia se encuentran en tu póliza o certificado. Consúltalos para conocer las condiciones de tu seguro.</p><a class="button primary" href="ayuda.html#faq-documentos">Revisar la guía de asistencia {ARROW}</a></div></div></section>
-<section class="section container help-cta"><div><p class="eyebrow">SI NECESITAS REPORTAR UN EVENTO</p><h2>Cuéntale a Efy lo ocurrido.</h2><p>Puedes enviar tu reporte desde Siniestros. Sigue también los canales y plazos indicados por tu aseguradora.</p></div><a class="button blue" href="siniestros.html">Reportar un siniestro {ARROW}</a></section>
+<section class="section container help-cta"><div><p class="eyebrow">SI NECESITAS REPORTAR UN EVENTO</p><h2>Cuéntale a Efy lo ocurrido.</h2><p>Puedes enviar tu reporte desde Asistencia. Sigue también los canales y plazos indicados por tu aseguradora.</p></div><a class="button blue" href="asistencia.html#reportar">Reportar un siniestro {ARROW}</a></section>
 '''
 
 review_cards = []
@@ -169,8 +205,23 @@ help_page = f'''
 '''
 
 
+assistance_cards = []
+for partner in PARTNERS:
+    lines = []
+    for line in partner.get('assistance', []):
+        digits = re.sub(r'[^+0-9]', '', line['phone'])
+        destination = 'https://wa.me/' + re.sub(r'\D','',digits) if line.get('channel') == 'whatsapp' else 'tel:' + digits
+        channel = 'WhatsApp' if line.get('channel') == 'whatsapp' else 'Llamar'
+        lines.append(f'<div class="assistance-line"><p>{escape(line["label"])}</p><a href="{destination}">{channel}: {escape(line["phone"])} {ARROW}</a><a class="line-source" href="{escape(line["source"], quote=True)}" rel="noopener noreferrer">Ver fuente oficial</a></div>')
+    content = ''.join(lines) or '<p class="form-hint">Consulta los canales de atención en el sitio oficial o en tu póliza.</p>'
+    website = (f'<a class="text-link" href="{escape(partner["website"], quote=True)}" rel="noopener noreferrer">Sitio oficial {ARROW}</a>' if partner.get('website') else '<p class="form-hint">Canal oficial pendiente de confirmar.</p>')
+    assistance_cards.append(f'<article class="assistance-card" data-provider="{escape(partner["name"], quote=True)}"><h3>{escape(partner["name"])}</h3>{content}{website}</article>')
+
+assistance_directory = ('<div class="assistance-directory">' + ''.join(assistance_cards) + '</div>' if PARTNERS else '<p>Estamos preparando las líneas oficiales de nuestros socios.</p>')
 claim_page = f'''
-<section class="page-intro container claim-intro"><p class="eyebrow">SINIESTROS</p><h1 id="page-title">Cuéntanos lo ocurrido.<br><span>Empecemos por ayudarte.</span></h1><p class="large-copy intro-copy">Envía tu reporte al equipo de Efy. Te pediremos los datos del evento y una forma de contactarte.</p><div class="actions claim-start"><a class="button blue" href="#claim-workspace">Comenzar reporte {ARROW}</a></div></section>
+<section class="assistance-hero"><div class="container"><p class="eyebrow light">ASISTENCIA</p><h1 id="page-title">El siguiente paso.<br><span>Cuando más lo necesitas.</span></h1><p class="large-copy">Reporta un siniestro, encuentra una línea de atención o revisa cómo consultar por tu caso.</p><nav class="actions assistance-shortcuts" aria-label="Opciones de Asistencia"><a class="button primary" href="#reportar">Reportar un siniestro {ARROW}</a><a class="button ghost" href="#consultar-estado">Estado y reembolsos</a><a class="button ghost" href="#lineas-asistencia">Líneas de asistencia</a></nav></div></section>
+<section class="section container lookup-section" id="consultar-estado" aria-labelledby="lookup-title"><div><p class="eyebrow">SINIESTROS Y REEMBOLSOS</p><h2 id="lookup-title">Consulta por<br><span>tu caso.</span></h2><p>La consulta en línea está en preparación. Podrás localizar tu caso con la cédula o, para un siniestro vehicular, la placa del vehículo.</p><p class="form-hint">Antes de mostrar información del caso, confirmaremos tu identidad.</p><a class="text-link" href="mailto:siniestros@efyseguros.com">Consultar al equipo de Efy {ARROW}</a></div><div class="lookup-panel"><p id="lookup-availability" class="lookup-pending">CONSULTA EN LÍNEA · PRÓXIMAMENTE</p><label for="lookup-type">¿Qué quieres consultar?</label><select id="lookup-type"><option value="vehicular">Siniestro vehicular</option><option value="siniestro">Otro siniestro</option><option value="reembolso">Reembolso</option></select><fieldset class="lookup-method"><legend>Localizar por</legend><label><input type="radio" name="lookup-method" value="cedula" checked>Cédula</label><label id="lookup-plate-option"><input type="radio" name="lookup-method" value="placa">Placa del vehículo</label></fieldset><div id="lookup-cedula-field"><label for="lookup-cedula">Número de cédula</label><input id="lookup-cedula" type="text" inputmode="numeric" autocomplete="off" placeholder="Consulta disponible próximamente" disabled aria-describedby="lookup-availability"></div><div id="lookup-plate-field" hidden><label for="lookup-plate">Placa del vehículo</label><input id="lookup-plate" type="text" autocomplete="off" placeholder="Consulta disponible próximamente" disabled aria-describedby="lookup-availability"></div><button class="button blue lookup-disabled" type="button" disabled>Consultar estado</button><p class="form-hint">Por ahora, este apartado no recibe identificadores ni realiza búsquedas. Puedes consultar al equipo por correo.</p></div></section>
+<section class="container claim-section-heading" id="reportar" aria-labelledby="report-title"><p class="eyebrow">REPORTAR UN SINIESTRO</p><h2 id="report-title">Cuéntanos lo ocurrido.<br><span>Empecemos por ayudarte.</span></h2><p>Envía tu reporte al equipo de Efy. Te pediremos los datos del evento y una forma de contactarte.</p></section>
 <section class="container claim-layout" aria-label="Reporte de siniestro"><aside class="claim-guide"><div class="urgent-note"><p class="small-label">SI HAY UNA EMERGENCIA</p><h2>Tu seguridad<br>es lo primero.</h2><p>En Ecuador, llama al <a href="tel:911">911</a> si necesitas atención urgente. Este formulario no ofrece asistencia inmediata.</p></div><div class="claim-destination"><p class="small-label">TU REPORTE LLEGARÁ A</p><a href="mailto:siniestros@efyseguros.com">siniestros@efyseguros.com</a><p>El envío informa a Efy. Revisa también los canales y plazos de aviso exigidos por tu aseguradora.</p></div><p class="claim-note">La referencia que recibas corresponde al reporte para Efy; no confirma cobertura, indemnización ni aceptación por la aseguradora.</p><a class="text-link" href="ayuda.html#faq-siniestro">Revisa nuestra guía de siniestros {ARROW}</a></aside>
 <div class="claim-workspace" id="claim-workspace" tabindex="-1"><ol class="claim-progress" aria-label="Pasos del reporte"><li aria-current="step"><span>1</span>Tu contacto</li><li><span>2</span>El evento</li><li><span>3</span>Revisar y enviar</li></ol><p id="claim-availability" class="form-hint" role="status">Comprobando disponibilidad del envío…</p><div id="claim-error" class="claim-error" role="alert" hidden></div>
 <noscript><p class="claim-error">Para completar el formulario, activa JavaScript. También puedes enviar tu reporte a <a href="mailto:siniestros@efyseguros.com">siniestros@efyseguros.com</a>.</p></noscript>
@@ -179,6 +230,7 @@ claim_page = f'''
 <fieldset class="claim-step" data-step="1"><legend>¿Qué ocurrió?</legend><p class="step-intro">Describe los hechos con tus palabras. Puedes adjuntar fotos o documentos que ayuden a entender el evento.</p><label for="claim-type">Tipo de evento <span class="required-label">(obligatorio)</span></label><select id="claim-type" name="event_type" required><option value="">Selecciona una opción</option><option>Accidente</option><option>Daños</option><option>Robo</option><option>Otro evento</option></select><div class="claim-fields"><div><label for="claim-date">Fecha del evento <span class="required-label">(obligatorio)</span></label><input id="claim-date" name="event_date" type="date" required></div><div><label for="claim-time">Hora aproximada <span class="required-label">(opcional)</span></label><input id="claim-time" name="event_time" type="time"><p class="form-hint">Hora de Quito.</p></div></div><label for="claim-location">Lugar del evento <span class="required-label">(obligatorio)</span></label><input id="claim-location" name="location" maxlength="240" placeholder="Ciudad y dirección o referencia" required><label for="claim-description">Describe lo ocurrido <span class="required-label">(obligatorio)</span></label><textarea id="claim-description" name="description" rows="5" minlength="20" maxlength="4000" required placeholder="Indica qué pasó y qué daños observaste."></textarea><p class="form-hint">Incluye sólo información necesaria para el reporte. No escribas claves, datos bancarios ni detalles médicos.</p><label for="claim-files">Fotos o documentos <span class="required-label">(opcional)</span></label><input id="claim-files" name="attachments[]" type="file" accept="image/jpeg,image/png,image/webp,application/pdf" multiple aria-describedby="claim-file-hint"><p id="claim-file-hint" class="form-hint">Hasta 3 archivos JPG, PNG, WebP o PDF. Máximo 2 MB por archivo.</p><ul id="claim-file-list" class="claim-file-list" aria-label="Archivos seleccionados"></ul><div class="step-actions"><button class="text-link" type="button" data-claim-back>Volver</button><button class="button blue" type="button" data-claim-next>Revisar reporte {ARROW}</button></div></fieldset>
 <fieldset class="claim-step" data-step="2"><legend>Revisa antes de enviar.</legend><p class="step-intro">Comprueba los datos. Tu reporte se enviará a <strong>siniestros@efyseguros.com</strong>.</p><dl id="claim-review" class="claim-review"></dl><label class="claim-consent" for="claim-consent"><input id="claim-consent" name="consent" type="checkbox" value="1" required><span>Autorizo a Efy a usar la información y los adjuntos de este reporte para gestionar mi caso y contactarme.</span></label><p class="form-hint">Los datos se envían al correo del equipo de siniestros. Los adjuntos no se publican en la web. Este aviso no sustituye los procedimientos de la aseguradora.</p><div class="step-actions"><button class="text-link" type="button" data-claim-back>Corregir datos</button><button id="claim-send" class="button blue" type="submit" disabled>Enviar reporte {ARROW}</button></div></fieldset><div class="claim-honeypot" aria-hidden="true"><label for="claim-website">Sitio web</label><input id="claim-website" name="website" tabindex="-1" autocomplete="off"></div></form>
 <section id="claim-success" class="claim-success" aria-labelledby="claim-success-title" hidden><div class="receipt-icon" aria-hidden="true">✓</div><p class="eyebrow">REPORTE PARA EFY</p><h2 id="claim-success-title">Tu reporte fue enviado.</h2><p>El servidor aceptó el envío a <strong>siniestros@efyseguros.com</strong>. Conserva esta referencia para consultar al equipo.</p><p class="receipt-reference" id="claim-reference"></p><p class="form-hint" id="claim-received-at"></p><p class="claim-note">Esta referencia no es un número de siniestro emitido por la aseguradora ni confirma cobertura. Sigue también sus instrucciones de aviso.</p><div class="actions"><button id="claim-download" type="button" class="button blue">Descargar comprobante {ARROW}</button><a class="text-link" href="index.html">Volver al inicio</a></div></section></div></section>
+<section class="soft-section" id="lineas-asistencia" aria-labelledby="lines-title"><div class="container"><div class="section-heading"><p class="eyebrow">LÍNEAS OFICIALES</p><h2 id="lines-title">Encuentra la atención<br><span>que necesitas.</span></h2></div><div class="emergency-line"><div><strong>Emergencias en Ecuador</strong><p>Si hay riesgo inmediato para la vida o la seguridad, llama al ECU 911.</p></div><a class="button blue" href="tel:911">Llamar al 911 {ARROW}</a></div><p class="assistance-intro">Elige el canal que corresponde a tu aseguradora o proveedor. La disponibilidad de cada asistencia depende de tu póliza o plan.</p><label for="assistance-search">Busca tu aseguradora o proveedor</label><input id="assistance-search" type="search" placeholder="Por ejemplo: Chubb, Saludsa o MAPFRE" autocomplete="off"><p id="assistance-count" class="form-hint" role="status"></p><p id="assistance-empty" class="form-hint" hidden>No encontramos ese nombre. Revisa tu póliza o prueba con otra palabra.</p>{assistance_directory}</div></section>
 '''
 
 pages = [
@@ -189,7 +241,7 @@ pages = [
     ('socios.html','Socios estratégicos','Socios estratégicos · Efy Seguros',partners_page),
     ('resenas.html','Reseñas','Reseñas de clientes · Efy Seguros',reviews_page),
     ('ayuda.html','Ayuda','Ayuda · Efy Seguros',help_page),
-    ('siniestros.html','Siniestros','Reportar un siniestro · Efy Seguros',claim_page),
+    ('asistencia.html','Asistencia','Asistencia · Efy Seguros',claim_page),
 ]
 for filename, label, title, content in pages:
     nav = ''.join(f'<a href="{file}"'+(' aria-current="page"' if file==filename else '')+f'>{name}</a>' for file,name,_,_ in pages)
@@ -204,10 +256,11 @@ for filename, label, title, content in pages:
 <dialog id="evia-dialog" class="evia-dialog" aria-labelledby="chat-title"><div class="chat-header"><div class="avatar-row"><img src="../assets/site/evia-portrait.jpg" alt="" width="44" height="44"><div><h2 id="chat-title">EVIA</h2><span>Guía de preguntas frecuentes</span></div></div><button id="close-chat" class="icon-button" type="button" aria-label="Cerrar chat">×</button></div><p class="chat-context">Información general de seguros. Evita compartir datos personales.</p><div id="chat-messages" class="chat-messages" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversación con EVIA"><div class="chat-message bot"><span>EVIA</span><p>Hola, soy EVIA. Puedo orientarte con las preguntas frecuentes de Efy. ¿Qué te gustaría conocer?</p></div></div><div class="chat-suggestions"><button type="button" data-chat-question="¿Qué significa deducible?">Deducibles</button><button type="button" data-chat-question="¿Por dónde empiezo para elegir un seguro?">Elegir un seguro</button><button type="button" data-chat-question="¿Cómo puedo contactar a Efy?">Contactar a Efy</button></div><form id="chat-form" class="chat-form"><label class="sr-only" for="chat-input">Tu pregunta para EVIA</label><input id="chat-input" type="text" maxlength="400" placeholder="Escribe tu pregunta…" autocomplete="off" required><button class="icon-button send-button" type="submit" aria-label="Enviar pregunta a EVIA">{ARROW}</button></form><a class="chat-help-link" href="ayuda.html">Ver todas las preguntas frecuentes {ARROW}</a></dialog>
 <script id="faq-data" type="application/json">{json.dumps(FAQ,ensure_ascii=False).replace('<','\\u003c')}</script>
 </body></html>'''
-    if filename == 'siniestros.html':
-        document = document.replace('</head>', '<script src="../assets/site/siniestros.js?v=claims-20261009" defer></script></head>')
-    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=reviews-20261009').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=reviews-20261009')
+    if filename == 'asistencia.html':
+        document = document.replace('</head>', '<script src="../assets/site/siniestros.js?v=claims-20261009" defer></script><script src="../assets/site/asistencia.js?v=assistance-20261009" defer></script></head>')
+    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=assistance-20261009').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=assistance-20261009')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
-    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#claim-form,.claim-progress,#claim-availability{display:none}</style></noscript></head>')
+    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#claim-form,.claim-progress,#claim-availability,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)
     print('Built', filename)
+(OUT / 'siniestros.html').write_text((OUT / 'asistencia.html').read_text())

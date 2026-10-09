@@ -1,8 +1,30 @@
 # Reportes de siniestros desde la web de Efy
 
 El propietario pidió un módulo de reporte y confirmó el destinatario
-`siniestros@efyseguros.com`. El módulo está en `/nueva/siniestros.html` y figura en
-la navegación, portada y guía de EVIA. La portada de espera sigue separada.
+`siniestros@efyseguros.com`. El módulo se llama Asistencia y está en
+`/nueva/asistencia.html#reportar`. Figura en la navegación, portada y guía de EVIA.
+La antigua URL `/nueva/siniestros.html` conserva el mismo contenido y formulario.
+La portada de espera sigue separada.
+
+## Consulta de estados y líneas de asistencia
+
+El propietario confirmó que siniestros y reembolsos se actualizan en otro sistema.
+Quedan pendientes su nombre, URL y documentación de integración. La interfaz
+permite escoger siniestro vehicular, otro siniestro o reembolso. Ofrece cédula y,
+sólo para un siniestro vehicular, placa. Los campos y el botón de búsqueda están
+deshabilitados y el estado «Próximamente» es explícito: no recibe identificadores,
+no hace búsquedas, no consulta el endpoint de reportes y no inventa estados.
+
+La integración futura debe verificar la identidad y autorización del cliente antes
+de mostrar información del caso. Una cédula o placa no constituye autenticación.
+La referencia de recepción y sus metadatos privados tampoco son estados del
+siniestro o reembolso. Por ahora se ofrece contacto con el equipo por correo.
+
+El directorio de 26 socios se filtra por nombre sin enviar datos. Teléfonos,
+etiquetas y fuentes proceden de `socios.json`, documentados en
+[SOCIOS-Y-ASISTENCIA.md](SOCIOS-Y-ASISTENCIA.md). Distingue asistencia vehicular,
+médica, hogar y atención al cliente. Cuando no se pudo confirmar una línea,
+enlaza al sitio oficial. Incluye ECU 911 para emergencias en Ecuador.
 
 ## Flujo
 

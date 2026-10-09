@@ -1,1 +1,460 @@
-[]
+[
+  {
+    "id": "sweaden",
+    "name": "Sweaden",
+    "website": "https://sweadenseguros.com/",
+    "logo": "assets/site/partners/sweaden.png",
+    "logo_source": "https://sweadenseguros.com/wp-content/uploads/2020/01/logo-sweaden.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "099 714 3551",
+        "label": "Asistencia vehicular · Claro",
+        "source": "https://sweadenseguros.com/servicios/sweaden-assistance/"
+      },
+      {
+        "phone": "099 734 5298",
+        "label": "Asistencia vehicular · Claro",
+        "source": "https://sweadenseguros.com/servicios/sweaden-assistance/"
+      },
+      {
+        "phone": "098 389 9042",
+        "label": "Asistencia vehicular · Movistar",
+        "source": "https://sweadenseguros.com/servicios/sweaden-assistance/"
+      }
+    ]
+  },
+  {
+    "id": "chubb",
+    "name": "Chubb",
+    "website": "https://www.chubb.com/ec-es/",
+    "logo": "assets/site/partners/chubb.png",
+    "logo_source": "https://www.chubb.com/content/dam/chubb-sites/chubb/us-en/home_page/chubb-logo-black.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "04 259 8212",
+        "label": "Asistencia vehicular",
+        "source": "https://www.chubb.com/ec-es/contactanos.html"
+      },
+      {
+        "phone": "099 114 7216",
+        "label": "Asistencia vehicular",
+        "source": "https://www.chubb.com/ec-es/contactanos.html"
+      }
+    ]
+  },
+  {
+    "id": "aseguradora-del-sur",
+    "name": "Aseguradora del Sur",
+    "website": "https://aseguradoradelsur.com/",
+    "logo": "assets/site/partners/aseguradora-del-sur.png",
+    "logo_source": "https://aseguradoradelsur.com/static/images/logoCP.png",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "099 555 3333",
+        "label": "Asistencia hogar · Mi Hogar",
+        "source": "https://fms.aseguradoradelsur.com/asegsur/v1/fms/uploads/5ff56117-5bbe-49c9-a966-ebf694df1c58.pdf"
+      }
+    ]
+  },
+  {
+    "id": "zurich",
+    "name": "Zurich",
+    "website": "https://www.zurichseguros.com.ec/",
+    "logo": "assets/site/partners/zurich.svg",
+    "logo_source": "https://amicovered.zurich.com/images/zurichLogo_EN.svg",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "099 938 2238",
+        "label": "Asistencia vehicular",
+        "source": "https://www.zurichseguros.com.ec/servicios-clientes/contactanos"
+      }
+    ]
+  },
+  {
+    "id": "seguros-unidos",
+    "name": "Seguros Unidos",
+    "website": "https://segurosunidos.ec/",
+    "logo": "assets/site/partners/seguros-unidos.svg",
+    "logo_source": "https://segurosunidos.ec/wp-content/uploads/2022/08/Seguros-Unidos.svg",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 786436",
+        "label": "Asistencia en caso de siniestro",
+        "source": "https://segurosunidos.ec/servicios/asistencia/"
+      }
+    ]
+  },
+  {
+    "id": "mapfre",
+    "name": "MAPFRE",
+    "website": "https://www.mapfre.com.ec/",
+    "logo": "assets/site/partners/mapfre.png",
+    "logo_source": "https://www.mapfre.com.ec/media/logo-mapfre.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1700 627373",
+        "label": "Asistencia vehicular y hogar",
+        "source": "https://www.mapfre.com.ec/servicios-cliente/que-hacer/"
+      },
+      {
+        "phone": "098 181 8182",
+        "label": "Asistencia vehicular",
+        "source": "https://www.mapfre.com.ec/servicios-cliente/que-hacer/"
+      }
+    ]
+  },
+  {
+    "id": "atlantida",
+    "name": "Seguros Atlántida",
+    "website": "https://www.segurosatlantida.ec/",
+    "logo": "assets/site/partners/atlantida.webp",
+    "logo_source": "https://www.segurosatlantida.ec/_next/static/media/logo-rojo.2fpq9u-mq4ix8.webp",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 54 23 78",
+        "label": "Atención de siniestros · Línea nacional",
+        "source": "https://www.segurosatlantida.ec/siniestros"
+      },
+      {
+        "phone": "+593 98 490 0754",
+        "label": "Atención de siniestros · WhatsApp",
+        "source": "https://www.segurosatlantida.ec/siniestros",
+        "channel": "whatsapp"
+      }
+    ]
+  },
+  {
+    "id": "ecuasanitas",
+    "name": "Ecuasanitas",
+    "website": "https://www.ecuasanitas.com/",
+    "logo": "assets/site/partners/ecuasanitas.png",
+    "logo_source": "https://www.ecuasanitas.com/assets/img/ecuasanitas/Logo_Ecuasanitas_nuevo.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "02 395 6280",
+        "label": "Call center · 24/7",
+        "source": "https://www.linkedin.com/company/ecuasanitas/"
+      }
+    ]
+  },
+  {
+    "id": "saludsa",
+    "name": "Saludsa",
+    "website": "https://www.saludsa.com/",
+    "logo": "assets/site/partners/saludsa.svg",
+    "logo_source": "https://www.saludsa.com/wp-content/uploads/2021/03/logo_saludsa_home.svg",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "02 602 0920",
+        "label": "Asistencia médica · Opción 1 · 24/7",
+        "source": "https://www.saludsa.com/contactos"
+      },
+      {
+        "phone": "04 602 0920",
+        "label": "Asistencia médica · Opción 1 · 24/7",
+        "source": "https://www.saludsa.com/contactos"
+      }
+    ]
+  },
+  {
+    "id": "humana",
+    "name": "Humana",
+    "website": "https://humana.med.ec/",
+    "logo": "assets/site/partners/humana.png",
+    "logo_source": "https://humana.med.ec/wp-content/uploads/2025/03/humana-medicina-prepagada-logo-2025.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 486262",
+        "label": "Afiliados · Asistencia médica",
+        "source": "https://servicio.humana.med.ec/hc/es/articles/4417432981389--Qu%C3%A9-hacer-en-caso-de-una-emergencia"
+      },
+      {
+        "phone": "02 401 7000",
+        "label": "Afiliados · Asistencia médica",
+        "source": "https://servicio.humana.med.ec/hc/es/articles/4417432981389--Qu%C3%A9-hacer-en-caso-de-una-emergencia"
+      }
+    ]
+  },
+  {
+    "id": "bmi",
+    "name": "BMI",
+    "website": "https://www.bmicos.com/ecuador/",
+    "logo": "assets/site/partners/bmi.png",
+    "logo_source": "https://www.bmicos.com/ecuador/wp-content/uploads/sites/9/2024/05/Logo-BMI_RGB_blanco.png",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "1800 264264",
+        "label": "Autorizaciones médicas · Opción 1, subopción 1",
+        "source": "https://www.bmicos.com/ecuador/directorio-de-contacto-de-clientes/"
+      },
+      {
+        "phone": "02 400 0081",
+        "label": "Autorizaciones médicas · Opción 1, subopción 1",
+        "source": "https://www.bmicos.com/ecuador/directorio-de-contacto-de-clientes/"
+      }
+    ]
+  },
+  {
+    "id": "alianza",
+    "name": "Seguros Alianza",
+    "website": "https://www.segurosalianza.com/",
+    "logo": "assets/site/partners/alianza.png",
+    "logo_source": "https://www.segurosalianza.com/wp-content/uploads/2023/05/Logo-blanco.png",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "02 516 9932",
+        "label": "Asistencia vehicular y hogar · 24/7",
+        "source": "https://www.segurosalianza.com/contactos-asistencia/"
+      },
+      {
+        "phone": "04 515 8022",
+        "label": "Asistencia vehicular y hogar · 24/7",
+        "source": "https://www.segurosalianza.com/contactos-asistencia/"
+      }
+    ]
+  },
+  {
+    "id": "pichincha",
+    "name": "Seguros del Pichincha",
+    "website": "https://segurosdelpichincha.com/",
+    "logo": "assets/site/partners/pichincha.png",
+    "logo_source": "https://segurosdelpichincha.com/images/shared/logo-sdp.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 400400",
+        "label": "Atención y aviso de asistencia",
+        "source": "https://segurosdelpichincha.com/aviso-asistencia"
+      }
+    ]
+  },
+  {
+    "id": "interoceanica",
+    "name": "Interoceánica",
+    "website": "https://segurosinteroceanica.com/",
+    "logo": "assets/site/partners/interoceanica.png",
+    "logo_source": "https://segurosinteroceanica.com/wp-content/themes/interoceanica/images/logo-default.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 787787",
+        "label": "Agenda de citas médicas",
+        "source": "https://segurosinteroceanica.com/"
+      },
+      {
+        "phone": "02 297 7500",
+        "label": "Servicio al cliente · Quito",
+        "source": "https://segurosinteroceanica.com/"
+      }
+    ]
+  },
+  {
+    "id": "generali",
+    "name": "Generali",
+    "website": "https://www.generali.com.ec/",
+    "logo": "assets/site/partners/generali.svg",
+    "logo_source": "https://www.generali.com/.resources/generalicom-templating-light/webresources/images/generali-logo-small.svg",
+    "checked_at": "2026-10-09",
+    "assistance": []
+  },
+  {
+    "id": "equisuiza",
+    "name": "Equisuiza",
+    "website": "https://equisuiza.com/",
+    "logo": "assets/site/partners/equisuiza.svg",
+    "logo_source": "https://equisuiza.com/wp-content/uploads/2025/09/logo.svg",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 787878",
+        "label": "Asistencia · Opción 1; siniestros · Opción 2",
+        "source": "https://equisuiza.com/contacto/"
+      }
+    ]
+  },
+  {
+    "id": "bupa",
+    "name": "Bupa",
+    "website": "https://www.bupasalud.com.ec/",
+    "logo": "assets/site/partners/bupa.svg",
+    "logo_source": "https://www.bupasalud.com.ec/sites/default/files/2025-06/media/bupa-seguro-medico.svg",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "+1 (305) 275 1500",
+        "label": "USA Medical Services · Asistencia médica internacional · 24/7",
+        "source": "https://www.bupasalud.com.ec/contactenos"
+      },
+      {
+        "phone": "02 401 8945",
+        "label": "Servicio al cliente · Ecuador",
+        "source": "https://www.bupasalud.com.ec/contactenos"
+      }
+    ]
+  },
+  {
+    "id": "assist-card",
+    "name": "Assist Card",
+    "website": "https://www.assistcard.com/ec",
+    "logo": "assets/site/partners/assist-card.png",
+    "logo_source": "https://aboutus.assistcard.com/template/assist_card.png",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "+54 9 11 2703 9665",
+        "label": "Asistencia en viaje y reintegros · WhatsApp",
+        "source": "https://www.assistcard.com/listadotelefonico",
+        "channel": "whatsapp"
+      }
+    ]
+  },
+  {
+    "id": "hispana",
+    "name": "Hispana",
+    "website": "https://www.hispanadeseguros.com/",
+    "logo": "assets/site/partners/hispana.png",
+    "logo_source": "https://www.hispanadeseguros.com/wp-content/uploads/2024/08/Logo-hispana-transparente-1.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1800 447726",
+        "label": "Atención al cliente",
+        "source": "https://www.hispanadeseguros.com/"
+      }
+    ]
+  },
+  {
+    "id": "latina",
+    "name": "Latina Seguros",
+    "website": "https://latinaseguros.com.ec/",
+    "logo": "assets/site/partners/latina.png",
+    "logo_source": "https://latinaseguros.com.ec/wp-content/uploads/2021/11/logotipo-latina.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "+593 99 230 4130",
+        "label": "Asistencia vial Latina",
+        "source": "https://latinaseguros.com.ec/"
+      }
+    ]
+  },
+  {
+    "id": "aig",
+    "name": "AIG",
+    "website": "https://www.aig.com.ec/",
+    "logo": "assets/site/partners/aig.png",
+    "logo_source": "https://www.aig.com.ec/content/experience-fragments/aig/lac/ecuador/es/header-nextgen/master/_jcr_content/root/responsivegrid_19588/responsivegrid_copy/container_copy_copy_/container_897891850/image_409587976.coreimg.png/1778871201638/icon-aig-logo-white.png",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "02 395 5200",
+        "label": "Asistencia vehicular · 24/7",
+        "source": "https://www.aig.com.ec/home/siniestros/vehiculos"
+      }
+    ]
+  },
+  {
+    "id": "vaz",
+    "name": "VAZ Seguros",
+    "website": "https://vazseguros.com/",
+    "logo": "assets/site/partners/vaz.svg",
+    "logo_source": "https://vazseguros.com/wp-content/uploads/2022/01/logoVAZ.svg",
+    "checked_at": "2026-10-09",
+    "logo_dark": true,
+    "assistance": [
+      {
+        "phone": "02 450 4292",
+        "label": "Atención al cliente · Quito PBX",
+        "source": "https://vazseguros.com/vazasistencia/"
+      }
+    ]
+  },
+  {
+    "id": "vidasana",
+    "name": "VidaSana",
+    "website": "https://vidasana.ec/",
+    "logo": "assets/site/partners/vidasana.png",
+    "logo_source": "https://vidasana.ec/images/logo_main.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "+593 98 760 1828",
+        "label": "Servicio al cliente · WhatsApp",
+        "source": "https://vidasana.ec/contact",
+        "channel": "whatsapp"
+      }
+    ]
+  },
+  {
+    "id": "confiamed",
+    "name": "Confiamed",
+    "website": "https://www.confiamed.com/",
+    "logo": "assets/site/partners/confiamed.svg",
+    "logo_source": "https://www.confiamed.com/wp-content/uploads/2025/12/confiamed.svg",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "1700 303030",
+        "label": "Atención nacional · 24/7",
+        "source": "https://www.confiamed.com/contactanos/"
+      },
+      {
+        "phone": "1800 306030",
+        "label": "Atención nacional · 24/7",
+        "source": "https://www.confiamed.com/contactanos/"
+      },
+      {
+        "phone": "02 294 3030",
+        "label": "Atención nacional · 24/7",
+        "source": "https://www.confiamed.com/contactanos/"
+      }
+    ]
+  },
+  {
+    "id": "privilegio",
+    "name": "Privilegio",
+    "website": "https://www.privilegioseguros.com.ec/",
+    "logo": "assets/site/partners/privilegio.png",
+    "logo_source": "https://www.privilegioseguros.com.ec/wp-content/uploads/2025/12/logo-privilegio-cia-de-seguros-2.png",
+    "checked_at": "2026-10-09",
+    "assistance": [
+      {
+        "phone": "02 223 1908",
+        "label": "Servicio al cliente",
+        "source": "https://www.privilegioseguros.com.ec/"
+      },
+      {
+        "phone": "02 600 0700",
+        "label": "Servicio al cliente",
+        "source": "https://www.privilegioseguros.com.ec/"
+      }
+    ]
+  },
+  {
+    "id": "mediken",
+    "name": "Mediken",
+    "website": "https://www.mediken.com.ec/",
+    "logo": "assets/site/partners/mediken.png",
+    "logo_source": "https://www.mediken.com.ec/assets/img/logo-mediken.png",
+    "checked_at": "2026-10-09",
+    "assistance": []
+  }
+]
