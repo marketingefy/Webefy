@@ -65,12 +65,14 @@ def key_agent(root, key_path, passphrase):
         subprocess.run(["ssh-agent", "-k"], env=env, capture_output=True, timeout=10)
 
 
-def publish():
+def publish(check_only=False):
     host = required("SSH_HOST")
     user = required("SSH_USER")
     directory = required("SSH_DIRECTORY")
     key = required("SSH_PRIVATE_KEY")
-    known_hosts = required("SSH_KNOWN_HOSTS")
+    known_hosts = os.environ.get("SSH_KNOWN_HOSTS", "").strip()
+    if not known_hosts:
+        known_hosts = (Path(__file__).resolve().parents[1] / ".github/hostgator_known_hosts").read_text()
     port = int(os.environ.get("SSH_PORT", "22"))
     if not re.fullmatch(r"[A-Za-z0-9.-]+", host) or not re.fullmatch(r"[A-Za-z0-9_-]+", user):
         raise ValueError("Invalid SSH host or username")
@@ -98,6 +100,8 @@ def publish():
         'put "' + (site / "index.html").as_posix() + '" "' + temporary + '"',
         'rename "' + temporary + '" "index.html"',
     ])
+    if check_only:
+        commands = ['cd "' + directory + '"', 'pwd', 'ls -la .']
     with tempfile.TemporaryDirectory(prefix="efy-sftp-") as temporary_directory:
         root = Path(temporary_directory)
         key_path = root / "key"
@@ -115,12 +119,17 @@ def publish():
                 "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=30",
                 "-o", "UserKnownHostsFile=" + str(hosts_path), user + "@" + host,
             ], check=True, env=agent_env)
-    print("Site published. Other remote files were not deleted.")
+    if check_only:
+        print("SSH authentication and site directory access verified. No remote files modified.")
+    else:
+        print("Site published. Other remote files were not deleted.")
 
 
 if __name__ == "__main__":
     try:
-        publish()
+        if sys.argv[1:] not in ([], ["--check"]):
+            raise ValueError("Use --check for a read-only connection test, or no arguments to publish.")
+        publish(check_only=sys.argv[1:] == ["--check"])
     except ValueError as error:
         print(str(error), file=sys.stderr)
         sys.exit(1)

@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/check-hostgator.yml'
       - 'scripts/check_hostgator.py'
+      - '.github/hostgator_known_hosts'
 
 permissions:
   contents: read
@@ -24,3 +25,12 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
         run: python3 scripts/check_hostgator.py key
+      - name: Verificar inicio de sesión y carpeta sin modificar archivos
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST || '162.241.61.73' }}
+          SSH_PORT: ${{ vars.SSH_PORT || '2222' }}
+          SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY || '/home1/brayanez/public_html' }}
+          SSH_USER: ${{ vars.SSH_USER || 'brayanez' }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
+        run: python3 scripts/deploy_sftp.py --check
