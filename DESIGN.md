@@ -8,7 +8,8 @@ Composición: escena cinematográfica de fondo, mensaje a la izquierda en escrit
 EVIA y los paneles de la web a la derecha. En móvil, escena superior con encuadre
 propio y texto debajo. El encabezado usa el nuevo logo aportado por el propietario el 9 de octubre,
 con el fondo retirado y guardado como PNG con transparencia. El logo conserva
-su composición a color, y su contenedor no añade fondo, sombra ni recuadro.
+su composición, y se muestra completamente blanco mediante un filtro CSS de
+color que conserva la transparencia. Su contenedor no añade fondo, sombra ni recuadro.
 El contenido explica que el sitio está en preparación, sin fecha de lanzamiento,
 porcentajes, testimonios ni funcionalidades no confirmadas.
 
