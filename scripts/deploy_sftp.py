@@ -1,5 +1,6 @@
 """Publish the static site with SFTP and a verified server host key."""
 import os
+from contextlib import contextmanager
 from pathlib import Path
 import re
 import subprocess
@@ -13,6 +14,55 @@ def required(name):
     if not value:
         raise ValueError(f"Missing GitHub setting: {name}")
     return value
+
+
+@contextmanager
+def key_agent(root, key_path, passphrase):
+    """Unlock the key without placing its passphrase in files, arguments or logs."""
+    result = subprocess.run(
+        ["ssh-agent", "-s", "-a", str(root / "agent.sock")],
+        check=True, capture_output=True, text=True, timeout=10,
+    )
+    socket = re.search(r"SSH_AUTH_SOCK=([^;]+);", result.stdout)
+    pid = re.search(r"SSH_AGENT_PID=(\d+);", result.stdout)
+    if not socket or not pid:
+        raise ValueError("Could not start SSH agent")
+    env = os.environ.copy()
+    env.pop("SSH_PRIVATE_KEY", None)
+    env.pop("SSH_KEY_PASSPHRASE", None)
+    env.update(SSH_AUTH_SOCK=socket.group(1), SSH_AGENT_PID=pid.group(1))
+    try:
+        askpass = root / "askpass"
+        marker = root / "passphrase-attempted"
+        marker.unlink(missing_ok=True)
+        askpass.write_text(
+            '#!/bin/sh\n'
+            'if [ -f "$EFY_ASKPASS_MARKER" ]; then printf \'\\n\'; exit 0; fi\n'
+            ': > "$EFY_ASKPASS_MARKER"\n'
+            'printf \'%s\\n\' "$EFY_KEY_PASSPHRASE"\n'
+        )
+        askpass.chmod(0o700)
+        unlock_env = env.copy()
+        unlock_env.update(
+            SSH_ASKPASS=str(askpass), SSH_ASKPASS_REQUIRE="force",
+            DISPLAY="efy:0", EFY_KEY_PASSPHRASE=passphrase,
+            EFY_ASKPASS_MARKER=str(marker),
+        )
+        unlocked = subprocess.run(
+            ["ssh-add", str(key_path)], env=unlock_env,
+            stdin=subprocess.DEVNULL, capture_output=True, timeout=30,
+        )
+        if unlocked.returncode:
+            raise ValueError("Could not unlock SSH key. Check SSH_PRIVATE_KEY and SSH_KEY_PASSPHRASE in GitHub Secrets.")
+        # Encrypted PEM keys need a public companion for IdentitiesOnly to match the agent.
+        public = subprocess.run(
+            ["ssh-add", "-L"], env=env, check=True,
+            capture_output=True, text=True, timeout=10,
+        )
+        Path(str(key_path) + ".pub").write_text(public.stdout)
+        yield env
+    finally:
+        subprocess.run(["ssh-agent", "-k"], env=env, capture_output=True, timeout=10)
 
 
 def publish():
@@ -58,12 +108,13 @@ def publish():
         hosts_path.chmod(0o600)
         batch_path = root / "commands"
         batch_path.write_text("\n".join(commands) + "\n")
-        subprocess.run([
-            "sftp", "-b", str(batch_path), "-i", str(key_path), "-P", str(port),
-            "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes",
-            "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=30",
-            "-o", "UserKnownHostsFile=" + str(hosts_path), user + "@" + host,
-        ], check=True)
+        with key_agent(root, key_path, os.environ.get("SSH_KEY_PASSPHRASE", "")) as agent_env:
+            subprocess.run([
+                "sftp", "-b", str(batch_path), "-i", str(key_path), "-P", str(port),
+                "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes",
+                "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=30",
+                "-o", "UserKnownHostsFile=" + str(hosts_path), user + "@" + host,
+            ], check=True, env=agent_env)
     print("Site published. Other remote files were not deleted.")
 
 

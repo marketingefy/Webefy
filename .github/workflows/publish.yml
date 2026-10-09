@@ -30,6 +30,7 @@ jobs:
           SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY }}
           SSH_USER: ${{ vars.SSH_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: python3 scripts/deploy_sftp.py
       - name: Verificar página publicada

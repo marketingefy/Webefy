@@ -43,6 +43,8 @@ Variables:
 Secrets:
 
 - `SSH_PRIVATE_KEY`: clave privada dedicada a este despliegue.
+- `SSH_KEY_PASSPHRASE`: contraseña que protege esa clave, si se generó cifrada en cPanel.
+  No es la contraseña de la cuenta HostGator. Se utiliza mediante un agente SSH temporal.
 - `SSH_KNOWN_HOSTS`: entrada OpenSSH cuya huella se haya verificado con una fuente confiable
   de HostGator. Para puerto distinto de 22 debe incluir `[host]:puerto`.
 
