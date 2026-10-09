@@ -42,14 +42,14 @@ con encuadre de EVIA para móvil. El original no se sube al sitio.
 
 Las imágenes WebP proceden del primer fotograma del video final, con el mismo
 encuadre en cada formato. Se ven antes del video, sin JavaScript y si falla la reproducción.
-El botón permite pausar y reanudar. La preferencia de movimiento reducido y el
-ahorro de datos evitan la descarga automática del video. La reproducción se pausa
-cuando la escena sale de pantalla o la pestaña queda oculta, respetando una pausa
-manual. Se puede activar explícitamente aun con movimiento reducido.
+Por petición del propietario, la página no muestra botón de pausa ni reproducción.
+La preferencia de movimiento reducido y el ahorro de datos evitan la descarga
+automática del video. La reproducción se pausa cuando la escena sale de pantalla
+o la pestaña queda oculta.
 
 ## Comprobación
 
-Revisar 320, 390, 768 y 1440 px, carga de recursos, teclado, controles, anclas,
+Revisar 320, 390, 768 y 1440 px, carga de recursos, teclado, anclas,
 movimiento reducido, ausencia de JavaScript y fallo del video. Comprobar los
 fotogramas en los dos puntos de retorno y el peso de ambas versiones del bucle.
 Los cambios de `public/` en `main` se publican mediante el workflow existente de
