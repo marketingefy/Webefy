@@ -6,7 +6,8 @@ integración de un video de Higgsfield con reproducción de ida y vuelta.
 
 Composición: escena cinematográfica de fondo, mensaje a la izquierda en escritorio,
 EVIA y los paneles de la web a la derecha. En móvil, escena superior con encuadre
-propio y texto debajo. El encabezado conserva el logo oficial a color sobre blanco.
+propio y texto debajo. El encabezado usa el nuevo logo aportado por el propietario el 9 de octubre,
+convertido a PNG con sus píxeles y proporciones intactos, a color sobre blanco.
 El contenido explica que el sitio está en preparación, sin fecha de lanzamiento,
 porcentajes, testimonios ni funcionalidades no confirmadas.
 
