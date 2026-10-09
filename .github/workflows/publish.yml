@@ -25,10 +25,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Publicar mediante SFTP seguro
         env:
-          SSH_HOST: ${{ vars.SSH_HOST }}
-          SSH_PORT: ${{ vars.SSH_PORT || '22' }}
-          SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY }}
-          SSH_USER: ${{ vars.SSH_USER }}
+          SSH_HOST: ${{ vars.SSH_HOST || '162.241.61.73' }}
+          SSH_PORT: ${{ vars.SSH_PORT || '2222' }}
+          SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY || '/home1/brayanez/public_html' }}
+          SSH_USER: ${{ vars.SSH_USER || 'brayanez' }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}

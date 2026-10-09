@@ -26,6 +26,15 @@ Confirmar con HostGator que SSH/SFTP esté habilitado y obtener hostname, puerto
 clave pública o huella del servidor. «Manage SSH Keys» por sí solo no confirma acceso activo.
 No asumir el puerto predeterminado.
 
+La comprobación `Comprobar acceso a HostGator` verificó que la clave guardada en GitHub
+puede desbloquearse y que la IP pública suministrada por cPanel responde por SSH en
+2222 y 22. No realizó login ni modificó el hospedaje. Las claves de servidor obtenidas
+con `ssh-keyscan` son observaciones: requieren verificación con HostGator antes de usarse.
+
+Valores no secretos predeterminados del workflow, derivados de las capturas de cPanel
+y la comprobación de puertos: host `162.241.61.73`, puerto `2222`, usuario `brayanez`,
+directorio `/home1/brayanez/public_html`. Las variables de GitHub pueden sobrescribirlos.
+
 Autorizar la clave pública dedicada en cPanel → SSH Access → Manage SSH Keys → Import Key.
 Importar únicamente la parte pública y autorizarla. La clave privada se guarda como GitHub
 Secret, nunca en el repositorio ni en el chat.
