@@ -1,0 +1,26 @@
+name: Comprobar acceso a HostGator
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/check-hostgator.yml'
+      - 'scripts/check_hostgator.py'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Consultar servicio SSH sin iniciar sesión
+        run: python3 scripts/check_hostgator.py server
+      - name: Validar clave guardada sin mostrarla
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
+        run: python3 scripts/check_hostgator.py key
