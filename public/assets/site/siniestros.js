@@ -6,7 +6,7 @@
   const errorBox = document.querySelector('#claim-error');
   const send = document.querySelector('#claim-send');
   const files = document.querySelector('#claim-files');
-  const endpoint = 'api/siniestros.php';
+  const endpoint = form.action;
   let current = 0, config, requestId, sending = false, receipt;
   form.noValidate = true;
   const field = name => name === 'attachments' ? files : form.elements.namedItem(name);

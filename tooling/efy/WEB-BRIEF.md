@@ -433,3 +433,28 @@ Revisión de la simulación: panel y menús operativos en 320, 390 y 1440 px, si
 desbordamiento ni errores. Enlaces de cotización y navegación conservan el modo;
 pregunta libre, apertura/cierre y foco comprobados. El chat blanco conserva
 su comportamiento al acceder sin el parámetro de simulación.
+
+## Publicación de la web completa y cristal aprobado
+
+El propietario aprueba la simulación y pide aplicar todos los cambios al sitio.
+El generador publica los ocho módulos y sus cinco páginas auxiliares en la raíz,
+conservando copias compatibles en `/nueva/`. La portada de espera se sustituye por
+Inicio y la escena aprobada del astronauta. El chat de cristal se aplica por
+defecto en todos los módulos y abre solo al pulsar el acceso habitual; enlaces de
+simulación anteriores pueden seguir abriéndolo al entrar. Tipografía nativa,
+distintivo propio de Efy, menú de atención y contactos corregidos se conservan.
+
+Los formularios publicados usan el mismo endpoint `/nueva/api/siniestros.php`:
+el código del correo y su configuración no se duplican. JavaScript obtiene la
+ruta del `action` del formulario. La sesión segura se conserva en el endpoint.
+Las páginas raíz admiten indexación y canonical hacia su ruta publicada; la copia
+`/nueva/` conserva `noindex`. El generador mantiene versión en recursos y enlaces.
+CRM y estados siguen pendientes de sus APIs; opiniones de demostración permanecen
+identificadas como tales, hasta disponer de reseñas reales.
+
+Revisión de publicación: 13 páginas raíz en móvil y escritorio (26 vistas),
+con los ocho módulos ordenados, cristal activo, fuente de sistema y distintivo
+propio de Efy. Sin errores ni desbordamiento; se conservan servicios, socios,
+contactos, historia y preguntas verificadas. Las dos copias suman 362 enlaces y
+anclas locales válidos. Las rutas de reporte raíz y previa cargan la configuración
+del mismo endpoint, comprobado con tres GET simulados y sin enviar reportes.

@@ -20,10 +20,10 @@
 
   // The guide uses the site's published FAQ, with no API calls or saved conversations.
   const dialog = document.querySelector('#evia-dialog');
-  // Opt-in visual simulation; the approved white conversation remains the default.
+  // Glass is the approved shared design; old simulation links can still open it directly.
   const glassPreview = new URLSearchParams(location.search).get('evia') === 'cristal';
+  dialog.classList.add('is-glass');
   if (glassPreview) {
-    dialog.classList.add('is-glass-preview');
     document.querySelectorAll('a[href]').forEach(link => {
       const url = new URL(link.href, location.href);
       if (url.origin === location.origin && url.pathname.endsWith('.html')) {

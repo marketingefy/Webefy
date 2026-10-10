@@ -1,7 +1,7 @@
 # EFY Seguros: desarrollo y publicación automática
 
 El sitio está en `public/`. Las páginas no requieren paquetes ni un servidor de
-aplicaciones. El módulo de siniestros usa el PHP nativo y correo local de HostGator. La portada de espera no recopila datos. La vista previa `/nueva/` incluye una guía
+aplicaciones. El módulo de siniestros usa el PHP nativo y correo local de HostGator. La web completa se publica en la raíz del dominio; `/nueva/` mantiene los enlaces de revisión anteriores. El sitio incluye una guía
 de preguntas frecuentes y un formulario que prepara consultas sólo en el navegador;
 no envía ni almacena información. El módulo Siniestros sí envía datos y adjuntos
 al correo autorizado `siniestros@efyseguros.com`, con validación del servidor y
@@ -17,7 +17,7 @@ python3 -m http.server 8080 --bind 127.0.0.1 --directory public
 ```
 
 Comprobar el mensaje principal, la carga de la imagen y el diseño en móvil.
-La nueva web se revisa en `/nueva/`; sus páginas compartidas se regeneran con
+La web se visita en `/`; la copia compatible sigue en `/nueva/`. Ambas se regeneran con
 `python3 scripts/build_site.py`. El script de publicación incluye los `index.html`
 de subdirectorios y reemplaza la portada raíz al finalizar.
 
