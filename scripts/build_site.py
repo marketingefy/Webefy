@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-web-glass-live-20261010'
+SITE_VERSION = 'efy-web-ui-polish-20261010'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -367,9 +367,9 @@ for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
     nav = ''.join(f'<a href="{file}"'+(' aria-current="page"' if name==label else '')+f'>{name}</a>' for file,name,_,_ in pages)
     document = f'''<!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
 <body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887"></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><button class="header-chat" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></header>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><picture><source type="image/webp" srcset="../assets/efy-brand-360.webp 360w, ../assets/efy-brand-720.webp 720w" sizes="(max-width:760px) 144px, 178px"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887" fetchpriority="high" decoding="async"></picture></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><button class="header-chat" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></header>
 <main id="contenido">{content}</main>
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>© 2026 Efy Seguros.</p><span>Tu mejor elección.</span></div></div></footer>
 <button class="chat-fab" type="button" data-open-chat aria-controls="evia-dialog" aria-expanded="false"><img src="../assets/site/evia-portrait.jpg" alt="" width="40" height="40"><span>Habla con EVIA</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H5l-3 3V11.5a9 9 0 0 1 18 0Z"/></svg></button>
@@ -388,7 +388,12 @@ for filename, label, title, content in pages + extras:
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)
     document = document.replace('<meta name="robots"', f'<meta name="efy-site-version" content="{SITE_VERSION}"><meta name="robots"')
     document = re.sub(r'href="([a-z0-9-]+\.html)(#[^"]*)?"', lambda match: f'href="{match[1]}?v={SITE_VERSION}{match[2] or ""}"', document)
-    document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
+    def avatar_picture(match):
+        image = re.sub(r'width="[0-9]+" height="[0-9]+"', 'width="960" height="1280"', match[1])
+        return ('<span class="evia-avatar"><picture><source type="image/webp" '
+                'srcset="../assets/site/evia-avatar-180.webp 180w, ../assets/site/evia-avatar-360.webp 360w" '
+                'sizes="135px">' + image + '</picture></span>')
+    document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', avatar_picture, document)
     document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)
     # The root is the published product; /nueva/ remains available for old review links.

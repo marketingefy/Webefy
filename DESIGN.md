@@ -54,3 +54,19 @@ movimiento reducido, ausencia de JavaScript y fallo del video. Comprobar los
 fotogramas en los dos puntos de retorno y el peso de ambas versiones del bucle.
 Los cambios de `public/` en `main` se publican mediante el workflow existente de
 HostGator; no cambiar el hosting. La verificación HTTPS compara todos los recursos.
+
+## Afinado de la web completa, 10 de octubre de 2026
+
+La web completa del commit `94b683b` amplía esta dirección visual a sus 13 páginas
+y al diálogo de cristal de EVIA. La mejora autorizada conserva las fuentes,
+colores, videos, contactos, textos y flujos existentes. El encabezado se compacta
+a 96 px y la tipografía usa `rem` equivalentes para respetar texto ampliado.
+El chat mejora su lectura y sus objetivos táctiles; la página y el diálogo
+respetan las zonas seguras del teléfono.
+
+Las respuestas visuales usan `cubic-bezier(.23,1,.32,1)`: pulsación de 160 ms,
+entrada del chat de 200 ms y mensajes de 180 ms. El movimiento reducido anula
+las nuevas transiciones. La preferencia de transparencia reducida emplea el
+color de superficie existente, sin sustituir el acabado de cristal habitual.
+Los derivados WebP del logo y de los retratos preservan los originales como
+alternativa. Ver [MEJORAS-UI.md](MEJORAS-UI.md) para las skills y comprobaciones.
