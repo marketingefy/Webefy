@@ -23,7 +23,94 @@
   const messages = document.querySelector('#chat-messages');
   const input = document.querySelector('#chat-input');
   const fab = document.querySelector('.chat-fab');
+  const previewVersion = document.querySelector('meta[name="efy-site-version"]')?.content;
+  function siteLink(path) {
+    if (!previewVersion) return path;
+    const url = new URL(path, location.href);
+    url.searchParams.set('v', previewVersion);
+    return url.href;
+  }
   let lastTrigger;
+  const businessMenus = {
+    inicio: {
+      text: 'Hola, soy EVIA, tu asistente virtual de Efy. ¿En qué puedo ayudarte?',
+      options: [
+        { menu: 'cotizar', label: 'Solicitar una cotización' },
+        { menu: 'poliza', label: 'Dudas sobre mi póliza' },
+        { menu: 'asistencia', label: 'Siniestros y asistencia' },
+        { faq: 'contacto', label: 'Hablar con un asesor' }
+      ]
+    },
+    cotizar: {
+      faq: 'cotizar',
+      options: [
+        { href: 'servicios.html#seguro-vehiculos', label: 'Seguro de vehículos' },
+        { href: 'servicios.html#seguro-hogar', label: 'Seguro de hogar' },
+        { href: 'servicios.html#seguro-pymes', label: 'Seguro para pymes' },
+        { href: 'servicios.html', label: 'Explorar todos los seguros' },
+        { faq: 'contacto', label: 'Hablar con un asesor' }
+      ]
+    },
+    poliza: {
+      text: 'Te ayudo a entender los conceptos de tu póliza. ¿Qué te gustaría revisar?',
+      options: [
+        { faq: 'vigencia', label: 'Vigencia de la póliza' },
+        { faq: 'cobertura', label: 'Entender las coberturas' },
+        { faq: 'deducible', label: 'Entender el deducible' },
+        { faq: 'renovar', label: 'Renovar mi seguro' },
+        { faq: 'contacto', label: 'Consultar con un asesor' }
+      ]
+    },
+    asistencia: {
+      text: 'Encuentra el siguiente paso para tu caso. Si hay una emergencia en Ecuador, llama al 911.',
+      options: [
+        { href: 'reportar-siniestro.html', label: 'Reportar un siniestro' },
+        { href: 'consultas.html', label: 'Estado de siniestros y reembolsos' },
+        { faq: 'reembolso-documentos', label: 'Preparar un reembolso' },
+        { href: 'lineas-asistencia.html', label: 'Asistencia de mi aseguradora' }
+      ]
+    }
+  };
+  const messageClock = new Intl.DateTimeFormat('es-EC', { hour: '2-digit', minute: '2-digit', hour12: false });
+  function stampMessage(entry) {
+    if (entry.querySelector('.chat-message-time')) return;
+    const now = new Date();
+    const time = document.createElement('time');
+    time.className = 'chat-message-time';
+    time.dateTime = now.toISOString();
+    time.textContent = messageClock.format(now);
+    time.setAttribute('aria-label', `Hora del mensaje: ${time.textContent}`);
+    entry.append(time);
+  }
+  function appendBusinessOptions(entry, options) {
+    const list = document.createElement('div');
+    list.className = 'chat-business-options';
+    list.setAttribute('aria-label', 'Opciones de atención');
+    options.forEach((option, index) => {
+      const action = document.createElement(option.href ? 'a' : 'button');
+      if (option.href) action.href = siteLink(option.href);
+      else {
+        action.type = 'button';
+        if (option.menu) action.dataset.chatMenu = option.menu;
+        else action.dataset.chatFaq = option.faq;
+      }
+      const number = document.createElement('span');
+      number.className = 'chat-option-number';
+      number.textContent = String(index + 1).padStart(2, '0');
+      number.setAttribute('aria-hidden', 'true');
+      const label = document.createElement('span');
+      label.textContent = option.label;
+      const arrow = document.createElement('span');
+      arrow.className = 'chat-option-arrow';
+      arrow.textContent = '›';
+      arrow.setAttribute('aria-hidden', 'true');
+      action.append(number, label, arrow);
+      list.append(action);
+    });
+    entry.classList.add('chat-menu-message');
+    entry.insertBefore(list, entry.querySelector('.chat-message-time'));
+    messages.scrollTop = messages.scrollHeight;
+  }
   const intents = [
     ['estado', ['estado', 'reembolso', 'seguimiento de siniestro', 'seguimiento de mi siniestro']],
     ['lineas', ['lineas de asistencia', 'linea de asistencia', 'telefono de asistencia', 'asistencia vehicular', 'asistencia medica']],
@@ -100,57 +187,60 @@
         entry.append(sourceLink);
       }
       const link = document.createElement('a');
-      link.href = `ayuda.html#faq-${faqId}`;
+      link.href = siteLink(`ayuda.html#faq-${faqId}`);
       link.textContent = 'Ver en el centro de ayuda →';
       entry.append(link);
       if (faqId === 'siniestro') {
         const reportLink = document.createElement('a');
-        reportLink.href = 'reportar-siniestro.html';
+        reportLink.href = siteLink('reportar-siniestro.html');
         reportLink.textContent = 'Reportar en Asistencia →';
         entry.append(reportLink);
       }
       if (faqId === 'servicios') {
         const servicesLink = document.createElement('a');
-        servicesLink.href = 'servicios.html#catalogo';
+        servicesLink.href = siteLink('servicios.html#catalogo');
         servicesLink.textContent = 'Explorar Servicios →';
         entry.append(servicesLink);
       }
       if (faqId === 'socios') {
         const partnersLink = document.createElement('a');
-        partnersLink.href = 'socios.html';
+        partnersLink.href = siteLink('socios.html');
         partnersLink.textContent = 'Ver Socios estratégicos →';
         entry.append(partnersLink);
       }
       if (faqId === 'resenas') {
         const reviewsLink = document.createElement('a');
-        reviewsLink.href = 'resenas.html';
+        reviewsLink.href = siteLink('resenas.html');
         reviewsLink.textContent = 'Ver Reseñas →';
         entry.append(reviewsLink);
       }
       if (faqId === 'estado' || faqId === 'lineas') {
         const assistanceLink = document.createElement('a');
-        assistanceLink.href = faqId === 'estado' ? 'consultas.html' : 'lineas-asistencia.html';
+        assistanceLink.href = siteLink(faqId === 'estado' ? 'consultas.html' : 'lineas-asistencia.html');
         assistanceLink.textContent = faqId === 'estado' ? 'Consultar por mi caso →' : 'Ver líneas de asistencia →';
         entry.append(assistanceLink);
       }
     }
+    stampMessage(entry);
     messages.append(entry);
     messages.scrollTop = messages.scrollHeight;
+    return entry;
   }
-  function submitQuestion(question) {
+  function submitQuestion(question, { focusInput = true } = {}) {
     const text = question.trim().slice(0, 400);
     if (!text) return;
     addMessage(text, 'user');
     const answer = answerFor(text);
     addMessage(answer.text, 'bot', answer.id);
     input.value = '';
-    input.focus();
+    if (focusInput) input.focus();
   }
   function openChat(trigger) {
     lastTrigger = trigger;
+    stampMessage(messages.querySelector('.chat-message'));
     if (!dialog.open) dialog.showModal();
     fab.setAttribute('aria-expanded', 'true');
-    input.focus();
+    document.querySelector('#close-chat').focus({ preventScroll: true });
   }
   document.querySelectorAll('[data-open-chat]').forEach(trigger => {
     trigger.addEventListener('click', () => openChat(trigger));
@@ -158,23 +248,28 @@
   document.querySelectorAll('[data-chat-question]').forEach(trigger => {
     trigger.addEventListener('click', () => {
       openChat(trigger);
-      submitQuestion(trigger.dataset.chatQuestion);
+      submitQuestion(trigger.dataset.chatQuestion, { focusInput: false });
     });
   });
-  const topicQuestions = {
-    contratar: [['broker', '¿Qué hace un bróker?'], ['comparar', 'Comparar propuestas'], ['contacto', 'Contactar a Efy']],
-    poliza: [['vigencia', 'Vigencia'], ['deducible', 'Deducibles'], ['carencias', 'Carencias']],
-    siniestros: [['siniestro', 'Reportar un siniestro'], ['reembolso-documentos', 'Pedir un reembolso'], ['estado', 'Consultar mi caso']]
-  };
-  document.querySelectorAll('[data-chat-topic]').forEach(button => {
-    button.addEventListener('click', () => {
-      document.querySelectorAll('[data-chat-topic]').forEach(tab => tab.setAttribute('aria-pressed', String(tab === button)));
-      document.querySelectorAll('.chat-suggestions [data-chat-question]').forEach((suggestion, index) => {
-        const [id, label] = topicQuestions[button.dataset.chatTopic][index];
-        suggestion.dataset.chatQuestion = faq.find(item => item.id === id).question;
-        suggestion.textContent = label;
-      });
-    });
+  messages.addEventListener('click', event => {
+    const action = event.target.closest('button[data-chat-menu],button[data-chat-faq]');
+    if (!action || !messages.contains(action)) return;
+    if (action.dataset.chatFaq) {
+      const item = faq.find(item => item.id === action.dataset.chatFaq);
+      if (item) submitQuestion(item.question, { focusInput: false });
+      return;
+    }
+    const menu = businessMenus[action.dataset.chatMenu];
+    if (!menu) return;
+    addMessage(action.children[1].textContent, 'user');
+    const item = menu.faq ? faq.find(item => item.id === menu.faq) : null;
+    const entry = addMessage(item?.answer || menu.text, 'bot', item?.id);
+    appendBusinessOptions(entry, menu.options);
+  });
+  document.querySelector('#chat-menu-toggle')?.addEventListener('click', () => {
+    addMessage('Ver opciones', 'user');
+    const entry = addMessage('¿En qué puedo ayudarte?', 'bot');
+    appendBusinessOptions(entry, businessMenus.inicio.options);
   });
   document.querySelector('#close-chat').addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => {
@@ -189,6 +284,7 @@
     event.preventDefault();
     submitQuestion(input.value);
   });
+  appendBusinessOptions(messages.querySelector('.chat-message'), businessMenus.inicio.options);
 
   const search = document.querySelector('#faq-search');
   function providerDirectory(inputId, itemSelector, countId, emptyId) {

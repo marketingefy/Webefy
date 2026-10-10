@@ -37,6 +37,12 @@ frente a esta versión para detectar fallos de publicación o caché.
 versión conservan su caché habitual. La comprobación HTTPS exige esa cabecera
 en cada HTML de `/nueva/` y comprueba que `.htaccess` no se pueda leer públicamente.
 
+El generador usa `SITE_VERSION` para CSS, JavaScript, metadatos y enlaces internos.
+Al iniciar la revisión con el enlace actualizado, los módulos mantienen esa misma
+versión al navegar; el chat aplica también esa versión a sus enlaces de ayuda,
+servicios y asistencia. Así se evita reutilizar rutas de módulos que el navegador
+pudiera haber almacenado antes de incorporar la regla de revalidación.
+
 La conexión SFTP y el directorio del dominio se validaron desde GitHub Actions.
 Datos no secretos predeterminados, obtenidos del cPanel del usuario y pruebas reales:
 

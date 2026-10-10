@@ -358,3 +358,45 @@ sin restos del número anterior en el sitio generado. Contraste de cabecera y
 cierre 6,23:1, subtítulo 4,59:1 y mensajes 16,46:1. Color exterior conservado.
 Hogar y Pymes visibles en el catálogo en anchos de 320, 390, 768 y 1440 px sin
 desbordamiento; consultas por WhatsApp conservadas. Sin errores de navegador.
+
+## Chat con opciones de atención y revisión de todos los módulos
+
+El propietario pide una conversación similar a WhatsApp Business y confirma en
+su captura el color del botón «Conócenos»: fucsia `#ce005e`. La cabecera del chat
+usa ese fucsia con texto blanco. Las burbujas de EVIA mantienen un tinte rosa
+suave; las del visitante quedan alineadas a la derecha. El fondo blanco conserva
+un patrón tenue, y cada mensaje muestra la hora local real del navegador. No se
+añaden estados de lectura, confirmaciones de entrega ni presencia de un agente.
+
+El menú inicial tiene cuatro opciones: cotización, dudas de póliza, siniestros y
+asistencia, y hablar con un asesor. Los submenús enlazan con los seguros, reportes,
+consulta de casos y líneas oficiales existentes; las respuestas de póliza y
+reembolso conservan sus fuentes. «Ver opciones» permite volver al menú dentro de
+la conversación. Se conserva el texto libre y el acceso a los dos WhatsApp
+comerciales. Abrir el chat enfoca su cierre, evitando desplegar el teclado móvil
+antes de que el visitante elija una opción.
+
+El botón exterior usa el mismo fucsia con 84 % de opacidad de fondo y desenfoque
+del fondo; avatar y texto no pierden opacidad. Permanece fijo abajo a la derecha,
+incluidas las páginas de Asistencia donde antes estaba oculto. Texto blanco con
+contraste mínimo calculado de 4,72:1 sobre blanco y superior sobre fondos oscuros.
+
+Los 13 HTML comparten versión, tipografía, contactos y chat. El menú y los enlaces
+internos conservan `SITE_VERSION` en su URL; el chat lo aplica también a sus rutas
+dinámicas. Los enlaces externos, WhatsApp, correo y fuentes oficiales conservan
+sus destinos. La revalidación de HTML sigue activa.
+
+La conexión de cotizaciones al CRM y la consulta automática de estados siguen
+requiriendo acceso a sus sistemas. El menú no afirma registrar solicitudes ni
+consultar casos; los formularios y las páginas mantienen su comportamiento real.
+
+Revisión de esta versión: 13 páginas en móvil y escritorio (26 vistas), sin
+errores de navegador ni desbordamiento. Orden de módulos, versión de los enlaces,
+chat disponible, posición inferior, fucsia y foco comprobados en todas ellas.
+181 enlaces y anclas locales válidos. Se verifican 16 servicios con Hogar/Pymes,
+26 logos que cargan correctamente, 40 canales oficiales de asistencia, historia y
+cifras confirmadas, diez opiniones de demostración, dirección única, dos redes,
+correos y número comercial corregido. Menús de cotización, póliza, asistencia y
+asesores comprobados; preguntas libres y fuentes conservadas. El chat cabe también
+en pantallas de 320 × 568 y 768 × 600 px. No se envían mensajes, cotizaciones ni
+reportes de prueba a sistemas reales.
