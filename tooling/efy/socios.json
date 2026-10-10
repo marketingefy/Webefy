@@ -268,8 +268,14 @@
     "website": "https://www.generali.com.ec/",
     "logo": "assets/site/partners/generali.svg",
     "logo_source": "https://www.generali.com/.resources/generalicom-templating-light/webresources/images/generali-logo-small.svg",
-    "checked_at": "2026-10-09",
-    "assistance": []
+    "checked_at": "2026-10-10",
+    "assistance": [
+      {
+        "phone": "025505007",
+        "label": "PBX Quito · consultas y atención",
+        "source": "https://www.generali.com.ec/wp-content/uploads/2024/08/Condiciones-Generales-ROBO.pdf"
+      }
+    ]
   },
   {
     "id": "equisuiza",
@@ -451,7 +457,13 @@
     "website": "https://www.mediken.com.ec/",
     "logo": "assets/site/partners/mediken.png",
     "logo_source": "https://www.mediken.com.ec/assets/img/logo-mediken.png",
-    "checked_at": "2026-10-09",
-    "assistance": []
+    "checked_at": "2026-10-10",
+    "assistance": [
+      {
+        "phone": "045505077",
+        "label": "Opción 1 · autorizaciones hospitalarias y emergencias; opción 2 · servicio al cliente",
+        "source": "https://www.mediken.com.ec/components/footer.html"
+      }
+    ]
   }
 ]

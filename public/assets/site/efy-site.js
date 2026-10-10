@@ -73,7 +73,7 @@
       entry.append(link);
       if (faqId === 'siniestro') {
         const reportLink = document.createElement('a');
-        reportLink.href = 'asistencia.html#reportar';
+        reportLink.href = 'reportar-siniestro.html';
         reportLink.textContent = 'Reportar en Asistencia →';
         entry.append(reportLink);
       }
@@ -97,7 +97,7 @@
       }
       if (faqId === 'estado' || faqId === 'lineas') {
         const assistanceLink = document.createElement('a');
-        assistanceLink.href = faqId === 'estado' ? 'asistencia.html#consultar-estado' : 'asistencia.html#lineas-asistencia';
+        assistanceLink.href = faqId === 'estado' ? 'consultas.html' : 'lineas-asistencia.html';
         assistanceLink.textContent = faqId === 'estado' ? 'Consultar por mi caso →' : 'Ver líneas de asistencia →';
         entry.append(assistanceLink);
       }

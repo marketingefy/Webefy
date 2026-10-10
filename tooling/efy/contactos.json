@@ -1,0 +1,13 @@
+{
+  "city": "Quito",
+  "address": "Av. 10 de Agosto y Juan de Galindes, edificio Green Tower, piso 4, oficina 4A",
+  "departments": [
+    {"name": "Comercial", "description": "Información sobre servicios y consultas comerciales.", "phones": ["0967146828", "0983568633"]},
+    {"name": "Operativo", "description": "Consultas sobre trámites y gestión de tu seguro.", "phones": ["0959150877", "0981892326"]}
+  ],
+  "emails": [
+    {"address": "formularios@efyseguros.com", "label": "Formularios y consultas"},
+    {"address": "siniestros@efyseguros.com", "label": "Siniestros y reembolsos"}
+  ],
+  "error_email": "formularios@efyseguros.com"
+}

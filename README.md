@@ -4,9 +4,11 @@ Web con páginas estáticas y recepción de siniestros en PHP, publicada en http
 SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican automáticamente.
 
 - Sitio: `public/`.
-- Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia).
-- Catálogo de seguros confirmado: `tooling/efy/servicios.json`; pendiente de la lista del propietario.
+- Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Contáctanos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia).
+- Catálogo de seguros confirmado: `tooling/efy/servicios.json`; 14 apartados confirmados, organizados en cuatro grupos. Finanzas se mantiene distinto de Fianzas.
 - Socios estratégicos: `tooling/efy/socios.json`; 26 confirmados por el propietario, con logos oficiales y canales de atención. [Fuentes y mantenimiento](tooling/efy/SOCIOS-Y-ASISTENCIA.md).
+- Contactos confirmados: `tooling/efy/contactos.json`; teléfonos comerciales y operativos, correos y dirección de Quito.
+- Ayuda: `reportar-error.html` prepara un reporte y abre el correo del cliente para enviarlo a `formularios@efyseguros.com`. La web no confirma un envío automático.
 - Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Diseño y contenido de la vista previa: [brief de la web](tooling/efy/WEB-BRIEF.md).

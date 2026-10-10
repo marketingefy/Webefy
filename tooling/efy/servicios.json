@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "finanzas",
+    "name": "Finanzas",
+    "group": "Patrimonio y actividad",
+    "description": "Un apartado para tus consultas sobre necesidades financieras y su relación con la protección de tu patrimonio.",
+    "details": [
+      "Consulta al equipo de Efy el alcance del servicio que necesitas.",
+      "Pide información sobre los requisitos y condiciones aplicables."
+    ]
+  },
+  {
+    "id": "accidentes-personales",
+    "name": "Accidentes personales",
+    "group": "Vida y bienestar",
+    "description": "Protección ante las consecuencias de un accidente, según las coberturas contratadas.",
+    "details": [
+      "Revisa las prestaciones, sumas aseguradas y actividades incluidas.",
+      "Consulta las exclusiones y el procedimiento para reportar un accidente."
+    ]
+  },
+  {
+    "id": "vehiculos",
+    "name": "Vehículos",
+    "group": "Movilidad",
+    "description": "Opciones de protección para tu vehículo y los riesgos de su uso.",
+    "details": [
+      "Compara daños, robo y responsabilidad civil incluidos en la propuesta.",
+      "Revisa deducibles, asistencia vial y condiciones de reparación."
+    ]
+  },
+  {
+    "id": "transporte-pesado",
+    "name": "Transporte pesado",
+    "group": "Movilidad",
+    "description": "Protección para vehículos pesados según su operación y uso declarado.",
+    "details": [
+      "Consulta los requisitos de la unidad, conductores y actividad.",
+      "Distingue la protección del vehículo de la cobertura de la carga."
+    ]
+  },
+  {
+    "id": "motos",
+    "name": "Motos",
+    "group": "Movilidad",
+    "description": "Opciones para proteger tu motocicleta de acuerdo con su uso y características.",
+    "details": [
+      "Consulta qué riesgos se pueden asegurar para tu moto.",
+      "Revisa deducibles, exclusiones y asistencia disponible."
+    ]
+  },
+  {
+    "id": "asistencia-medica",
+    "name": "Asistencia médica",
+    "group": "Salud",
+    "description": "Planes para acceder a atención médica según la red y condiciones elegidas.",
+    "details": [
+      "Compara la red, las modalidades de atención y los copagos.",
+      "Revisa carencias, autorizaciones y requisitos de reembolso."
+    ]
+  },
+  {
+    "id": "gastos-medicos-mayores",
+    "name": "Gastos médicos mayores",
+    "group": "Salud",
+    "description": "Opciones de protección para gastos médicos de mayor alcance, según el contrato.",
+    "details": [
+      "Compara límites, deducibles, territorio de atención y red médica.",
+      "Consulta las condiciones de hospitalización y enfermedades preexistentes."
+    ]
+  },
+  {
+    "id": "asistencia-viaje",
+    "name": "Asistencia de viaje",
+    "group": "Movilidad",
+    "description": "Asistencia durante tus viajes de acuerdo con el destino y la duración contratados.",
+    "details": [
+      "Verifica vigencia, destino, límites y actividades de tu viaje.",
+      "Revisa cómo solicitar asistencia y cuáles son los requisitos de reintegro."
+    ]
+  },
+  {
+    "id": "vida",
+    "name": "Vida",
+    "group": "Vida y bienestar",
+    "description": "Protección para tus beneficiarios conforme a las condiciones del seguro de vida.",
+    "details": [
+      "Define beneficiarios, suma asegurada y plazo de protección.",
+      "Consulta requisitos, exclusiones y condiciones de renovación."
+    ]
+  },
+  {
+    "id": "vida-indexada",
+    "name": "Vida indexada",
+    "group": "Vida y bienestar",
+    "description": "Opciones de seguro de vida con un componente vinculado a un índice, según el producto.",
+    "details": [
+      "Solicita el detalle de costos, riesgos y condiciones del componente indexado.",
+      "Compara protección, plazos y condiciones de retiro; no asumas rendimientos garantizados."
+    ]
+  },
+  {
+    "id": "dental",
+    "name": "Seguro dental",
+    "group": "Salud",
+    "description": "Opciones para atención dental según la red y las prestaciones del plan.",
+    "details": [
+      "Consulta tratamientos incluidos, límites y copagos.",
+      "Verifica carencias, exclusiones y proveedores disponibles."
+    ]
+  },
+  {
+    "id": "responsabilidad-civil",
+    "name": "Responsabilidad civil",
+    "group": "Patrimonio y actividad",
+    "description": "Protección frente a determinadas responsabilidades por daños a terceros.",
+    "details": [
+      "Describe tu actividad y consulta el alcance de la cobertura.",
+      "Revisa límites, exclusiones y ámbito territorial."
+    ]
+  },
+  {
+    "id": "caucion",
+    "name": "Caución",
+    "group": "Patrimonio y actividad",
+    "description": "Garantías relacionadas con el cumplimiento de obligaciones, según el contrato aplicable.",
+    "details": [
+      "Consulta el tipo de obligación y los requisitos de emisión.",
+      "Revisa vigencia, condiciones y obligaciones de las partes."
+    ]
+  },
+  {
+    "id": "fidelidad-privada",
+    "name": "Fidelidad privada",
+    "group": "Patrimonio y actividad",
+    "description": "Protección frente a determinados actos deshonestos del personal en una organización privada.",
+    "details": [
+      "Consulta qué personas, actos y pérdidas contempla la propuesta.",
+      "Revisa límites, controles requeridos y condiciones de reclamación."
+    ]
+  }
+]

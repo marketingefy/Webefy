@@ -39,10 +39,15 @@ no se generaliza esa línea a vehículos. El logo a color procede de `/static/im
 `appLogo2` en su aplicación pública: estrella azul y celeste y texto azul oscuro
 sobre superficie clara. Se retiró la variante blanca del panel oscuro.
 
-No se confirmó un teléfono vigente y apropiado para Generali o Mediken en las
-fuentes revisadas. Ambas fichas enlazan a su sitio oficial y a la recomendación de
-revisar la póliza. No se copian teléfonos de páginas de desarrollo, directorios de
-terceros ni datos del área de privacidad como líneas de asistencia.
+El 10 de octubre se incorporaron las dos líneas restantes. Generali publica el
+PBX de Quito 02 550 5007 en sus condiciones generales de Robo; se presenta como
+consultas y atención, sin afirmar que este documento confirme una asistencia 24/7.
+Mediken publica 04 550 5077 en el componente de pie de su web, con opción 1 para
+autorizaciones hospitalarias y emergencias y opción 2 para servicio al cliente.
+La etiqueta conserva estas opciones. No se usan números de dominios de desarrollo
+ni se deducen líneas de emergencia a partir de teléfonos de privacidad.
+Los 26 socios tienen canales telefónicos: 40 entradas en total, también desplegables
+junto a sus logos en Socios.
 
 Consulta: los números se revisaron el 9 de octubre de 2026; pueden cambiar.
 Cada ficha de Asistencia incluye la fuente para comprobar condiciones y canal.
@@ -123,3 +128,5 @@ origen: véase [SINIESTROS.md](SINIESTROS.md).
 | Confiamed | Atención nacional · 24/7 | 02 294 3030 | [Fuente oficial](https://www.confiamed.com/contactanos/) |
 | Privilegio | Servicio al cliente | 02 223 1908 | [Fuente oficial](https://www.privilegioseguros.com.ec/) |
 | Privilegio | Servicio al cliente | 02 600 0700 | [Fuente oficial](https://www.privilegioseguros.com.ec/) |
+| Generali | PBX Quito · consultas y atención | 02 550 5007 | [Fuente oficial](https://www.generali.com.ec/wp-content/uploads/2024/08/Condiciones-Generales-ROBO.pdf) |
+| Mediken | Opción 1 · autorizaciones hospitalarias y emergencias; opción 2 · servicio al cliente | 04 550 5077 | [Fuente oficial](https://www.mediken.com.ec/components/footer.html) |

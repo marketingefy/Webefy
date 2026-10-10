@@ -2,7 +2,7 @@
 
 El propietario pidió un módulo de reporte y confirmó el destinatario
 `siniestros@efyseguros.com`. El módulo se llama Asistencia y está en
-`/nueva/asistencia.html#reportar`. Figura en la navegación, portada y guía de EVIA.
+`/nueva/asistencia.html`, con el reporte en `/nueva/reportar-siniestro.html`. Figura en la navegación, portada y guía de EVIA.
 La antigua URL `/nueva/siniestros.html` conserva el mismo contenido y formulario.
 La portada de espera sigue separada.
 
@@ -10,7 +10,7 @@ La portada de espera sigue separada.
 
 El propietario confirmó que siniestros y reembolsos se actualizan en otro sistema.
 Quedan pendientes su nombre, URL y documentación de integración. La interfaz
-permite escoger siniestro vehicular, otro siniestro o reembolso. Ofrece cédula y,
+en `/nueva/consultas.html` permite escoger siniestro vehicular, otro siniestro o reembolso. Ofrece cédula y,
 sólo para un siniestro vehicular, placa. Los campos y el botón de búsqueda están
 deshabilitados y el estado «Próximamente» es explícito: no recibe identificadores,
 no hace búsquedas, no consulta el endpoint de reportes y no inventa estados.
@@ -20,7 +20,7 @@ de mostrar información del caso. Una cédula o placa no constituye autenticaci�
 La referencia de recepción y sus metadatos privados tampoco son estados del
 siniestro o reembolso. Por ahora se ofrece contacto con el equipo por correo.
 
-El directorio de 26 socios se filtra por nombre sin enviar datos. Teléfonos,
+El directorio de 26 socios en `/nueva/lineas-asistencia.html` se filtra por nombre sin enviar datos. Teléfonos,
 etiquetas y fuentes proceden de `socios.json`, documentados en
 [SOCIOS-Y-ASISTENCIA.md](SOCIOS-Y-ASISTENCIA.md). Distingue asistencia vehicular,
 médica, hogar y atención al cliente. Cuando no se pudo confirmar una línea,

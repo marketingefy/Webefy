@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Servicios, Contactos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia
+# Primera web Efy: Inicio, Servicios, Contáctanos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -10,7 +10,7 @@ Público: personas que quieren conocer Efy y entender cómo consultar por sus se
 Trabajo de la portada: presentar la marca y dirigir a la información o el contacto.
 
 Tokens: grafito #080E1D, tinta secundaria #17233D, blanco #F8F9FC, lienzo #F7F8FB,
-rosa de lectura #FF91B2, azul de acción #445EA5. Magenta #EC245B sólo como acento.
+magenta de lectura #F25C9D, azul de acción #445EA5. Magenta #CE005E para acentos y botones con texto blanco (contraste 5,55:1).
 Nunito Sans 700 para titulares; IBM Plex Sans 400 para texto y navegación.
 
 Firma: EVIA trabajando en el universo digital de Efy, integrada en una portada
@@ -19,45 +19,56 @@ La composición de la escena aprobada se conserva y no hay botón de pausa.
 
 ```
 Inicio:    navegación / mensaje + taller EVIA / accesos a información / cierre
-Contactos: navegación / introducción / canales oficiales / preparar consulta
+Contáctanos: navegación / introducción / canales oficiales / preparar consulta
 Conócenos:  navegación / identidad / EVIA / principios / acceso a contacto
-Ayuda:     navegación / búsqueda / categorías / respuestas / acceso a contacto
+Ayuda:     navegación / búsqueda / categorías / respuestas / reporte de errores
 Servicios: navegación / introducción / catálogo / guía para comparar / consulta
 Socios:    navegación / búsqueda / 26 logos y nombres / guía de póliza / asistencia
 Reseñas:   navegación / presentación / opiniones de clientes / conocer Efy
-Asistencia: acceso a reporte / consulta de estados pendiente / líneas oficiales
+Asistencia: hub / reportar-siniestro.html / consultas.html / lineas-asistencia.html
 ```
 
-Revisión previa: se descartó una parrilla genérica de pólizas y cifras porque no
-hay ramos o cifras confirmados. Los 26 socios se incorporan con nombres confirmados
-por el propietario y logos de sus fuentes oficiales. La firma
-visual está concentrada en EVIA y el taller. La jerarquía de contenido guía el resto.
+Revisión del 10 de octubre: se mantiene el azul, el grafito, el blanco y la escena
+aprobada de EVIA. El rosa se desplaza hacia magenta con contraste suficiente.
+La jerarquía distingue los ramos, las tres gestiones de Asistencia y los equipos
+comercial/operativo. Los logos aprobados se conservan en sus colores originales.
 
-## Contenido pendiente
+## Contactos y datos pendientes
 
-El propietario confirmó Quito y pidió incorporar un apartado con chatbot.
-WhatsApp se incorporará después. Se solicitaron correo, descripción oficial y ramos.
-No inventar esos datos. No simular envíos ni confirmar consultas sin destino real.
-EVIA responde con una base local de preguntas frecuentes; no es una integración
-generativa ni recibe pólizas o reportes. Los borradores se preparan en el navegador, sin enviar ni almacenar
-información. La vista previa requiere completar esos datos antes de pasar a portada.
-El reporte de siniestros, ahora en el módulo Asistencia, envía al correo
-`siniestros@efyseguros.com`, confirmado por el propietario. Su recepción, datos
-y pruebas se documentan en [SINIESTROS.md](SINIESTROS.md).
+El propietario confirmó los cuatro teléfonos, los dos correos y la dirección de
+Green Tower en Quito. `tooling/efy/contactos.json` contiene estos datos y el correo
+para formularios. Contáctanos enlaza a llamadas, correo y búsqueda de la dirección
+(es una búsqueda, no una ubicación geocodificada confirmada).
+WhatsApp y horarios no están confirmados; no se inventan.
+
+Ayuda incorpora `reportar-error.html`. Prepara un texto en el navegador, permite
+copiarlo y abre un correo dirigido a `formularios@efyseguros.com` para que el cliente
+lo envíe desde su aplicación. No almacena el reporte ni declara que se haya enviado.
+Sin JavaScript queda disponible el enlace al correo. No hay un nuevo backend de errores.
+
+EVIA responde con una base local de preguntas frecuentes, que incluye los contactos
+confirmados; no consulta pólizas ni recibe reportes. El envío de siniestros continúa
+por el backend existente a `siniestros@efyseguros.com`. Véase [SINIESTROS.md](SINIESTROS.md).
+
+La consulta en línea de estados necesita el sistema externo, su API y verificación
+de identidad. La reseñas necesitan una fuente real. El sitio completo se publica
+como vista previa en `/nueva/`; la portada de espera permanece en `/`.
 
 ## Servicios
 
-El propietario pidió desglosar los tipos de seguros de Efy. Se ha solicitado su
-lista; todavía no hay ramos confirmados. Servicios incluye un estado de catálogo
-próximo, una guía para comparar propuestas y enlaces reales a Ayuda, Contactos y
-EVIA. No publica los ejemplos de la pregunta como productos de Efy.
+El propietario confirmó 14 apartados: Finanzas (expresamente distinto de Fianzas),
+Accidentes personales, Vehículos, Transporte pesado, Motos, Asistencia médica,
+Gastos médicos mayores, Asistencia de viaje, Vida, Vida indexada, Seguro dental,
+Responsabilidad civil, Caución y Fidelidad privada.
 
-El catálogo se prepara en `tooling/efy/servicios.json` y se regenera con el resto
-de páginas. Cada entrada contiene `id` (único, minúsculas y guiones), `name`,
-`description` y `details` (lista de textos confirmados; puede estar vacía).
-Los detalles se muestran en acordeones nativos y los textos se escapan como HTML.
-La respuesta de EVIA sobre servicios usa esa misma lista y enlaza al catálogo.
-No agregar precios, coberturas o condiciones que el propietario no haya confirmado.
+`tooling/efy/servicios.json` contiene `id`, `name`, `group`, `description` y `details`.
+Cuatro grupos facilitan la navegación: Movilidad, Salud, Vida y bienestar, Patrimonio
+y actividad. Los detalles son orientación general y preguntas para la propuesta;
+no prometen coberturas concretas, precios, resultados financieros ni productos de
+una aseguradora. Finanzas necesita aún el detalle concreto del servicio del equipo.
+Cada ramo abre una consulta por correo a Formularios con el asunto correspondiente.
+La respuesta de EVIA se genera desde la misma lista. El generador valida los IDs,
+textos y grupos, y escapa el contenido HTML.
 
 ## Socios estratégicos y Conócenos
 
@@ -79,10 +90,12 @@ del sistema donde se registran los estados, solicitado al propietario. Los campo
 de cédula y placa están deshabilitados. No se hace una búsqueda ficticia ni se
 publica información por un identificador sin verificar la identidad del cliente.
 
-Dirección del módulo: el titular pone lo que el cliente quiere proteger primero;
-un panel oscuro reúne las preguntas que debe resolver antes de decidir. Se
-conservan los tokens y las tipografías compartidas. Se descartaron iconos de ramos
-y tarjetas de productos ficticios; las fichas aparecerán con contenido real.
+`asistencia.html` ofrece tres accesos separados. Los enlaces antiguos con fragmentos
+llevan al acceso correspondiente del hub. `siniestros.html` conserva el formulario
+operativo y el endpoint relativo. Sólo las páginas del reporte cargan su script;
+`consultas.html` carga el selector de caso/cédula/placa sin enviar identificadores.
+Cada socio permite desplegar sus teléfonos y fuentes oficiales; el directorio
+completo tiene un buscador propio y ECU 911 separado.
 
 ## Reseñas de clientes
 
@@ -144,3 +157,15 @@ recursos locales y vistas de 320/390/768/1440 px. No enviar mensajes reales en p
   placa. Comprobado el recorrido del reporte hasta revisión y vuelta para corregir,
   sin enviar correos. La URL antigua sigue mostrando el módulo Asistencia. EVIA
   dirige a líneas y consulta pendiente sin inventar resultados.
+
+## Verificación del 10 de octubre de 2026
+
+13 páginas a 320, 390, 768, 1101, 1440 y 1600 px: sin desbordamientos ni errores
+de JavaScript. Revisados menú/Escape, navegación del módulo padre, catálogo de
+14 servicios, detalles nativos, 26 logos, 40 teléfonos/canales, filtros y vacíos,
+selector de estado pendiente, revisión y retorno del reporte de siniestro sin
+enviar un correo real, borrador de errores y destinos, contactos y enlaces EVIA.
+Revisados los enlaces y anclas locales, las alternativas sin JavaScript y las
+capturas de escritorio/móvil de Inicio, Servicios, Asistencia, Contactos, Ayuda
+y Socios. Contrastes: blanco/magenta 5,55:1; magenta claro/grafito 6,23:1;
+azul/lienzo 5,83:1. No cambió el backend de siniestros.

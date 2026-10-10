@@ -13,8 +13,8 @@ color que conserva la transparencia. Su contenedor no añade fondo, sombra ni re
 El contenido explica que el sitio está en preparación, sin fecha de lanzamiento,
 porcentajes, testimonios ni funcionalidades no confirmadas.
 
-Identidad: grafito `#080E1D`, blanco `#F8F9FC`, texto secundario `#B2BBCE` y rosa
-claro `#FF91B2` para lectura sobre oscuro. La escena utiliza magenta y azul Efy.
+Identidad: grafito `#080E1D`, blanco `#F8F9FC`, texto secundario `#B2BBCE` y magenta
+de lectura `#F25C9D` sobre oscuro, actualizado por petición del propietario el 10 de octubre. La escena utiliza magenta y azul Efy.
 Nunito Sans 700 e IBM Plex Sans 400 se alojan localmente, con sus licencias.
 La página sigue siendo estática, sin dependencias de aplicaciones ni fuentes externas.
 
