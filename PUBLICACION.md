@@ -5,7 +5,7 @@ aplicaciones. El módulo de siniestros usa el PHP nativo y correo local de HostG
 de preguntas frecuentes y un formulario que prepara consultas sólo en el navegador;
 no envía ni almacena información. El módulo Siniestros sí envía datos y adjuntos
 al correo autorizado `siniestros@efyseguros.com`, con validación del servidor y
-referencia después de la aceptación del transporte de correo. Véase [Siniestros](tooling/efy/SINIESTROS.md). Los enlaces comerciales de WhatsApp usan los dos números confirmados por el propietario. La recepción de cotizaciones en su CRM está pendiente de identificar el sistema y su canal de entrada.
+referencia después de la aceptación del transporte de correo. Véase [Siniestros](tooling/efy/SINIESTROS.md). Los enlaces comerciales de WhatsApp usan los dos números confirmados por el propietario. El CRM es `https://app.latamyanez.com/login`; la recepción de cotizaciones está pendiente de acceder a su API o repo y confirmar su canal de entrada.
 
 ## Desarrollo local
 

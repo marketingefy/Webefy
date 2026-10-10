@@ -280,8 +280,8 @@ cabecera y burbujas fucsia. Las 13 páginas mantienen el pie reducido sin logo n
 navegación repetida. Los HTML de `/nueva/` revalidan su caché mediante `.htaccess`;
 la publicación verifica las cabeceras y el contenido recibido por HTTPS.
 
-La conexión de las cotizaciones al CRM requiere el nombre o URL del sistema y
-su API o formulario de recepción. Hasta contar con esa información, los enlaces
+La conexión de las cotizaciones al CRM requiere acceso a su API o repo y
+su formulario de recepción. Hasta contar con esa información, los enlaces
 comerciales siguen preparando consultas por WhatsApp y no afirman registrarlas
 en un CRM. La consulta de estados de siniestros sigue siendo una integración
 independiente pendiente del sistema que gestiona los casos.
@@ -289,3 +289,28 @@ independiente pendiente del sistema que gestiona los casos.
 Verificación de este ajuste: 13 pies sin duplicaciones; carrusel, menú y chat sin
 errores de navegador; anchos de 320, 390, 768, 1101 y 1440 px sin desbordamiento;
 posición inferior del botón, nueva introducción y nota de simulación comprobadas.
+
+## Redes sociales y chat con acento sutil
+
+El propietario confirma Instagram `@efyseguros` y el enlace de Facebook de la
+marca. Se añaden dos enlaces en Contáctanos con iconos vectoriales reconocibles,
+nombre de la plataforma y perfil; abren una nueva pestaña con `noopener noreferrer`.
+Instagram utiliza la URL del perfil sin parámetros de seguimiento; Facebook
+conserva el enlace compartido por el propietario. No se cargan widgets ni scripts
+de las redes sociales.
+
+El acento del chat pasa a `#914665` en cabecera y botón flotante. Las burbujas de
+EVIA usan `#f8eef3` con texto oscuro, enlaces `#823b5c` y borde suave; el fondo sigue
+blanco. Los botones comerciales y colores de la página conservan su identidad.
+
+CRM confirmado: `https://app.latamyanez.com/login`, cuya página pública se titula
+«EFY Analyzer IA · Efy Seguros» y muestra un inicio de sesión. La inspección se
+limita a HTML y scripts públicos, sin iniciar sesión ni enviar solicitudes. Falta
+la documentación de recepción de cotizaciones o acceso a la repo del CRM; el
+enlace de login por sí solo no determina los campos ni la autenticación de la API.
+
+Verificación: perfiles y sus iconos visibles, enlaces y protección de nueva
+pestaña comprobados; Contáctanos sin desbordamiento a 320, 390, 768, 1101 y
+1440 px. Chat dentro del área móvil, cierre con Escape y acceso a los dos
+WhatsApp comerciales correctos. Contraste medido: 6,43:1 en la cabecera,
+16,97:1 en el texto de los mensajes y 6,78:1 en el rótulo de EVIA.

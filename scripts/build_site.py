@@ -199,9 +199,15 @@ for department in CONTACTS['departments']:
         phones += f'<div class="contact-phone"><a href="{destination}" aria-label="{channel}: {display_phone(phone)}">{display_phone(phone)} {ARROW}</a><span>{channel}</span></div>'
     department_rows += f'<section class="contact-department"><p class="small-label">{escape(department["name"].upper())}</p><p>{escape(department["description"])}</p><div class="contact-phones">{phones}</div></section>'
 email_rows = ''.join(f'<div class="contact-email"><span>{escape(item["label"])}</span><a href="mailto:{item["address"]}">{escape(item["address"])} {ARROW}</a></div>' for item in CONTACTS['emails'])
+social_icons = {
+    'instagram': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
+    'facebook': '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.8 22v-9.1h3.1l.5-3.5h-3.6V7.1c0-1 .3-1.7 1.8-1.7h1.9V2.3c-.3 0-1.5-.1-2.8-.1-2.8 0-4.6 1.7-4.6 4.8v2.4H7v3.5h3.1V22Z"/></svg>',
+}
+social_cards = ''.join(f'<a class="contact-social-link" href="{escape(item["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Efy Seguros en {escape(item["name"], quote=True)}: {escape(item["label"], quote=True)} (abre una nueva pestaña)"><span class="contact-social-icon {item["platform"]}">{social_icons[item["platform"]]}</span><span class="contact-social-text"><span>{escape(item["name"])}</span><strong>{escape(item["label"])}</strong></span>{ARROW}</a>' for item in CONTACTS.get('social_profiles', []))
+social_section = f'<section class="contact-department contact-social" aria-labelledby="social-title"><h2 class="small-label" id="social-title">CONECTA CON EFY</h2><div class="contact-social-links">{social_cards}</div></section>' if social_cards else ''
 contact = f'''
 <section class="page-intro container"><p class="eyebrow">CONTÁCTANOS</p><h1 id="page-title">Conversemos.<br><span>Estamos cerca de ti.</span></h1><p class="large-copy intro-copy">Elige el equipo que necesitas o visítanos en Quito.</p></section>
-<section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department"><p class="small-label">CORREOS</p>{email_rows}</section></div><aside class="office-panel"><p class="eyebrow light">ENCUÉNTRANOS</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%2010%20de%20Agosto%20y%20Juan%20de%20Galindes%20Green%20Tower%20Quito" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
+<section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department"><p class="small-label">CORREOS</p>{email_rows}</section>{social_section}</div><aside class="office-panel"><p class="eyebrow light">ENCUÉNTRANOS</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%2010%20de%20Agosto%20y%20Juan%20de%20Galindes%20Green%20Tower%20Quito" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
 ''' + consult_section
 
 service_cards = []
@@ -378,7 +384,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', '<script src="../assets/site/asistencia.js?v=assistance-20261009" defer></script></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
-    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=evia-refined-reviews-20261010').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=evia-refined-reviews-20261010')
+    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=evia-subtle-social-20261010').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=evia-subtle-social-20261010')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
     document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)

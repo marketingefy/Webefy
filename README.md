@@ -7,11 +7,11 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Socios estratégicos, Conócenos, Asistencias, Reseñas, Contáctanos y Ayuda).
 - Catálogo de seguros confirmado: `tooling/efy/servicios.json`; 16 apartados confirmados, organizados en cuatro grupos, incluidos Hogar y Pymes. Finanzas se mantiene distinto de Fianzas.
 - Socios estratégicos: `tooling/efy/socios.json`; 26 confirmados por el propietario, con logos oficiales y canales de atención. [Fuentes y mantenimiento](tooling/efy/SOCIOS-Y-ASISTENCIA.md).
-- Contactos confirmados: `tooling/efy/contactos.json`; WhatsApp comercial, teléfonos operativos, `info@efyseguros.com`, correo de siniestros y dirección única de Quito.
+- Contactos confirmados: `tooling/efy/contactos.json`; WhatsApp comercial, teléfonos operativos, correos, dirección única de Quito e Instagram/Facebook facilitados por el propietario.
 - Conócenos: `tooling/efy/conocenos.json`; trayectoria y texto facilitados por el propietario, cifras animadas y video de EVIA en bucle. [Contenido y medios](tooling/efy/WEB-BRIEF.md).
 - Ayuda: `reportar-error.html` prepara un reporte y abre el correo del cliente para enviarlo a `info@efyseguros.com`. La web no confirma un envío automático.
 - Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial. `resenas-demo.json` contiene diez ejemplos ficticios, identificados mediante una nota visible junto al carrusel mientras no haya reseñas reales.
-- Cotizaciones: las consultas actuales se preparan en el navegador y continúan por WhatsApp comercial. La recepción de solicitudes en el CRM depende de identificar el sistema y su API o formulario de entrada.
+- Cotizaciones: las consultas actuales se preparan en el navegador y continúan por WhatsApp comercial. El CRM facilitado es `https://app.latamyanez.com/login`; su recepción de solicitudes depende del acceso a la API o repo.
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; 21 preguntas adicionales investigadas en fuentes oficiales, con enlaces y variantes para el chat.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Diseño y contenido de la vista previa: [brief de la web](tooling/efy/WEB-BRIEF.md).

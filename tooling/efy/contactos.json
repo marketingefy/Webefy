@@ -29,5 +29,19 @@
       "label": "Siniestros y reembolsos"
     }
   ],
-  "error_email": "info@efyseguros.com"
+  "error_email": "info@efyseguros.com",
+  "social_profiles": [
+    {
+      "platform": "instagram",
+      "name": "Instagram",
+      "label": "@efyseguros",
+      "url": "https://www.instagram.com/efyseguros/"
+    },
+    {
+      "platform": "facebook",
+      "name": "Facebook",
+      "label": "Efy Seguros",
+      "url": "https://www.facebook.com/share/1J7RkC6c51/?mibextid=wwXIfr"
+    }
+  ]
 }
