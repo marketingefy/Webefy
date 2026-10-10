@@ -129,3 +129,8 @@
 @media(hover:hover){.chat-fab:hover{background:rgba(206,0,94,.92)}.chat-business-options button:hover,.chat-business-options a:hover{background:#fff6fa;border-color:#d9a4be}.chat-quick-actions button:hover,.chat-quick-actions .chat-team-link:hover{background:#f7f8fb}}
 @media(max-width:760px){.chat-messages{padding:16px 18px}.chat-business-options button,.chat-business-options a{font-size:12px}.chat-quick-actions{padding-inline:12px}.chat-form{padding-inline:12px}}
 @media(max-height:600px){.chat-quick-actions{padding-top:8px}.chat-quick-actions button,.chat-quick-actions .chat-team-link{min-height:36px;padding-block:6px}.chat-help-link{padding-block:8px}}
+
+/* Platform typography for the conversation; the rest of the site keeps IBM Plex Sans. */
+.evia-dialog{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.chat-header h2{font-family:inherit;display:flex;align-items:center;gap:7px;font-weight:600;letter-spacing:0;line-height:1.25}
+.chat-header .chat-brand-badge{display:block;width:18px;height:18px;color:#1685dc;flex-shrink:0}

@@ -400,3 +400,21 @@ correos y número comercial corregido. Menús de cotización, póliza, asistenci
 asesores comprobados; preguntas libres y fuentes conservadas. El chat cabe también
 en pantallas de 320 × 568 y 768 × 600 px. No se envían mensajes, cotizaciones ni
 reportes de prueba a sistemas reales.
+
+## Tipografía del chat y distintivo de marca
+
+La conversación usa las fuentes nativas de cada plataforma (sistema Apple,
+Segoe UI o Roboto), con alternativas locales, para una lectura similar a la de
+WhatsApp. Se aplica solo al diálogo, incluidos el nombre, los mensajes, el menú
+y el campo de escritura; la página conserva IBM Plex Sans.
+
+El nombre EVIA lleva un círculo azul con un check blanco. Su título y nombre
+accesible lo identifican como distintivo propio de Efy: no afirma una
+verificación de una plataforma externa. Cabecera, burbujas, acceso flotante y
+menú conservan el diseño aprobado.
+
+Revisión: los 13 HTML incluyen el distintivo y la misma versión. Tipografía
+calculada del diálogo, nombre, mensajes, botones y campo de escritura comprobada
+en 320, 390, 768 y 1440 px; IBM Plex Sans permanece en el resto de la página.
+Sin desbordamiento ni errores de JavaScript. Menú de cotización, pregunta libre,
+horas y cierre por teclado conservan su funcionamiento.
