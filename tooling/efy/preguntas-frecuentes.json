@@ -1,0 +1,326 @@
+{
+  "reviewed_on": "2026-10-10",
+  "sources": {
+    "broker": {
+      "label": "MAPFRE Ecuador · El corredor de seguros",
+      "url": "https://www.mapfre.com.ec/servicios-cliente/brokers/articulos/que-es-un-corredor-de-seguros-y-para-que-sirve/"
+    },
+    "conceptos": {
+      "label": "MAPFRE Ecuador · Educación financiera",
+      "url": "https://www.mapfre.com.ec/media/programa-educacion-financiera-preguntas-frecuentes.pdf"
+    },
+    "chubb": {
+      "label": "Chubb Ecuador · Preguntas frecuentes",
+      "url": "https://www.chubb.com/ec-es/siniestros/preguntas-frecuentes.html"
+    },
+    "salud": {
+      "label": "Saludsa · Preguntas frecuentes",
+      "url": "https://www.saludsa.com/preguntas-frecuentes"
+    },
+    "reembolsos": {
+      "label": "Saludsa · Ayuda con reembolsos",
+      "url": "https://serviciosaludsa.zendesk.com/hc/es/sections/360013264852-Preguntas-frecuentes"
+    },
+    "vehiculos": {
+      "label": "MAPFRE Ecuador · Seguro de autos",
+      "url": "https://www.mapfre.com.ec/seguros-autos/"
+    },
+    "cambios": {
+      "label": "Chubb Ecuador · Condiciones generales de responsabilidad civil",
+      "url": "https://www.chubb.com/content/dam/chubb-sites/chubb-com/ec-es/sobre-nosotros/condiciones-generales/documents/pdf/condiciones-generales-de-responsabilidad-civil.pdf"
+    }
+  },
+  "items": [
+    {
+      "id": "broker",
+      "category": "Antes de elegir",
+      "question": "¿Qué hace un bróker y en qué se diferencia de una aseguradora?",
+      "answer": "El bróker asesora, compara opciones y acompaña la gestión del seguro. La aseguradora emite la póliza, asume el riesgo y decide las indemnizaciones conforme al contrato.",
+      "source": "broker",
+      "aliases": [
+        "broker",
+        "corredor de seguros",
+        "diferencia con aseguradora",
+        "intermediario"
+      ]
+    },
+    {
+      "id": "comparar",
+      "category": "Antes de elegir",
+      "question": "¿Cómo comparo dos propuestas de seguro?",
+      "answer": "Compara protección, límites, exclusiones, deducibles, asistencia y precio total. Una prima más baja puede incluir menos protección. Pide que te expliquen las diferencias por escrito.",
+      "source": "broker",
+      "aliases": [
+        "comparar seguros",
+        "comparo",
+        "dos propuestas",
+        "mas barato",
+        "mejor seguro"
+      ]
+    },
+    {
+      "id": "acompanamiento",
+      "category": "Antes de elegir",
+      "question": "¿El bróker me acompaña después de contratar?",
+      "answer": "Puede orientarte durante la vigencia, las modificaciones, la renovación y un siniestro. Confirma con el equipo el alcance del servicio. La aprobación de un reclamo corresponde a la aseguradora.",
+      "source": "broker",
+      "aliases": [
+        "despues de contratar",
+        "acompanamiento",
+        "apoyo del broker",
+        "ayuda del broker"
+      ]
+    },
+    {
+      "id": "honorarios",
+      "category": "Antes de elegir",
+      "question": "¿Contratar con un bróker tiene un costo adicional?",
+      "answer": "Solicita el detalle de prima, impuestos y cualquier honorario antes de aceptar la propuesta. EVIA no tiene una tarifa confirmada de Efy ni puede prometer asesoría gratuita.",
+      "source": "broker",
+      "aliases": [
+        "costo del broker",
+        "cobra el broker",
+        "honorarios",
+        "comision",
+        "asesoria gratuita",
+        "costo adicional"
+      ]
+    },
+    {
+      "id": "prima",
+      "category": "Tu póliza",
+      "question": "¿Qué es la prima y cómo se diferencia del deducible?",
+      "answer": "La prima es el precio del seguro. El deducible es la parte de un evento cubierto que asumes según el contrato. Revisa ambos valores antes de contratar.",
+      "source": "conceptos",
+      "aliases": [
+        "prima",
+        "precio del seguro",
+        "diferencia prima deducible"
+      ]
+    },
+    {
+      "id": "vigencia",
+      "category": "Tu póliza",
+      "question": "¿Cuándo empieza y termina la protección de mi seguro?",
+      "answer": "Revisa las fechas y horas de inicio y vencimiento en la póliza. Confirma los requisitos de activación con la aseguradora; solicitar una cotización no equivale a tener cobertura.",
+      "source": "conceptos",
+      "aliases": [
+        "vigencia",
+        "cuando empieza",
+        "cuando termina",
+        "desde cuando",
+        "activa mi seguro",
+        "seguro activo"
+      ]
+    },
+    {
+      "id": "limites",
+      "category": "Tu póliza",
+      "question": "¿Qué son la suma asegurada y los límites de cobertura?",
+      "answer": "Definen el alcance económico de la protección. Puede haber límites por evento, persona o cobertura. Revisa los valores particulares, los sublímites y las condiciones de tu contrato.",
+      "source": "conceptos",
+      "aliases": [
+        "suma asegurada",
+        "limite",
+        "sublimite",
+        "monto asegurado"
+      ]
+    },
+    {
+      "id": "beneficiarios",
+      "category": "Tu póliza",
+      "question": "¿Quién es el beneficiario de una póliza?",
+      "answer": "Es la persona designada para recibir el beneficio previsto en el contrato cuando corresponda. Comprueba los nombres y pregunta cómo actualizarlos por el canal oficial de la aseguradora.",
+      "source": "conceptos",
+      "aliases": [
+        "beneficiario",
+        "beneficiaria",
+        "cambiar beneficiarios"
+      ]
+    },
+    {
+      "id": "modificaciones",
+      "category": "Tu póliza",
+      "question": "¿Qué hago si cambian mis datos o el uso del bien asegurado?",
+      "answer": "Comunica el cambio al equipo y a la aseguradora. Pide confirmar si requiere una modificación o un anexo, desde qué fecha aplica y si cambia la prima o la cobertura.",
+      "source": "broker",
+      "aliases": [
+        "cambiar datos",
+        "cambio de datos",
+        "actualizar datos",
+        "cambio de uso",
+        "modificar poliza",
+        "anexo",
+        "endoso"
+      ]
+    },
+    {
+      "id": "pagos",
+      "category": "Tu póliza",
+      "question": "¿Cómo reviso las cuotas y fechas de pago?",
+      "answer": "Consulta el calendario y las condiciones de pago del contrato. Si tienes un atraso, comunícate con el equipo para verificar cómo regularizarlo y si afecta la vigencia; EVIA no consulta pagos.",
+      "source": "conceptos",
+      "aliases": [
+        "cuota",
+        "pagos",
+        "pagar",
+        "pago de cuota",
+        "atraso",
+        "debo pagar",
+        "deje de pagar"
+      ]
+    },
+    {
+      "id": "carencias",
+      "category": "Tu póliza",
+      "question": "¿Qué es una carencia o período de espera?",
+      "answer": "Es un plazo que debe cumplirse antes de acceder a determinadas coberturas de salud. Los tiempos varían por plan y prestación: confirma los aplicables a tu contrato.",
+      "source": "salud",
+      "aliases": [
+        "carencia",
+        "periodo de espera",
+        "tiempo de espera"
+      ]
+    },
+    {
+      "id": "preexistencias",
+      "category": "Antes de elegir",
+      "question": "¿Qué debo saber sobre enfermedades preexistentes?",
+      "answer": "Declara las condiciones de salud conocidas al contratar. Pide que te expliquen su tratamiento en el plan, los límites y los tiempos aplicables. EVIA no puede confirmar cobertura médica individual.",
+      "source": "salud",
+      "aliases": [
+        "preexistencia",
+        "enfermedad previa",
+        "enfermedad anterior"
+      ]
+    },
+    {
+      "id": "copago",
+      "category": "Tu póliza",
+      "question": "¿Qué son el copago y el coaseguro?",
+      "answer": "Son participaciones del cliente en el costo de una atención, según el plan. Revisa si se calculan como valor fijo o porcentaje y cómo interactúan con el deducible.",
+      "source": "salud",
+      "aliases": [
+        "copago",
+        "coaseguro"
+      ]
+    },
+    {
+      "id": "red-medica",
+      "category": "Tu póliza",
+      "question": "¿Puedo atenderme con cualquier médico o clínica?",
+      "answer": "Depende de la red y de las condiciones del plan. Confirma prestadores, autorizaciones, libre elección y reembolsos antes de una atención programada.",
+      "source": "salud",
+      "aliases": [
+        "red medica",
+        "cualquier medico",
+        "cualquier clinica",
+        "elegir medico",
+        "libre eleccion",
+        "autorizacion medica"
+      ]
+    },
+    {
+      "id": "reembolso-documentos",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos preparo para un reembolso médico?",
+      "answer": "Conserva facturas y soportes de la atención. Solicita la lista y el plazo de presentación de tu plan; puede requerir documentos adicionales. Envía información personal únicamente por los canales oficiales.",
+      "source": "salud",
+      "aliases": [
+        "documentos para reembolso",
+        "documentos de reembolso",
+        "solicitar reembolso",
+        "pedir reembolso",
+        "facturas",
+        "reembolso medico",
+        "solicito reembolso",
+        "tramitar reembolso",
+        "quiero un reembolso",
+        "solicitar un reembolso"
+      ]
+    },
+    {
+      "id": "reembolso-tiempo",
+      "category": "Si ocurre un evento",
+      "question": "¿Cuánto tarda un reembolso y qué hago si falta un documento?",
+      "answer": "El tiempo depende del plan, la revisión y la documentación completa. Consulta el plazo y las observaciones por el canal oficial. Un expediente pendiente no equivale a una aprobación.",
+      "source": "reembolsos",
+      "aliases": [
+        "cuanto tarda",
+        "cuanto demora",
+        "tiempo del reembolso",
+        "falta un documento",
+        "faltan documentos",
+        "documentacion incompleta"
+      ]
+    },
+    {
+      "id": "reclamo-documentos",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué información necesito al reportar un siniestro?",
+      "answer": "Prepara fecha, lugar, descripción del evento y un contacto; ten a mano la póliza si la conoces. La aseguradora indicará los soportes específicos. Evita introducir esos datos en EVIA.",
+      "source": "chubb",
+      "aliases": [
+        "documentos del siniestro",
+        "documentos para siniestro",
+        "informacion para reportar",
+        "datos del siniestro"
+      ]
+    },
+    {
+      "id": "reclamo-revision",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué hago si no estoy de acuerdo con la respuesta del reclamo?",
+      "answer": "Solicita la explicación y las cláusulas aplicadas por escrito. Reúne la respuesta y los soportes para revisar el caso con el equipo y seguir el procedimiento oficial de reclamación.",
+      "source": "chubb",
+      "aliases": [
+        "rechazado",
+        "negado",
+        "negaron",
+        "no estoy de acuerdo",
+        "no me reembolsan",
+        "reclamo rechazado"
+      ]
+    },
+    {
+      "id": "conductores",
+      "category": "Tu póliza",
+      "question": "¿Mi seguro vehicular cubre si conduce otra persona?",
+      "answer": "Depende de los conductores admitidos, el uso declarado y las condiciones de la póliza. Confirma quién puede conducir y si debe registrarse antes de prestar el vehículo.",
+      "source": "vehiculos",
+      "aliases": [
+        "otro conductor",
+        "otra persona conduce",
+        "prestar el carro",
+        "prestar el vehiculo",
+        "mi hijo conduce"
+      ]
+    },
+    {
+      "id": "exterior",
+      "category": "Tu póliza",
+      "question": "¿El seguro del vehículo me cubre fuera de Ecuador?",
+      "answer": "Comprueba el territorio cubierto y si necesitas una extensión. Daños propios, responsabilidad civil y asistencia pueden tener alcances distintos. Confírmalo antes de viajar.",
+      "source": "vehiculos",
+      "aliases": [
+        "fuera de ecuador",
+        "fuera del pais",
+        "extraterritorial",
+        "cruzar la frontera"
+      ]
+    },
+    {
+      "id": "cancelar",
+      "category": "Tu póliza",
+      "question": "¿Cómo solicito cancelar una póliza o cambiar de aseguradora?",
+      "answer": "Pide revisar las condiciones de terminación, el aviso requerido y cualquier devolución aplicable. Confirma la fecha efectiva y coordina la nueva cobertura antes de realizar el cambio. EVIA no cancela pólizas.",
+      "source": "cambios",
+      "aliases": [
+        "cancelar",
+        "cancelacion",
+        "cambiar de aseguradora",
+        "terminar poliza"
+      ]
+    }
+  ]
+}

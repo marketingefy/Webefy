@@ -2,6 +2,7 @@
   document.documentElement.classList.add('js');
   const normalize = text => text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
   const faq = JSON.parse(document.querySelector('#faq-data').textContent);
+  const contacts = JSON.parse(document.querySelector('#contact-data').textContent);
   const menu = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.site-nav');
   menu.addEventListener('click', () => {
@@ -47,6 +48,17 @@
     if (exact) return { text: exact.answer, id: exact.id };
     if (/^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey)[!.\s]*$/.test(cleaned)) return { text: 'Hola. Puedo ayudarte con conceptos de seguros y preguntas frecuentes de Efy. ¿Quieres conocer qué es una cobertura, un deducible o cómo preparar una consulta?' };
     if (/^(gracias|muchas gracias|perfecto|listo)[!.\s]*$/.test(cleaned)) return { text: 'Con gusto. Puedes seguir preguntando o revisar el centro de ayuda.' };
+    if (/contact|comunicar|whatsapp|telefono|llamar|hablar con/.test(cleaned) && contacts.providers.some(provider => (` ${cleaned.replace(/[^a-z0-9]+/g, ' ')} `).includes(` ${normalize(provider).replace(/[^a-z0-9]+/g, ' ')} `))) {
+      const lines = faq.find(item => item.id === 'lineas');
+      return { text: lines.answer, id: 'lineas' };
+    }
+    const padded = ` ${cleaned.replace(/[^a-z0-9]+/g, ' ')} `;
+    const researched = faq.map(item => ({item, score: Math.max(0, ...(item.aliases || []).map(alias => padded.includes(` ${normalize(alias)} `) ? alias.length : 0))})).sort((a,b) => b.score - a.score)[0];
+    if (researched?.score > 0) return { text: researched.item.answer, id: researched.item.id };
+    if (/contacta|contacto|comunicar|whatsapp|hablar con (efy|un asesor|una persona|el equipo|comercial)|asesor comercial/.test(cleaned)) {
+      const contact = faq.find(item => item.id === 'contacto');
+      return { text: contact.answer, id: 'contacto' };
+    }
     if (/mi poliza|mi cobertura|me cubre|estoy cubierto|numero de poliza|numero de cedula/.test(cleaned)) return { text: 'No puedo consultar una póliza ni confirmar si un evento particular está cubierto. Revisa las condiciones de tu contrato y consulta a tu aseguradora por su canal oficial.', id: 'cobertura' };
     const intent = intents.find(([, words]) => words.some(word => cleaned.includes(word)));
     if (intent) {
@@ -66,7 +78,27 @@
     const body = document.createElement('p');
     body.textContent = text;
     entry.append(name, body);
+    if (faqId === 'contacto') {
+      const actions = document.createElement('div');
+      actions.className = 'chat-contact-actions';
+      contacts.whatsapp.forEach(contact => {
+        const action = document.createElement('a');
+        action.href = contact.url;
+        action.className = 'chat-whatsapp';
+        action.textContent = `WhatsApp comercial · ${contact.label}`;
+        actions.append(action);
+      });
+      entry.append(actions);
+    }
     if (faqId) {
+      const source = faq.find(item => item.id === faqId)?.source;
+      if (source?.url) {
+        const sourceLink = document.createElement('a');
+        sourceLink.href = source.url;
+        sourceLink.textContent = `Fuente: ${source.label}`;
+        sourceLink.className = 'chat-source';
+        entry.append(sourceLink);
+      }
       const link = document.createElement('a');
       link.href = `ayuda.html#faq-${faqId}`;
       link.textContent = 'Ver en el centro de ayuda →';
@@ -127,6 +159,21 @@
     trigger.addEventListener('click', () => {
       openChat(trigger);
       submitQuestion(trigger.dataset.chatQuestion);
+    });
+  });
+  const topicQuestions = {
+    contratar: [['broker', '¿Qué hace un bróker?'], ['comparar', 'Comparar propuestas'], ['contacto', 'Contactar a Efy']],
+    poliza: [['vigencia', 'Vigencia'], ['deducible', 'Deducibles'], ['carencias', 'Carencias']],
+    siniestros: [['siniestro', 'Reportar un siniestro'], ['reembolso-documentos', 'Pedir un reembolso'], ['estado', 'Consultar mi caso']]
+  };
+  document.querySelectorAll('[data-chat-topic]').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelectorAll('[data-chat-topic]').forEach(tab => tab.setAttribute('aria-pressed', String(tab === button)));
+      document.querySelectorAll('.chat-suggestions [data-chat-question]').forEach((suggestion, index) => {
+        const [id, label] = topicQuestions[button.dataset.chatTopic][index];
+        suggestion.dataset.chatQuestion = faq.find(item => item.id === id).question;
+        suggestion.textContent = label;
+      });
     });
   });
   document.querySelector('#close-chat').addEventListener('click', () => dialog.close());
@@ -206,6 +253,7 @@
       questionField.setCustomValidity(question ? '' : 'Escribe tu pregunta para preparar la consulta.');
       if (!consult.reportValidity()) return;
       summary.value = `Consulta para Efy Seguros\nTema: ${document.querySelector('#consult-topic').value}\n\n${question}`;
+      document.querySelector('#consult-whatsapp').href = contacts.whatsapp[0].url + '?text=' + encodeURIComponent(summary.value);
       document.querySelector('#consult-result').hidden = false;
       status.textContent = 'Resumen preparado. No se ha enviado al equipo de Efy.';
       summary.focus();
@@ -221,6 +269,36 @@
         status.textContent = 'Seleccionamos el resumen. Usa la opción Copiar de tu dispositivo.';
       }
     });
+  }
+
+  const reviewRail = document.querySelector('.review-demo-rail');
+  if (reviewRail) {
+    const previous = document.querySelector('.review-prev');
+    const next = document.querySelector('.review-next');
+    const position = document.querySelector('.review-position');
+    const stride = () => reviewRail.firstElementChild.getBoundingClientRect().width + parseFloat(getComputedStyle(reviewRail).columnGap);
+    function updateReviews() {
+      const start = Math.round(reviewRail.scrollLeft / stride()) + 1;
+      const visible = Math.max(1, Math.floor((reviewRail.clientWidth + 24) / stride()));
+      const label = `${start}–${Math.min(start + visible - 1, reviewRail.children.length)} de ${reviewRail.children.length} ejemplos`;
+      if (position.textContent !== label) position.textContent = label;
+      previous.disabled = reviewRail.scrollLeft <= 2;
+      next.disabled = reviewRail.scrollLeft >= reviewRail.scrollWidth - reviewRail.clientWidth - 2;
+    }
+    function moveReviews(direction) {
+      reviewRail.scrollBy({left: direction * stride(), behavior:matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    }
+    previous.addEventListener('click', () => moveReviews(-1));
+    next.addEventListener('click', () => moveReviews(1));
+    reviewRail.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault();
+        moveReviews(event.key === 'ArrowRight' ? 1 : -1);
+      }
+    });
+    reviewRail.addEventListener('scroll', updateReviews, {passive:true});
+    new ResizeObserver(updateReviews).observe(reviewRail);
+    updateReviews();
   }
 
   const video = document.querySelector('.workshop-video');

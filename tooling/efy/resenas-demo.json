@@ -1,0 +1,15 @@
+{
+  "simulation": true,
+  "items": [
+    {"id":"demo-asesoria","author":"Andrea M.","initials":"AM","rating":5,"topic":"Asesoría","text":"Me explicaron las opciones con claridad y pude comparar con calma. La atención fue cercana y profesional."},
+    {"id":"demo-vehiculo","author":"Carlos R.","initials":"CR","rating":5,"topic":"Vehículos","text":"Antes de elegir el seguro de mi vehículo entendí el deducible y las coberturas. Me sentí acompañado en cada paso."},
+    {"id":"demo-salud","author":"Valeria P.","initials":"VP","rating":5,"topic":"Salud","text":"Tenía muchas dudas sobre un plan para mi familia. La explicación de la red médica y los períodos de espera me ayudó a decidir."},
+    {"id":"demo-renovacion","author":"Diego C.","initials":"DC","rating":5,"topic":"Renovación","text":"Revisamos mi póliza antes de renovarla y me explicaron qué había cambiado. Agradezco una atención tan ordenada."},
+    {"id":"demo-siniestro","author":"Gabriela L.","initials":"GL","rating":5,"topic":"Acompañamiento","text":"Cuando necesité reportar un evento, me orientaron sobre los documentos y los pasos a seguir. Esa cercanía da tranquilidad."},
+    {"id":"demo-vida","author":"Mateo S.","initials":"MS","rating":5,"topic":"Vida","text":"Pude conversar sobre lo que quería proteger y resolver mis dudas sin sentir presión. Muy buena experiencia de asesoría."},
+    {"id":"demo-negocio","author":"Paola V.","initials":"PV","rating":5,"topic":"Negocios","text":"Nos ayudaron a ordenar las necesidades de nuestro negocio y a entender las alternativas. Un trato profesional de principio a fin."},
+    {"id":"demo-viaje","author":"Sebastián A.","initials":"SA","rating":5,"topic":"Viajes","text":"La orientación antes del viaje fue clara. Me explicaron cómo revisar la asistencia y dónde encontrar los canales de contacto."},
+    {"id":"demo-reembolso","author":"Daniela F.","initials":"DF","rating":5,"topic":"Reembolsos","text":"Me ayudaron a revisar los requisitos del reembolso y a organizar mis soportes. Valoro que expliquen cada gestión con paciencia."},
+    {"id":"demo-contacto","author":"Javier T.","initials":"JT","rating":5,"topic":"Atención","text":"Es fácil encontrar a quién consultar y la comunicación es amable. Me gustó tener una explicación sencilla de términos que no conocía."}
+  ]
+}

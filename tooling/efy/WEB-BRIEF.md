@@ -1,4 +1,4 @@
-# Primera web Efy: Inicio, Servicios, Contáctanos, Conócenos, Socios estratégicos, Reseñas, Ayuda y Asistencia
+# Primera web Efy: Inicio, Servicios, Socios estratégicos, Conócenos, Asistencias, Reseñas, Contáctanos y Ayuda
 
 Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
 trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
@@ -11,7 +11,9 @@ Trabajo de la portada: presentar la marca y dirigir a la información o el conta
 
 Tokens: grafito #080E1D, tinta secundaria #17233D, blanco #F8F9FC, lienzo #F7F8FB,
 magenta de lectura #F25C9D, azul de acción #445EA5. Magenta #CE005E para acentos y botones con texto blanco (contraste 5,55:1).
-Nunito Sans 700 para titulares; IBM Plex Sans 400 para texto y navegación.
+IBM Plex Sans 600 para títulos, 500 para menú y 400 para texto. Los pesos nuevos
+se alojan localmente, con la licencia IBM Plex ya incluida. Nunito Sans se conserva
+para algunos datos y para la portada de espera.
 
 Firma: EVIA trabajando en el universo digital de Efy, integrada en una portada
 cinematográfica; el resto de la web ofrece superficies claras y lectura sencilla.
@@ -20,12 +22,12 @@ La composición de la escena aprobada se conserva y no hay botón de pausa.
 ```
 Inicio:    navegación / mensaje + taller EVIA / accesos a información / cierre
 Contáctanos: navegación / introducción / canales oficiales / preparar consulta
-Conócenos:  navegación / identidad / EVIA / principios / acceso a contacto
+Conócenos:  navegación / identidad y EVIA / trayectoria / historia / WhatsApp
 Ayuda:     navegación / búsqueda / categorías / respuestas / reporte de errores
 Servicios: navegación / introducción / catálogo / guía para comparar / consulta
 Socios:    navegación / búsqueda / 26 logos y nombres / guía de póliza / asistencia
 Reseñas:   navegación / presentación / opiniones de clientes / conocer Efy
-Asistencia: hub / reportar-siniestro.html / consultas.html / lineas-asistencia.html
+Asistencias: hub / reportar-siniestro.html / consultas.html / lineas-asistencia.html
 ```
 
 Revisión del 10 de octubre: se mantiene el azul, el grafito, el blanco y la escena
@@ -35,14 +37,15 @@ comercial/operativo. Los logos aprobados se conservan en sus colores originales.
 
 ## Contactos y datos pendientes
 
-El propietario confirmó los cuatro teléfonos, los dos correos y la dirección de
-Green Tower en Quito. `tooling/efy/contactos.json` contiene estos datos y el correo
-para formularios. Contáctanos enlaza a llamadas, correo y búsqueda de la dirección
-(es una búsqueda, no una ubicación geocodificada confirmada).
-WhatsApp y horarios no están confirmados; no se inventan.
+El propietario confirmó los cuatro teléfonos y la dirección de Green Tower en Quito.
+Solicitó sustituir el correo de información por `info@efyseguros.com` y dirigir
+el contacto comercial a WhatsApp de 0967146828 y 0983568633. Estos datos están
+en `tooling/efy/contactos.json`. Contáctanos conserva llamadas para el equipo
+operativo, correo y búsqueda de la dirección (no una ubicación geocodificada
+confirmada). Los horarios no están confirmados; no se inventan.
 
 Ayuda incorpora `reportar-error.html`. Prepara un texto en el navegador, permite
-copiarlo y abre un correo dirigido a `formularios@efyseguros.com` para que el cliente
+copiarlo y abre un correo dirigido a `info@efyseguros.com` para que el cliente
 lo envíe desde su aplicación. No almacena el reporte ni declara que se haya enviado.
 Sin JavaScript queda disponible el enlace al correo. No hay un nuevo backend de errores.
 
@@ -66,7 +69,8 @@ Cuatro grupos facilitan la navegación: Movilidad, Salud, Vida y bienestar, Patr
 y actividad. Los detalles son orientación general y preguntas para la propuesta;
 no prometen coberturas concretas, precios, resultados financieros ni productos de
 una aseguradora. Finanzas necesita aún el detalle concreto del servicio del equipo.
-Cada ramo abre una consulta por correo a Formularios con el asunto correspondiente.
+Cada ramo abre WhatsApp comercial con un borrador específico. El visitante decide
+enviarlo. La consulta de Contáctanos también ofrece WhatsApp con su resumen.
 La respuesta de EVIA se genera desde la misma lista. El generador valida los IDs,
 textos y grupos, y escapa el contenido HTML.
 
@@ -100,9 +104,11 @@ completo tiene un buscador propio y ECU 911 separado.
 ## Reseñas de clientes
 
 El propietario solicitó un apartado de reseñas. Se añade `resenas.html` con
-accesos desde el menú, Inicio, el pie y EVIA. Se ha solicitado una fuente o las
-reseñas reales. Mientras faltan, se muestra «Próximamente», sin nombres, citas,
-estrellas, puntuaciones agregadas ni cantidades inventadas.
+accesos desde el menú, Inicio y EVIA. Se ha solicitado una fuente o las
+reseñas reales. La base `resenas.json` continúa vacía hasta recibirlas. A petición
+posterior del propietario, la vista previa muestra diez ejemplos de diseño,
+separados en `resenas-demo.json` y etiquetados como ficticios. No hay puntuaciones
+agregadas ni afirmaciones de reseñas reales o verificadas.
 
 El contenido se carga de `tooling/efy/resenas.json`: `profile_url` es el enlace
 opcional al perfil oficial de reseñas; `items` contiene las opiniones reales.
@@ -169,3 +175,80 @@ Revisados los enlaces y anclas locales, las alternativas sin JavaScript y las
 capturas de escritorio/móvil de Inicio, Servicios, Asistencia, Contactos, Ayuda
 y Socios. Contrastes: blanco/magenta 5,55:1; magenta claro/grafito 6,23:1;
 azul/lienzo 5,83:1. No cambió el backend de siniestros.
+
+## Ajuste corporativo del 10 de octubre
+
+Menú e información de Inicio ordenados como pidió el propietario: Inicio, Servicios,
+Socios estratégicos, Conócenos, Asistencias, Reseñas, Contáctanos y Ayuda. Las rutas
+se conservan; las subpáginas mantienen activo el módulo correspondiente. El menú
+se presenta en mayúsculas, con IBM Plex Sans 500 y un espaciado moderado. Los títulos
+usan IBM Plex Sans 600. La escena, logo superior y paleta aprobada se conservan.
+
+La oficina muestra una sola dirección, dividida en tres líneas para calle, edificio
+y piso/oficina. El pie se reduce a copyright y lema: sin logo ni menú repetidos.
+
+Verificación del ajuste: 13 páginas en siete anchos (320, 390, 768, 1101, 1280,
+1440 y 1600 px), sin desbordamiento ni errores de JavaScript. Menú ordenado,
+módulo activo, teclado/Escape y alternativa sin JavaScript correctos; sin logo
+o navegación en el pie. Pesos 500/600 cargados, dirección única y capturas
+revisadas de Inicio, Servicios y Contáctanos en móvil y escritorio.
+
+## Conócenos y conversación de EVIA
+
+La referencia del propietario se adapta a HTML responsive, con los 5 años de Efy
+y los más de 15 años de experiencia que confirmó. `conocenos.json` conserva las
+cifras, el lema «Experiencia que respalda. Cercanía que protege.», el subtítulo y
+sus tres párrafos completos. Magenta y azul distinguen las dos cifras. La entrada
+en pantalla anima los contadores una sola vez; sus etiquetas accesibles son
+estáticas. Sin JavaScript o con movimiento reducido se mantienen los datos finales.
+
+EVIA aparece sobre grafito, con luz magenta y azul y un panel holográfico. Se generó
+en Higgsfield a partir del astronauta aprobado, sin voz ni sonido. Primer fotograma:
+GPT Image 2.5, trabajo `e36fc8b0-7298-486c-9154-2bc1b3269530`. Video de 6 segundos:
+Seedance 2.5, trabajo `1b112559-1f8d-4561-8d4b-3593f28e0d86`. El proceso local
+`scripts/prepare_about_loop.py <video-original>` une avance y reversa y genera un
+póster del primer fotograma. Resultado: H.264, 720×960, 12,08 segundos, 635472 bytes,
+sin audio. El taller aprobado de Inicio se conserva.
+
+`evia-about.js` carga el video cuando la figura está visible, lo pausa fuera de
+pantalla y mantiene el póster si falla. Respeta movimiento reducido y ahorro de
+datos. La fotografía y todo el texto permanecen disponibles sin JavaScript.
+
+El chat tiene fondo magenta, respuestas claras y mensajes del visitante en azul
+oscuro. Ofrece ambos WhatsApp comerciales en las respuestas de contacto, además
+de un acceso persistente. Las preguntas sobre contacto con una aseguradora llevan
+al directorio de asistencia. No envía mensajes automáticamente, no guarda la
+conversación ni sustituye los canales de gestión de siniestros.
+
+## Preguntas investigadas y reseñas de demostración
+
+El 10 de octubre se consultaron fuentes oficiales de MAPFRE Ecuador, Chubb Ecuador
+y Saludsa. `preguntas-frecuentes.json` documenta las fuentes, fecha de revisión,
+21 preguntas nuevas, respuestas breves en redacción propia y variantes de consulta.
+Las 37 preguntas quedan disponibles en Ayuda y en EVIA. Temas: función del bróker,
+comparación, acompañamiento, costos, prima, vigencia, límites, beneficiarios,
+modificaciones, pagos, carencias, preexistencias, copagos, red médica, reembolsos,
+documentación, revisión de reclamos, conductores, territorio y cancelación.
+
+Las respuestas describen conceptos y remiten a la póliza particular. No trasladan
+los plazos, beneficios ni porcentajes de un producto a todas las aseguradoras.
+El PDF histórico de educación financiera de MAPFRE se usa sólo para conceptos;
+no se reproducen sus referencias legales, organismos ni plazos antiguos. Los
+enlaces a fuentes aparecen en cada respuesta investigada y en Ayuda. El chat
+ofrece tres grupos de sugerencias: Contratar, Mi póliza y Siniestros.
+
+La demostración de Reseñas usa diez nombres abreviados, comentarios positivos y
+estrellas ficticios. El aviso visible y cada tarjeta indican su naturaleza.
+No utiliza logo de Google, enlaces a reseñas inexistentes, fechas aparentes,
+calificaciones agregadas ni metadatos de valoraciones. El carrusel responde a
+botones, teclado y desplazamiento nativo; no avanza automáticamente. Sin
+JavaScript quedan los diez ejemplos y el desplazamiento. Al añadir opiniones
+reales a `resenas.json`, el generador retira automáticamente la demostración.
+
+Verificación: 13 páginas en siete anchos, más revisión específica del carrusel
+a 320, 390, 768, 1101, 1280, 1440 y 1600 px. Preguntas exactas, variantes, fuentes,
+temas del chat, WhatsApp, correos, dirección única y pie reducido comprobados.
+Video real sin audio, pausa fuera de pantalla, póster ante fallo y ausencia de
+descarga con movimiento reducido. Menú, chat y carrusel por teclado; alternativas
+sin JavaScript y enlaces/anclas locales válidos. No se envían mensajes de prueba
+ni reportes al backend de producción.
