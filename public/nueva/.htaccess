@@ -1,0 +1,7 @@
+# Revalidate HTML so returning visitors see the current preview.
+# Versioned media, fonts, CSS and JavaScript retain their normal caching.
+<IfModule mod_headers.c>
+    <FilesMatch "\.html$">
+        Header always set Cache-Control "no-cache, max-age=0, must-revalidate"
+    </FilesMatch>
+</IfModule>

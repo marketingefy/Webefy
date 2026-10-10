@@ -5,8 +5,7 @@ aplicaciones. El módulo de siniestros usa el PHP nativo y correo local de HostG
 de preguntas frecuentes y un formulario que prepara consultas sólo en el navegador;
 no envía ni almacena información. El módulo Siniestros sí envía datos y adjuntos
 al correo autorizado `siniestros@efyseguros.com`, con validación del servidor y
-referencia después de la aceptación del transporte de correo. Véase [Siniestros](tooling/efy/SINIESTROS.md). WhatsApp se incorporará cuando el propietario
-confirme el número.
+referencia después de la aceptación del transporte de correo. Véase [Siniestros](tooling/efy/SINIESTROS.md). Los enlaces comerciales de WhatsApp usan los dos números confirmados por el propietario. La recepción de cotizaciones en su CRM está pendiente de identificar el sistema y su canal de entrada.
 
 ## Desarrollo local
 
@@ -32,6 +31,11 @@ Antes de subir archivos comprueba la autenticación SFTP y el acceso al director
 No borra archivos ajenos; sube los recursos primero y reemplaza `index.html` tras
 transferirlo completamente. Después comprueba por HTTPS el contenido de cada archivo
 frente a esta versión para detectar fallos de publicación o caché.
+
+`public/nueva/.htaccess` obliga a revalidar los HTML de la vista previa mediante
+`Cache-Control: no-cache, max-age=0, must-revalidate`. Los medios y recursos con
+versión conservan su caché habitual. La comprobación HTTPS exige esa cabecera
+en cada HTML de `/nueva/` y comprueba que `.htaccess` no se pueda leer públicamente.
 
 La conexión SFTP y el directorio del dominio se validaron desde GitHub Actions.
 Datos no secretos predeterminados, obtenidos del cPanel del usuario y pruebas reales:

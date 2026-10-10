@@ -10,7 +10,8 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Contactos confirmados: `tooling/efy/contactos.json`; WhatsApp comercial, teléfonos operativos, `info@efyseguros.com`, correo de siniestros y dirección única de Quito.
 - Conócenos: `tooling/efy/conocenos.json`; trayectoria y texto facilitados por el propietario, cifras animadas y video de EVIA en bucle. [Contenido y medios](tooling/efy/WEB-BRIEF.md).
 - Ayuda: `reportar-error.html` prepara un reporte y abre el correo del cliente para enviarlo a `info@efyseguros.com`. La web no confirma un envío automático.
-- Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial. `resenas-demo.json` contiene diez ejemplos ficticios etiquetados, visibles en el carrusel de la vista previa mientras no haya reseñas reales.
+- Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial. `resenas-demo.json` contiene diez ejemplos ficticios, identificados mediante una nota visible junto al carrusel mientras no haya reseñas reales.
+- Cotizaciones: las consultas actuales se preparan en el navegador y continúan por WhatsApp comercial. La recepción de solicitudes en el CRM depende de identificar el sistema y su API o formulario de entrada.
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; 21 preguntas adicionales investigadas en fuentes oficiales, con enlaces y variantes para el chat.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Diseño y contenido de la vista previa: [brief de la web](tooling/efy/WEB-BRIEF.md).

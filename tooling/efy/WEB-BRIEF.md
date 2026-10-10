@@ -239,7 +239,7 @@ enlaces a fuentes aparecen en cada respuesta investigada y en Ayuda. El chat
 ofrece tres grupos de sugerencias: Contratar, Mi póliza y Siniestros.
 
 La demostración de Reseñas usa diez nombres abreviados, comentarios positivos y
-estrellas ficticios. El aviso visible y cada tarjeta indican su naturaleza.
+estrellas ficticios. Una nota visible junto al carrusel identifica su naturaleza.
 No utiliza logo de Google, enlaces a reseñas inexistentes, fechas aparentes,
 calificaciones agregadas ni metadatos de valoraciones. El carrusel responde a
 botones, teclado y desplazamiento nativo; no avanza automáticamente. Sin
@@ -265,3 +265,27 @@ Hogar y Pymes se añaden a Patrimonio y actividad, con detalles orientativos y
 consultas por WhatsApp. La lista compartida actualiza también la respuesta del
 chat y de Ayuda. El catálogo pasa de 14 a 16 apartados. Las condiciones concretas
 se remiten a la propuesta y la póliza, sin coberturas ni precios inventados.
+
+## Refinamiento de reseñas y actualización de la vista
+
+Se retiran las etiquetas «Ejemplo ficticio» de las tarjetas y el cuadro de
+demostración. Una única nota breve mantiene identificados los comentarios y las
+estrellas como simulaciones para la vista previa. Bajo «Tu experiencia también
+cuenta» aparece: «La confianza se construye en cada conversación. Tu opinión nos
+ayuda a seguir acompañándote mejor.»
+
+El acceso flotante a EVIA queda a 12 px del borde inferior en escritorio y 10 px
+en móvil, además del margen seguro del dispositivo. Conserva el chat blanco,
+cabecera y burbujas fucsia. Las 13 páginas mantienen el pie reducido sin logo ni
+navegación repetida. Los HTML de `/nueva/` revalidan su caché mediante `.htaccess`;
+la publicación verifica las cabeceras y el contenido recibido por HTTPS.
+
+La conexión de las cotizaciones al CRM requiere el nombre o URL del sistema y
+su API o formulario de recepción. Hasta contar con esa información, los enlaces
+comerciales siguen preparando consultas por WhatsApp y no afirman registrarlas
+en un CRM. La consulta de estados de siniestros sigue siendo una integración
+independiente pendiente del sistema que gestiona los casos.
+
+Verificación de este ajuste: 13 pies sin duplicaciones; carrusel, menú y chat sin
+errores de navegador; anchos de 320, 390, 768, 1101 y 1440 px sin desbordamiento;
+posición inferior del botón, nueva introducción y nota de simulación comprobadas.
