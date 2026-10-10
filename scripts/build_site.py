@@ -142,7 +142,7 @@ for faq in FAQ:
     if faq['id'] == 'ubicacion':
         faq['answer'] = f"Estamos en {CONTACTS['city']}: {CONTACTS['address']}. Encuentra nuestros canales en Contáctanos."
     if faq['id'] == 'contacto':
-        faq['answer'] = 'Puedes hablar con el equipo comercial por WhatsApp al 0967146828 o al 0983568633. Elige uno de los accesos para abrir la conversación. También puedes escribir a info@efyseguros.com. Para siniestros y reembolsos, escribe a siniestros@efyseguros.com.'
+        faq['answer'] = f'Puedes hablar con el equipo comercial por WhatsApp al {" o al ".join(COMMERCIAL["phones"])}. Elige uno de los accesos para abrir la conversación. También puedes escribir a info@efyseguros.com. Para siniestros y reembolsos, escribe a siniestros@efyseguros.com.'
 
 home = f'''
 <section class="home-hero" aria-labelledby="page-title">
@@ -384,7 +384,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', '<script src="../assets/site/asistencia.js?v=assistance-20261009" defer></script></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
-    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=evia-lower-corner-20261010').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=evia-lower-corner-20261010')
+    document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=evia-brand-pink-contact-20261010').replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=evia-brand-pink-contact-20261010')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', r'<span class="evia-avatar">\1</span>', document)
     document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)

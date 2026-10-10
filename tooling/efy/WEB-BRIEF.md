@@ -39,7 +39,7 @@ comercial/operativo. Los logos aprobados se conservan en sus colores originales.
 
 El propietario confirmó los cuatro teléfonos y la dirección de Green Tower en Quito.
 Solicitó sustituir el correo de información por `info@efyseguros.com` y dirigir
-el contacto comercial a WhatsApp de 0967146828 y 0983568633. Estos datos están
+el contacto comercial a WhatsApp de 0967146828 y 0983538633. Estos datos están
 en `tooling/efy/contactos.json`. Contáctanos conserva llamadas para el equipo
 operativo, correo y búsqueda de la dirección (no una ubicación geocodificada
 confirmada). Los horarios no están confirmados; no se inventan.
@@ -339,3 +339,22 @@ inferior en los 15 escenarios, sin desbordamiento horizontal. Apertura, cierre
 con Escape y retorno de foco comprobados; el carrusel conserva sus diez ejemplos
 y su navegación. Capturas de escritorio y móvil realizadas sin extender la imagen
 a toda la página.
+
+## Corrección comercial y rosa corporativo dentro del chat
+
+El propietario corrige el segundo número comercial a `0983538633`, con WhatsApp
+`https://wa.me/593983538633`. Se actualizan contactos, datos compartidos y la
+respuesta de EVIA; esta última se genera desde los números de `contactos.json`
+para evitar discrepancias entre el texto y los enlaces.
+
+Al abrir el chat, la cabecera utiliza el rosa corporativo `#f25c9d` y las burbujas
+un tinte rosa `#fce8f1`. Los textos, el cierre y el foco de la cabecera son oscuros
+para mantener legibilidad. El botón flotante exterior conserva su acento sobrio,
+aspecto y posición fija en la esquina inferior derecha. Servicios mantiene las
+tarjetas «Seguro de hogar» y «Seguro para pymes» con sus consultas comerciales.
+
+Verificación: número mostrado, respuesta de EVIA y enlace de WhatsApp corregidos,
+sin restos del número anterior en el sitio generado. Contraste de cabecera y
+cierre 6,23:1, subtítulo 4,59:1 y mensajes 16,46:1. Color exterior conservado.
+Hogar y Pymes visibles en el catálogo en anchos de 320, 390, 768 y 1440 px sin
+desbordamiento; consultas por WhatsApp conservadas. Sin errores de navegador.
