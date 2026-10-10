@@ -239,7 +239,7 @@ enlaces a fuentes aparecen en cada respuesta investigada y en Ayuda. El chat
 ofrece tres grupos de sugerencias: Contratar, Mi póliza y Siniestros.
 
 La demostración de Reseñas usa diez nombres abreviados, comentarios positivos y
-estrellas ficticios. Una nota visible junto al carrusel identifica su naturaleza.
+estrellas ficticios. El rótulo «Opiniones de demostración» identifica su naturaleza.
 No utiliza logo de Google, enlaces a reseñas inexistentes, fechas aparentes,
 calificaciones agregadas ni metadatos de valoraciones. El carrusel responde a
 botones, teclado y desplazamiento nativo; no avanza automáticamente. Sin
@@ -314,3 +314,28 @@ pestaña comprobados; Contáctanos sin desbordamiento a 320, 390, 768, 1101 y
 1440 px. Chat dentro del área móvil, cierre con Escape y acceso a los dos
 WhatsApp comerciales correctos. Contraste medido: 6,43:1 en la cabecera,
 16,97:1 en el texto de los mensajes y 6,78:1 en el rótulo de EVIA.
+
+## Ubicación inferior de EVIA y rótulo breve de reseñas
+
+El propietario confirma que el botón de EVIA debe permanecer fijo en la esquina
+inferior derecha de la pantalla mientras navega, tanto en móvil como en escritorio.
+El margen inferior pasa a 8 px, o al área segura del dispositivo si es mayor;
+el margen derecho es 16 px en escritorio y 12 px en móvil, también respetando el
+área segura. Se conserva el tono sobrio del chat y su apertura accesible.
+
+Se elimina el párrafo «Comentarios y estrellas simulados para esta vista previa».
+El encabezado del carrusel utiliza «Opiniones de demostración», una identificación
+breve para conservar la transparencia de los diez comentarios creados para el
+diseño. Las opiniones reales siguen pendientes de recibir y reemplazarán la
+demostración cuando se incorporen al catálogo.
+
+La revisión visual utiliza capturas del área visible del navegador. Una captura
+de toda la página puede colocar un elemento fijo a mitad de la imagen larga,
+aunque el botón esté en el borde inferior de la pantalla al navegar.
+
+Verificación de este ajuste: cinco anchos (320, 390, 768, 1101 y 1440 px), al
+inicio, a mitad y al final de la página. El botón permanece a 8 px del borde
+inferior en los 15 escenarios, sin desbordamiento horizontal. Apertura, cierre
+con Escape y retorno de foco comprobados; el carrusel conserva sus diez ejemplos
+y su navegación. Capturas de escritorio y móvil realizadas sin extender la imagen
+a toda la página.
