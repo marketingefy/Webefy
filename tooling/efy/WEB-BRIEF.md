@@ -418,3 +418,18 @@ calculada del diálogo, nombre, mensajes, botones y campo de escritura comprobad
 en 320, 390, 768 y 1440 px; IBM Plex Sans permanece en el resto de la página.
 Sin desbordamiento ni errores de JavaScript. Menú de cotización, pregunta libre,
 horas y cierre por teclado conservan su funcionamiento.
+
+## Simulación de chat en cristal
+
+La URL de la vista previa admite `?evia=cristal` para abrir una propuesta visual
+inspirada en los paneles del inicio. Solo esa opción activa el fondo grafito
+translúcido, desenfoque de 24 px, borde iluminado y reflejo sutil. Cabecera fucsia,
+tipografía de sistema, distintivo de Efy y acciones se conservan; mensajes claros
+y burbujas oscuras aseguran lectura sobre la escena. Los enlaces a módulos y
+respuestas mantienen el modo durante esa visita. Sin el parámetro, se conserva
+el chat blanco aprobado. Navegadores sin desenfoque reciben un panel más opaco.
+
+Revisión de la simulación: panel y menús operativos en 320, 390 y 1440 px, sin
+desbordamiento ni errores. Enlaces de cotización y navegación conservan el modo;
+pregunta libre, apertura/cierre y foco comprobados. El chat blanco conserva
+su comportamiento al acceder sin el parámetro de simulación.

@@ -20,6 +20,18 @@
 
   // The guide uses the site's published FAQ, with no API calls or saved conversations.
   const dialog = document.querySelector('#evia-dialog');
+  // Opt-in visual simulation; the approved white conversation remains the default.
+  const glassPreview = new URLSearchParams(location.search).get('evia') === 'cristal';
+  if (glassPreview) {
+    dialog.classList.add('is-glass-preview');
+    document.querySelectorAll('a[href]').forEach(link => {
+      const url = new URL(link.href, location.href);
+      if (url.origin === location.origin && url.pathname.endsWith('.html')) {
+        url.searchParams.set('evia', 'cristal');
+        link.href = url.href;
+      }
+    });
+  }
   const messages = document.querySelector('#chat-messages');
   const input = document.querySelector('#chat-input');
   const fab = document.querySelector('.chat-fab');
@@ -28,6 +40,7 @@
     if (!previewVersion) return path;
     const url = new URL(path, location.href);
     url.searchParams.set('v', previewVersion);
+    if (glassPreview) url.searchParams.set('evia', 'cristal');
     return url.href;
   }
   let lastTrigger;
@@ -424,4 +437,5 @@
     if ('IntersectionObserver' in window) new IntersectionObserver(entries => { visible = entries[0].isIntersecting; playback(); }).observe(scene);
     playback();
   }
+  if (glassPreview) openChat(fab);
 })();
