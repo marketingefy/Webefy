@@ -59,10 +59,10 @@ como vista previa en `/nueva/`; la portada de espera permanece en `/`.
 
 ## Servicios
 
-El propietario confirmó 14 apartados: Finanzas (expresamente distinto de Fianzas),
+El propietario confirmó 16 apartados: Finanzas (expresamente distinto de Fianzas),
 Accidentes personales, Vehículos, Transporte pesado, Motos, Asistencia médica,
 Gastos médicos mayores, Asistencia de viaje, Vida, Vida indexada, Seguro dental,
-Responsabilidad civil, Caución y Fidelidad privada.
+Responsabilidad civil, Caución, Fidelidad privada, Seguro de hogar y Seguro para pymes.
 
 `tooling/efy/servicios.json` contiene `id`, `name`, `group`, `description` y `details`.
 Cuatro grupos facilitan la navegación: Movilidad, Salud, Vida y bienestar, Patrimonio
@@ -214,8 +214,9 @@ sin audio. El taller aprobado de Inicio se conserva.
 pantalla y mantiene el póster si falla. Respeta movimiento reducido y ahorro de
 datos. La fotografía y todo el texto permanecen disponibles sin JavaScript.
 
-El chat tiene fondo magenta, respuestas claras y mensajes del visitante en azul
-oscuro. Ofrece ambos WhatsApp comerciales en las respuestas de contacto, además
+El chat tiene fondo blanco, cabecera fucsia y respuestas de EVIA en burbujas
+fucsias con texto blanco. Los mensajes del visitante son claros, con texto oscuro.
+Ofrece ambos WhatsApp comerciales en las respuestas de contacto, además
 de un acceso persistente. Las preguntas sobre contacto con una aseguradora llevan
 al directorio de asistencia. No envía mensajes automáticamente, no guarda la
 conversación ni sustituye los canales de gestión de siniestros.
@@ -252,3 +253,15 @@ Video real sin audio, pausa fuera de pantalla, póster ante fallo y ausencia de
 descarga con movimiento reducido. Menú, chat y carrusel por teclado; alternativas
 sin JavaScript y enlaces/anclas locales válidos. No se envían mensajes de prueba
 ni reportes al backend de producción.
+
+## Ajuste del chat y nuevos servicios
+
+A petición del propietario, el fucsia del chat se concentra en la cabecera y las
+burbujas de EVIA; el fondo queda blanco. Las sugerencias, el campo de entrada y
+los enlaces mantienen contraste y foco visible. Se retira el rótulo fucsia «EVIA»
+bajo el astronauta de Conócenos y se conserva su video y el pie descriptivo.
+
+Hogar y Pymes se añaden a Patrimonio y actividad, con detalles orientativos y
+consultas por WhatsApp. La lista compartida actualiza también la respuesta del
+chat y de Ayuda. El catálogo pasa de 14 a 16 apartados. Las condiciones concretas
+se remiten a la propuesta y la póliza, sin coberturas ni precios inventados.

@@ -5,7 +5,7 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 
 - Sitio: `public/`.
 - Vista previa de la nueva web: `public/nueva/` (Inicio, Servicios, Socios estratégicos, Conócenos, Asistencias, Reseñas, Contáctanos y Ayuda).
-- Catálogo de seguros confirmado: `tooling/efy/servicios.json`; 14 apartados confirmados, organizados en cuatro grupos. Finanzas se mantiene distinto de Fianzas.
+- Catálogo de seguros confirmado: `tooling/efy/servicios.json`; 16 apartados confirmados, organizados en cuatro grupos, incluidos Hogar y Pymes. Finanzas se mantiene distinto de Fianzas.
 - Socios estratégicos: `tooling/efy/socios.json`; 26 confirmados por el propietario, con logos oficiales y canales de atención. [Fuentes y mantenimiento](tooling/efy/SOCIOS-Y-ASISTENCIA.md).
 - Contactos confirmados: `tooling/efy/contactos.json`; WhatsApp comercial, teléfonos operativos, `info@efyseguros.com`, correo de siniestros y dirección única de Quito.
 - Conócenos: `tooling/efy/conocenos.json`; trayectoria y texto facilitados por el propietario, cifras animadas y video de EVIA en bucle. [Contenido y medios](tooling/efy/WEB-BRIEF.md).

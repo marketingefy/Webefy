@@ -110,6 +110,26 @@
     ]
   },
   {
+    "id": "hogar",
+    "name": "Seguro de hogar",
+    "group": "Patrimonio y actividad",
+    "description": "Opciones para proteger tu vivienda y sus bienes, según las coberturas contratadas.",
+    "details": [
+      "Consulta si la propuesta protege la edificación, el contenido o ambos.",
+      "Compara riesgos incluidos, exclusiones, límites y deducibles."
+    ]
+  },
+  {
+    "id": "pymes",
+    "name": "Seguro para pymes",
+    "group": "Patrimonio y actividad",
+    "description": "Opciones de protección para pequeñas y medianas empresas, según su actividad y las condiciones del seguro.",
+    "details": [
+      "Describe la actividad, instalaciones y bienes que necesitas proteger.",
+      "Consulta las coberturas aplicables, límites, exclusiones y requisitos de la propuesta."
+    ]
+  },
+  {
     "id": "responsabilidad-civil",
     "name": "Responsabilidad civil",
     "group": "Patrimonio y actividad",
