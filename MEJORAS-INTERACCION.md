@@ -85,3 +85,10 @@ y los navegadores sin desenfoque usan una superficie blanca opaca.
 
 Se retiraron de la portada el rótulo rosa «EFY SEGUROS · TU MEJOR ELECCIÓN» y
 «Una nueva experiencia de Efy, desde Quito.». El logo conserva su composición.
+
+Por la siguiente referencia de color, los desplegables usan azul cristalizado
+con texto blanco y rosa en hover, foco, pulsación y selección actual. La marca
+de selección sigue la página o la categoría del catálogo, sin cambiar enlaces
+ni navegación. La preferencia de transparencia reducida conserva un azul sólido.
+Se volvieron a aprobar las ocho pruebas de navegación y las comprobaciones de
+selección de página, enlaces con fragmento y cambio de categoría.

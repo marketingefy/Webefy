@@ -86,3 +86,7 @@ de cristal suave, con transparencia reducida como alternativa del sistema.
 La portada omite el rótulo rosa repetido de la marca y la frase sobre una nueva
 experiencia desde Quito; el logo, la escena de EVIA y el mensaje principal siguen
 siendo los elementos de identidad de ese encabezado.
+
+Los desplegables usan azul Efy cristalizado, con texto blanco. La opción señalada,
+enfocada o actual recibe el rosa Efy; la selección refleja también la categoría
+activa del carrusel. Las superficies interiores conservan su cristal blanco.

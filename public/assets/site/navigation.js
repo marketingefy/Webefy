@@ -14,6 +14,25 @@
   let leaveTimer;
   let restoringFocus = null;
 
+  function markCurrentSelection() {
+    const path = location.pathname.replace(/\/siniestros\.html$/, '/reportar-siniestro.html');
+    const links = [...nav.querySelectorAll('.nav-preview-link')];
+    const category = document.querySelector('[data-service-category][aria-pressed="true"]');
+    const hash = category ? (category.id ? '#' + category.id : '') : location.hash;
+    const destinations = links.map(link => ({ link, url: new URL(link.href, location.href) }));
+    const matchesSection = hash && destinations.some(({ url }) => url.pathname === path && url.hash === hash);
+    destinations.forEach(({ link, url }) => {
+      const selected = url.pathname === path && (matchesSection ? url.hash === hash : !url.hash);
+      if (selected) link.setAttribute('aria-current', matchesSection ? 'location' : 'page');
+      else link.removeAttribute('aria-current');
+    });
+  }
+  markCurrentSelection();
+  window.addEventListener('hashchange', markCurrentSelection);
+  document.addEventListener('click', event => {
+    if (event.target.closest('[data-service-category]')) markCurrentSelection();
+  });
+
   function cancelLeave() {
     clearTimeout(leaveTimer);
     leaveTimer = undefined;
@@ -30,6 +49,7 @@
 
   function open(entry) {
     if (!desktop.matches) return;
+    markCurrentSelection();
     cancelLeave();
     if (opened === entry) return;
     close();

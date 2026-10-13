@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-web-glass-dropdowns-20261013'
+SITE_VERSION = 'efy-web-blue-glass-20261013'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -394,17 +394,22 @@ NAV_PREVIEWS = {
     'ayuda.html': ('Entiende antes de decidir.', 'Respuestas claras para preparar tus preguntas y revisar tu seguro.', [('ayuda.html#faq-elegir', 'Elegir un seguro', 'Por dónde empezar.'), ('ayuda.html#faq-cobertura', 'Entender tu póliza', 'Coberturas y conceptos.'), ('reportar-error.html', 'Reportar un problema', 'Ayúdanos a mejorar la web.')]),
 }
 
-def navigation_item(filename, name, current):
+def navigation_item(filename, name, current, active_page):
     _, _, links = NAV_PREVIEWS[filename]
     panel_id = 'nav-preview-' + filename.removesuffix('.html')
     current_attribute = ' aria-current="page"' if current else ''
-    destinations = ''.join(f'<li><a class="nav-preview-link" href="{escape(url, quote=True)}">{escape(label)}</a></li>' for url, label, _ in links)
+    active_page = 'reportar-siniestro.html' if active_page == 'siniestros.html' else active_page
+    destinations = ''
+    for url, label, _ in links:
+        target = urlsplit(url)
+        selected = ' aria-current="page"' if target.path == active_page and not target.fragment else ''
+        destinations += f'<li><a class="nav-preview-link" href="{escape(url, quote=True)}"{selected}>{escape(label)}</a></li>'
     return (f'<div class="nav-item"><a class="nav-link" href="{filename}"{current_attribute} aria-expanded="false" aria-controls="{panel_id}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></a>'
             f'<section class="nav-preview" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><ul class="nav-preview-links">{destinations}</ul></section></div>')
 
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
-    nav = ''.join(navigation_item(file, name, name == label) for file,name,_,_ in pages)
+    nav = ''.join(navigation_item(file, name, name == label, filename) for file,name,_,_ in pages)
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
 <body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
