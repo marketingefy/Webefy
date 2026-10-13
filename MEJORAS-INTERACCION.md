@@ -6,7 +6,7 @@ catálogo, videos de EVIA, chat y recepción de reportes existentes.
 
 | Antes | Ahora | Propósito |
 | --- | --- | --- |
-| El menú sólo mostraba enlaces. | Cada módulo muestra una vista previa con descripción y accesos al pasar el puntero o recibir foco en escritorio. | Orientar antes de entrar, conservando el enlace principal. |
+| El menú sólo mostraba enlaces. | Cada módulo muestra una lista vertical de accesos al pasar el puntero o recibir foco en escritorio. | Orientar antes de entrar, conservando el enlace principal. |
 | Los 16 seguros formaban una lista larga en móvil. | Un carrusel manual con imágenes, categorías, contador, flechas y deslizamiento. | Explorar una opción cada vez. |
 | Cédula, placa y búsqueda estaban deshabilitadas. | Campos editables con validación y un borrador de consulta al equipo. | Permitir solicitar seguimiento mientras no hay un registro conectado. |
 
@@ -69,3 +69,19 @@ Nunca visitan producción ni envían correos reales.
 
 La publicación conserva el workflow automático de HostGator, su validación de
 reportes con correo simulado y la comparación HTTPS de los recursos publicados.
+
+## Ajuste a la referencia visual del propietario
+
+Los desplegables se compactaron a 260 px y se alinean debajo de cada módulo,
+como en la referencia aportada. Mantienen sus destinos, teclado, Escape y
+selección directa en móvil; los tres últimos se alinean al borde derecho para
+quedar dentro de la pantalla. Se revisaron los ocho menús a 1181, 1280, 1440 y
+1920 px, además de las pruebas existentes de navegación y las 13 páginas.
+
+Las tarjetas y paneles interiores reciben un blanco cristalizado con brillo
+suave, borde claro y sombra discreta. Los acentos de azul y rosa, la tipografía,
+el chat y los formularios permanecen. La preferencia de transparencia reducida
+y los navegadores sin desenfoque usan una superficie blanca opaca.
+
+Se retiraron de la portada el rótulo rosa «EFY SEGUROS · TU MEJOR ELECCIÓN» y
+«Una nueva experiencia de Efy, desde Quito.». El logo conserva su composición.

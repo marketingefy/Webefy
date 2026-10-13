@@ -79,3 +79,10 @@ ilustraciones en los colores de Efy y detalles nativos. Los servicios mantienen
 su contenido confirmado. La consulta por cédula o placa prepara un correo al
 equipo mientras el registro de estados no está conectado. Ver
 [MEJORAS-INTERACCION.md](MEJORAS-INTERACCION.md) para comportamiento y pruebas.
+
+Por la referencia posterior del propietario, la navegación usa listas verticales
+compactas bajo cada módulo. Las superficies blancas interiores tienen un acabado
+de cristal suave, con transparencia reducida como alternativa del sistema.
+La portada omite el rótulo rosa repetido de la marca y la frase sobre una nueva
+experiencia desde Quito; el logo, la escena de EVIA y el mensaje principal siguen
+siendo los elementos de identidad de ese encabezado.

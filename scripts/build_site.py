@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-web-interactive-20261013'
+SITE_VERSION = 'efy-web-glass-dropdowns-20261013'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -152,11 +152,9 @@ home = f'''
     <video class="workshop-video" muted playsinline loop preload="none" tabindex="-1"></video><div class="workshop-shade"></div>
   </figure>
   <div class="container hero-copy">
-    <p class="eyebrow light">EFY SEGUROS · TU MEJOR ELECCIÓN</p>
     <h1 id="page-title">Elegir bien.<br>Vivir con<br><span>tranquilidad.</span></h1>
     <p class="hero-lead">Elegir un seguro empieza por entenderlo.<br>Conoce Efy y encuentra el próximo paso para ti.</p>
     <div class="actions"><a class="button primary" href="nosotros.html">Conócenos {ARROW}</a><button class="button ghost" type="button" data-open-chat>Habla con EVIA</button></div>
-    <p class="hero-note">Una nueva experiencia de Efy, desde Quito.</p>
   </div>
   <p class="scene-note"><span></span>EVIA, dando forma a nuestro universo digital.</p>
 </section>
@@ -397,12 +395,12 @@ NAV_PREVIEWS = {
 }
 
 def navigation_item(filename, name, current):
-    title, description, links = NAV_PREVIEWS[filename]
+    _, _, links = NAV_PREVIEWS[filename]
     panel_id = 'nav-preview-' + filename.removesuffix('.html')
     current_attribute = ' aria-current="page"' if current else ''
-    destinations = ''.join(f'<a class="nav-preview-link" href="{escape(url, quote=True)}"><span><strong>{escape(label)}</strong><span>{escape(detail)}</span></span>{ARROW}</a>' for url, label, detail in links)
+    destinations = ''.join(f'<li><a class="nav-preview-link" href="{escape(url, quote=True)}">{escape(label)}</a></li>' for url, label, _ in links)
     return (f'<div class="nav-item"><a class="nav-link" href="{filename}"{current_attribute} aria-expanded="false" aria-controls="{panel_id}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></a>'
-            f'<section class="nav-preview" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><div class="nav-preview-intro"><p class="small-label">{escape(name)}</p><h2>{escape(title)}</h2><p>{escape(description)}</p><a class="text-link" href="{filename}">Ir a {escape(name.lower())} {ARROW}</a></div><div class="nav-preview-links">{destinations}</div></section></div>')
+            f'<section class="nav-preview" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><ul class="nav-preview-links">{destinations}</ul></section></div>')
 
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
