@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-web-ui-polish-20261010'
+SITE_VERSION = 'efy-web-interactive-20261013'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -114,7 +114,7 @@ if DEMO_REVIEWS:
     review_answer = 'Puedes ver una muestra del diseño en Reseñas, con diez comentarios y estrellas ficticios claramente identificados. Las opiniones reales de clientes se incorporarán cuando estén disponibles; esta muestra no procede de Google.'
 FAQ = [
     {'id':'lineas','category':'Si ocurre un evento','question':'¿Dónde encuentro las líneas de asistencia?','answer':'En Asistencia puedes buscar tu aseguradora o proveedor y consultar sus canales oficiales. Cada línea indica a qué servicio corresponde y enlaza a su fuente. Si hay una emergencia en Ecuador, llama al 911. Verifica en tu póliza o plan las condiciones de la asistencia.'},
-    {'id':'estado','category':'Si ocurre un evento','question':'¿Puedo consultar el estado de mi siniestro o reembolso?','answer':'La consulta en línea está en preparación en Asistencia. Permitirá localizar un siniestro o reembolso por cédula, y un siniestro vehicular por placa, con verificación de identidad antes de mostrar información. Por ahora puedes escribir a siniestros@efyseguros.com para consultar al equipo. EVIA no accede a los estados de los casos.'},
+    {'id':'estado','category':'Si ocurre un evento','question':'¿Puedo consultar el estado de mi siniestro o reembolso?','answer':'En Asistencia puedes preparar una consulta al equipo por cédula o, para un siniestro vehicular, por placa. Revisa el resumen y abre tu correo para enviarlo a siniestros@efyseguros.com. La web todavía no consulta un registro de estados; el equipo debe verificar tu identidad antes de compartir información. EVIA no accede a los casos.'},
     {'id':'resenas','category':'Sobre Efy','question':'¿Dónde puedo leer las reseñas de clientes de Efy?','answer':review_answer},
     {'id':'socios','category':'Sobre Efy','question':'¿Cuáles son los socios estratégicos de Efy?','answer':partner_answer},
     {'id':'servicios','category':'Sobre Efy','question':'¿Qué tipos de seguros ofrece Efy?','answer':service_answer},
@@ -211,19 +211,28 @@ contact = f'''
 <section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department"><p class="small-label">CORREOS</p>{email_rows}</section>{social_section}</div><aside class="office-panel"><p class="eyebrow light">ENCUÉNTRANOS</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="https://www.google.com/maps/search/?api=1&amp;query=Av.%2010%20de%20Agosto%20y%20Juan%20de%20Galindes%20Green%20Tower%20Quito" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
 ''' + consult_section
 
+# Tile identity follows the service ID, so reordering the catalogue keeps each image.
+service_illustrations = {
+    'finanzas': 0, 'accidentes-personales': 1, 'vehiculos': 2, 'transporte-pesado': 3,
+    'motos': 4, 'asistencia-medica': 5, 'gastos-medicos-mayores': 6, 'asistencia-viaje': 7,
+    'vida': 8, 'vida-indexada': 9, 'dental': 10, 'hogar': 11,
+    'pymes': 12, 'responsabilidad-civil': 13, 'caucion': 14, 'fidelidad-privada': 15,
+}
+if set(service_illustrations) != service_ids:
+    raise ValueError('Every service needs a matching catalogue illustration')
 service_cards = []
 for service in SERVICES:
+    illustration_index = service_illustrations[service['id']]
     details = ''.join(f'<li>{escape(item)}</li>' for item in service['details'])
-    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}"><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="{whatsapp_url('Hola Efy, quisiera información sobre ' + service['name'] + '.')}">Consultar este ramo {ARROW}</a></article>''')
+    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}" data-service-group="{escape(service['group'], quote=True)}"><div class="service-visual" style="--tile-col:{illustration_index % 4};--tile-row:{illustration_index // 4}"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async"></div><div class="service-card-body"><p class="service-category">{escape(service['group'])}</p><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="{whatsapp_url('Hola Efy, quisiera información sobre ' + service['name'] + '.')}">Consultar este ramo {ARROW}</a></div></article>''')
 service_groups = [('movilidad', 'Movilidad'), ('salud', 'Salud'), ('vida-bienestar', 'Vida y bienestar'), ('patrimonio-actividad', 'Patrimonio y actividad')]
-catalog = '<nav class="catalog-nav" aria-label="Ramos de servicios">' + ''.join(f'<a href="#{key}">{name} {ARROW}</a>' for key, name in service_groups) + '</nav>'
-for key, name in service_groups:
-    cards = ''.join(card for card, service in zip(service_cards, SERVICES) if service['group'] == name)
-    catalog += f'<section class="service-group" id="{key}" aria-labelledby="group-{key}"><div class="service-group-heading"><h2 id="group-{key}">{name}</h2></div><div class="service-catalog">{cards}</div></section>'
+catalog = '<div class="catalog-nav service-filters" role="group" aria-label="Filtrar seguros por categoría"><button type="button" data-service-category="Todas" aria-pressed="true">Todos los seguros</button>' + ''.join(f'<button type="button" id="{key}" data-service-category="{escape(name, quote=True)}" aria-pressed="false">{name}</button>' for key, name in service_groups) + '</div>'
+catalog += '<div class="catalog-heading"><p>Desliza para descubrir cada opción.</p><div class="catalog-controls"><span id="service-position" role="status" aria-live="polite" aria-atomic="true"></span><div><button type="button" id="service-prev" aria-label="Ver seguro anterior" aria-controls="service-rail">' + ARROW + '</button><button type="button" id="service-next" aria-label="Ver siguiente seguro" aria-controls="service-rail">' + ARROW + '</button></div></div></div>'
+catalog += '<div class="service-catalog service-rail" id="service-rail" role="region" aria-roledescription="carrusel" aria-label="Opciones de seguros" tabindex="0">' + ''.join(card for _, group in service_groups for card, service in zip(service_cards, SERVICES) if service['group'] == group) + '</div>'
 catalog += '<p class="form-hint">El alcance, las coberturas y los requisitos se confirman con la propuesta y las condiciones de cada póliza o plan.</p>'
 services_page = f'''
-<section class="services-hero"><div class="container services-hero-grid"><div><p class="eyebrow light">SERVICIOS</p><h1 id="page-title">Empieza por<br>lo que quieres<br><span>proteger.</span></h1><p class="large-copy">Cada elección empieza con algo que importa. Aquí reunimos la información para ayudarte a dar el siguiente paso.</p><a class="button primary" href="#catalogo">Explorar servicios {ARROW}</a></div><aside class="services-compass" aria-labelledby="compass-title"><p class="small-label">ANTES DE DECIDIR</p><h2 id="compass-title">Una elección clara<br>empieza contigo.</h2><p>¿Qué quieres proteger?</p><p>¿Qué necesitas que incluya?</p><p>¿Qué condiciones debes revisar?</p><a class="text-link" href="ayuda.html#faq-elegir">Encuentra por dónde empezar {ARROW}</a></aside></div></section>
-<section class="section container services-section" id="catalogo" aria-labelledby="catalog-title"><div class="section-heading"><p class="eyebrow">SEGUROS CON EFY</p><h2 id="catalog-title">Conoce las opciones.<br><span>Pregunta por los detalles.</span></h2></div>{catalog}</section>
+<section class="services-hero"><div class="container services-hero-grid"><div><p class="eyebrow light">SERVICIOS</p><h1 id="page-title">Empieza por<br>lo que quieres<br><span>proteger.</span></h1><p class="large-copy">Cada elección empieza con algo que importa. Aquí reunimos la información para ayudarte a dar el siguiente paso.</p><a class="button primary" href="#catalogo">Explorar servicios {ARROW}</a></div><aside class="services-compass"><details><summary><span class="small-label">ANTES DE DECIDIR</span><span class="compass-title">Una elección clara empieza contigo.</span><span class="compass-plus" aria-hidden="true">+</span></summary><div class="compass-content"><p>¿Qué quieres proteger?</p><p>¿Qué necesitas que incluya?</p><p>¿Qué condiciones debes revisar?</p><a class="text-link" href="ayuda.html#faq-elegir">Encuentra por dónde empezar {ARROW}</a></div></details></aside></div></section>
+<section class="section container services-section" id="catalogo" aria-labelledby="catalog-title"><div class="section-heading"><p class="eyebrow">SEGUROS CON EFY</p><h2 id="catalog-title">Explora nuestros seguros.</h2></div>{catalog}</section>
 <section class="soft-section"><div class="container"><div class="section-heading"><p class="eyebrow">PARA COMPARAR MEJOR</p><h2>Hay más que un precio<br><span>en cada propuesta.</span></h2></div><div class="principles service-checklist"><article><h3>Qué incluye.</h3><p>Revisa los riesgos cubiertos y los límites de cada cobertura. Pide que te expliquen cualquier concepto que no esté claro.</p><a class="text-link" href="ayuda.html#faq-cobertura">Entender las coberturas {ARROW}</a></article><article><h3>Qué asumes tú.</h3><p>Comprueba cómo se aplica el deducible y qué parte de un evento cubierto te corresponde pagar.</p><a class="text-link" href="ayuda.html#faq-deducible">Entender el deducible {ARROW}</a></article><article><h3>Qué queda fuera.</h3><p>Lee las exclusiones y las condiciones que debes cumplir. La protección concreta se define en la póliza.</p><a class="text-link" href="ayuda.html#faq-exclusiones">Revisar las exclusiones {ARROW}</a></article></div></div></section>
 <section class="section container help-cta"><div><p class="eyebrow">TU SIGUIENTE PASO</p><h2>Lleva tus preguntas claras.</h2><p>Prepara tu consulta o conversa con EVIA sobre conceptos generales.</p></div><div class="actions"><a class="button blue" href="contactos.html#consult-title">Preparar mi consulta {ARROW}</a><button class="text-link" type="button" data-open-chat>Consultar a EVIA {ARROW}</button></div></section>
 '''
@@ -307,7 +316,20 @@ for partner in PARTNERS:
 
 assistance_directory = ('<div class="assistance-directory">' + ''.join(assistance_cards) + '</div>' if PARTNERS else '<p>Estamos preparando las líneas oficiales de nuestros socios.</p>')
 lookup_content = f'''
-<section class="section container lookup-section" id="consultar-estado" aria-labelledby="lookup-title"><div><p class="eyebrow">SINIESTROS Y REEMBOLSOS</p><h2 id="lookup-title">Consulta por<br><span>tu caso.</span></h2><p>La consulta en línea está en preparación. Podrás localizar tu caso con la cédula o, para un siniestro vehicular, la placa del vehículo.</p><p class="form-hint">Antes de mostrar información del caso, confirmaremos tu identidad.</p><a class="text-link" href="mailto:siniestros@efyseguros.com">Consultar al equipo de Efy {ARROW}</a></div><div class="lookup-panel"><p id="lookup-availability" class="lookup-pending">CONSULTA EN LÍNEA · PRÓXIMAMENTE</p><label for="lookup-type">¿Qué quieres consultar?</label><select id="lookup-type"><option value="vehicular">Siniestro vehicular</option><option value="siniestro">Otro siniestro</option><option value="reembolso">Reembolso</option></select><fieldset class="lookup-method"><legend>Localizar por</legend><label><input type="radio" name="lookup-method" value="cedula" checked>Cédula</label><label id="lookup-plate-option"><input type="radio" name="lookup-method" value="placa">Placa del vehículo</label></fieldset><div id="lookup-cedula-field"><label for="lookup-cedula">Número de cédula</label><input id="lookup-cedula" type="text" inputmode="numeric" autocomplete="off" placeholder="Consulta disponible próximamente" disabled aria-describedby="lookup-availability"></div><div id="lookup-plate-field" hidden><label for="lookup-plate">Placa del vehículo</label><input id="lookup-plate" type="text" autocomplete="off" placeholder="Consulta disponible próximamente" disabled aria-describedby="lookup-availability"></div><button class="button blue lookup-disabled" type="button" disabled>Consultar estado</button><p class="form-hint">Por ahora, este apartado no recibe identificadores ni realiza búsquedas. Puedes consultar al equipo por correo.</p></div></section>
+<section class="section container lookup-section" id="consultar-estado" aria-labelledby="lookup-title">
+  <div><p class="eyebrow">SINIESTROS Y REEMBOLSOS</p><h2 id="lookup-title">Consulta por<br><span>tu caso.</span></h2><p>Prepara tu consulta con la cédula o, para un siniestro vehicular, la placa del vehículo. El equipo de Efy te ayudará a dar seguimiento.</p><p class="form-hint">Aún no hay un registro de estados conectado a la web. El equipo confirmará tu identidad antes de compartir información del caso.</p><a class="text-link" href="mailto:siniestros@efyseguros.com">Escribir directamente al equipo {ARROW}</a></div>
+  <div class="lookup-panel"><p id="lookup-availability" class="lookup-pending">CONSULTA AL EQUIPO DE EFY</p>
+    <form id="lookup-form">
+      <label for="lookup-type">¿Qué quieres consultar?</label><select id="lookup-type"><option value="vehicular">Siniestro vehicular</option><option value="siniestro">Otro siniestro</option><option value="reembolso">Reembolso</option></select>
+      <fieldset class="lookup-method"><legend>Identificar mi caso por</legend><label><input type="radio" name="lookup-method" value="cedula" checked>Cédula</label><label id="lookup-plate-option"><input type="radio" name="lookup-method" value="placa">Placa del vehículo</label></fieldset>
+      <div id="lookup-cedula-field"><label for="lookup-cedula">Número de cédula</label><input id="lookup-cedula" type="text" inputmode="numeric" autocomplete="off" minlength="10" maxlength="10" pattern="[0-9]{{10}}" placeholder="Escribe los 10 dígitos" required aria-describedby="lookup-data-hint"></div>
+      <div id="lookup-plate-field" hidden><label for="lookup-plate">Placa del vehículo</label><input id="lookup-plate" type="text" autocomplete="off" autocapitalize="characters" maxlength="10" placeholder="Ejemplo: ABC-1234" disabled aria-describedby="lookup-data-hint"></div>
+      <p class="form-hint" id="lookup-data-hint">Estos datos se usan para preparar el correo en tu dispositivo. En este paso no se envían ni se guardan en la web.</p><button class="button blue" type="submit">Preparar consulta al equipo {ARROW}</button>
+    </form><p id="lookup-status" class="form-hint" role="status" aria-live="polite" aria-atomic="true"></p>
+    <section id="lookup-result" class="lookup-result" aria-labelledby="lookup-result-title" hidden><h3 id="lookup-result-title">Tu consulta está preparada.</h3><p>Revisa el resumen y abre tu correo para enviarlo al equipo de siniestros. Aún no se ha enviado.</p><label for="lookup-summary">Resumen de la consulta</label><textarea id="lookup-summary" rows="5" readonly></textarea><a class="button primary" id="lookup-email" href="mailto:siniestros@efyseguros.com">Abrir correo para enviar {ARROW}</a></section>
+    <noscript><p class="form-hint">Activa JavaScript para preparar el resumen o escribe directamente a siniestros@efyseguros.com.</p></noscript>
+  </div>
+</section>
 '''
 report_content = f'''
 <section class="container claim-section-heading" id="reportar" aria-labelledby="report-title"><p class="eyebrow">REPORTAR UN SINIESTRO</p><h2 id="report-title">Cuéntanos lo ocurrido.<br><span>Empecemos por ayudarte.</span></h2><p>Envía tu reporte al equipo de Efy. Te pediremos los datos del evento y una forma de contactarte.</p></section>
@@ -334,7 +356,7 @@ assistance_hub = f'''
 <section class="assistance-hero"><div class="container"><p class="eyebrow light">ASISTENCIAS</p><h1 id="page-title">Cuando lo necesitas.<br><span>Efy, cerca de ti.</span></h1><p class="large-copy">Reporta lo ocurrido, consulta por tu caso o encuentra el canal de atención de tu aseguradora.</p></div></section>
 <section class="section container assistance-hub" aria-label="Gestiones de asistencia">
 <a class="assistance-option" id="reportar" href="reportar-siniestro.html"><span class="option-number" aria-hidden="true">01</span><div><p class="small-label">REPORTE</p><h2>Reportar un siniestro</h2><p>Cuéntanos lo ocurrido y envía los datos al equipo de Efy.</p><span class="option-action">Iniciar reporte {ARROW}</span></div></a>
-<a class="assistance-option" id="consultar-estado" href="consultas.html"><span class="option-number" aria-hidden="true">02</span><div><p class="small-label">SEGUIMIENTO</p><h2>Estado de siniestros y reembolsos</h2><p>Conoce cómo consultar por tu caso. La búsqueda en línea estará disponible próximamente.</p><span class="option-action">Consultar por mi caso {ARROW}</span></div></a>
+<a class="assistance-option" id="consultar-estado" href="consultas.html"><span class="option-number" aria-hidden="true">02</span><div><p class="small-label">SEGUIMIENTO</p><h2>Estado de siniestros y reembolsos</h2><p>Prepara tu consulta por cédula o placa y envíala al equipo de Efy.</p><span class="option-action">Consultar por mi caso {ARROW}</span></div></a>
 <a class="assistance-option" id="lineas-asistencia" href="lineas-asistencia.html"><span class="option-number" aria-hidden="true">03</span><div><p class="small-label">LÍNEAS OFICIALES</p><h2>Asistencia de tu aseguradora</h2><p>Teléfonos verificados, organizados por compañía y servicio.</p><span class="option-action">Buscar un teléfono {ARROW}</span></div></a>
 </section><section class="soft-section"><div class="container emergency-line"><div><strong>Emergencias en Ecuador</strong><p>Si hay riesgo inmediato para la vida o la seguridad, llama al ECU 911.</p></div><a class="button blue" href="tel:911">Llamar al 911 {ARROW}</a></div></section>
 '''
@@ -363,9 +385,28 @@ extras = [
     ('lineas-asistencia.html','Asistencias','Líneas de asistencia · Efy Seguros',lines_page),
     ('reportar-error.html','Ayuda','Reportar un error · Efy Seguros',error_page),
 ]
+NAV_PREVIEWS = {
+    'index.html': ('Bienvenido a Efy.', 'Encuentra lo que quieres proteger y el siguiente paso para acompañarte.', [('servicios.html', 'Explorar seguros', 'Opciones para cada etapa.'), ('asistencia.html', 'Necesito asistencia', 'Reportes, consultas y líneas de atención.'), ('contactos.html', 'Hablar con el equipo', 'Nuestros canales de contacto.')]),
+    'servicios.html': ('Empieza por lo que importa.', 'Explora nuestros seguros por categoría y revisa cada opción a tu ritmo.', [('servicios.html#movilidad', 'Movilidad', 'Vehículos, motos y viajes.'), ('servicios.html#salud', 'Salud', 'Atención y gastos médicos.'), ('servicios.html#vida-bienestar', 'Vida y bienestar', 'Vida y accidentes personales.'), ('servicios.html#patrimonio-actividad', 'Patrimonio y actividad', 'Hogar, negocios y garantías.')]),
+    'socios.html': ('Conoce a nuestros socios.', 'Las aseguradoras y proveedores con los que trabaja Efy, en un solo lugar.', [('socios.html', 'Explorar socios', 'Encuentra tu aseguradora o proveedor.'), ('lineas-asistencia.html', 'Líneas de asistencia', 'Consulta sus canales oficiales.')]),
+    'nosotros.html': ('Conoce el mundo de Efy.', 'Nuestra trayectoria, lo que nos mueve y EVIA, tu guía digital.', [('nosotros.html', 'Nuestra historia', 'La experiencia detrás de Efy.'), ('ayuda.html#faq-evia', 'Conoce a EVIA', 'Cómo puede orientarte nuestra guía.')]),
+    'asistencia.html': ('Estamos para acompañarte.', 'Elige lo que necesitas para dar seguimiento o encontrar asistencia.', [('reportar-siniestro.html', 'Reportar un siniestro', 'Informa al equipo lo ocurrido.'), ('consultas.html', 'Siniestros y reembolsos', 'Prepara tu consulta por cédula o placa.'), ('lineas-asistencia.html', 'Líneas de asistencia', 'Canales oficiales de los proveedores.')]),
+    'resenas.html': ('La experiencia de elegir Efy.', 'Visita nuestro espacio de opiniones y conoce cómo está organizado.', [('resenas.html', 'Explorar reseñas', 'Conoce la sección de opiniones.'), ('contactos.html', 'Conversar con Efy', 'Encuentra al equipo que necesitas.')]),
+    'contactos.html': ('Conversemos.', 'Encuentra al equipo adecuado o prepara tus preguntas antes de escribirnos.', [('contactos.html', 'Canales de contacto', 'Comercial, siniestros y atención.'), ('contactos.html#consult-title', 'Preparar una consulta', 'Organiza lo que quieres preguntar.'), ('consultas.html', 'Consultar por mi caso', 'Siniestros y reembolsos.')]),
+    'ayuda.html': ('Entiende antes de decidir.', 'Respuestas claras para preparar tus preguntas y revisar tu seguro.', [('ayuda.html#faq-elegir', 'Elegir un seguro', 'Por dónde empezar.'), ('ayuda.html#faq-cobertura', 'Entender tu póliza', 'Coberturas y conceptos.'), ('reportar-error.html', 'Reportar un problema', 'Ayúdanos a mejorar la web.')]),
+}
+
+def navigation_item(filename, name, current):
+    title, description, links = NAV_PREVIEWS[filename]
+    panel_id = 'nav-preview-' + filename.removesuffix('.html')
+    current_attribute = ' aria-current="page"' if current else ''
+    destinations = ''.join(f'<a class="nav-preview-link" href="{escape(url, quote=True)}"><span><strong>{escape(label)}</strong><span>{escape(detail)}</span></span>{ARROW}</a>' for url, label, detail in links)
+    return (f'<div class="nav-item"><a class="nav-link" href="{filename}"{current_attribute} aria-expanded="false" aria-controls="{panel_id}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></a>'
+            f'<section class="nav-preview" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><div class="nav-preview-intro"><p class="small-label">{escape(name)}</p><h2>{escape(title)}</h2><p>{escape(description)}</p><a class="text-link" href="{filename}">Ir a {escape(name.lower())} {ARROW}</a></div><div class="nav-preview-links">{destinations}</div></section></div>')
+
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
-    nav = ''.join(f'<a href="{file}"'+(' aria-current="page"' if name==label else '')+f'>{name}</a>' for file,name,_,_ in pages)
+    nav = ''.join(navigation_item(file, name, name == label) for file,name,_,_ in pages)
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
 <body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
@@ -382,7 +423,10 @@ for filename, label, title, content in pages + extras:
     if filename == 'nosotros.html':
         document = document.replace('</head>', '<script src="../assets/site/evia-about.js?v=evia-20261010" defer></script></head>')
     if filename == 'consultas.html':
-        document = document.replace('</head>', '<script src="../assets/site/asistencia.js?v=assistance-20261009" defer></script></head>')
+        document = document.replace('</head>', f'<script src="../assets/site/asistencia.js?v={SITE_VERSION}" defer></script></head>')
+    if filename == 'servicios.html':
+        document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
+    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)
@@ -394,7 +438,7 @@ for filename, label, title, content in pages + extras:
                 'srcset="../assets/site/evia-avatar-180.webp 180w, ../assets/site/evia-avatar-360.webp 360w" '
                 'sizes="135px">' + image + '</picture></span>')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', avatar_picture, document)
-    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
+    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,#lookup-form,.service-filters,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)
     # The root is the published product; /nueva/ remains available for old review links.
     published = document.replace('../assets/', '/assets/').replace('content="noindex,nofollow"', 'content="index,follow"')

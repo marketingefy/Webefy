@@ -15,8 +15,9 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; 21 preguntas adicionales investigadas en fuentes oficiales, con enlaces y variantes para el chat.
 - EVIA: burbujas de conversación y menú de atención para cotizaciones, pólizas, asistencia y asesores. Panel de cristal difuminado, fucsia de la marca y botón flotante translúcido y disponible en todos los módulos. Tipografía de sistema dentro del chat y distintivo propio de Efy junto al nombre. Los enlaces internos conservan la versión del sitio.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
+- Vistas previas, catálogo deslizante y consultas: [mejoras de interacción](MEJORAS-INTERACCION.md).
 - Diseño y contenido del sitio: [brief de la web](tooling/efy/WEB-BRIEF.md).
-- Asistencia: reporte de siniestros, líneas oficiales y consulta de estados pendiente de conectar al sistema del propietario. [Recepción e integración](tooling/efy/SINIESTROS.md).
+- Asistencia: reporte de siniestros, líneas oficiales y preparación de consultas al equipo por cédula o placa. El registro de estados aún no está conectado. [Recepción e integración](tooling/efy/SINIESTROS.md).
 - Desarrollo local: `python3 -m http.server 8080 --bind 127.0.0.1 --directory public`.
 - Identidad y página de espera: [DESIGN.md](DESIGN.md).
 - Publicación y diagnóstico: [PUBLICACION.md](PUBLICACION.md).

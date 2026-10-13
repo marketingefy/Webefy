@@ -70,3 +70,12 @@ las nuevas transiciones. La preferencia de transparencia reducida emplea el
 color de superficie existente, sin sustituir el acabado de cristal habitual.
 Los derivados WebP del logo y de los retratos preservan los originales como
 alternativa. Ver [MEJORAS-UI.md](MEJORAS-UI.md) para las skills y comprobaciones.
+
+## Interacción del catálogo y módulos, 13 de octubre de 2026
+
+Las vistas previas del menú anticipan cada módulo en escritorio sin reemplazar
+sus enlaces. El catálogo de 16 seguros se explora en un carrusel manual, con
+ilustraciones en los colores de Efy y detalles nativos. Los servicios mantienen
+su contenido confirmado. La consulta por cédula o placa prepara un correo al
+equipo mientras el registro de estados no está conectado. Ver
+[MEJORAS-INTERACCION.md](MEJORAS-INTERACCION.md) para comportamiento y pruebas.
