@@ -503,3 +503,13 @@ enlaces/anclas locales válidos. Mensaje de WhatsApp exacto, cuatro números, Ma
 nueve opciones de reembolso y sus fuentes, preguntas libres y apertura de FAQ
 comprobados en navegador. El test de consultas excluye únicamente la carga tardía
 del icono del sitio; sigue rechazando solicitudes de red de los borradores.
+
+## Destinos coherentes dentro de cada módulo
+
+Se corrigen submenús que salían del contexto del módulo: Conócenos/EVIA ya no
+apunta a Ayuda; Socios y Reseñas mantienen sus accesos en sus propias páginas.
+Inicio enlaza a secciones de Inicio, y Contáctanos incorpora anclas específicas
+para ambos equipos, ubicación y redes. Asistencias y Ayuda conservan sus páginas
+auxiliares bajo la misma categoría activa. Los títulos de los ocho módulos
+continúan abriendo sus páginas, y los elementos de los desplegables llevan a la
+sección nombrada. Se conserva la navegación azul cristalizada y las viñetas.
