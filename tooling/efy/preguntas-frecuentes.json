@@ -28,6 +28,42 @@
     "cambios": {
       "label": "Chubb Ecuador · Condiciones generales de responsabilidad civil",
       "url": "https://www.chubb.com/content/dam/chubb-sites/chubb-com/ec-es/sobre-nosotros/condiciones-generales/documents/pdf/condiciones-generales-de-responsabilidad-civil.pdf"
+    },
+    "reembolso-saludsa": {
+      "label": "Saludsa · Requisitos de reembolso",
+      "url": "https://serviciosaludsa.zendesk.com/hc/es/articles/360040775412-Requisitos-para-mi-solicitud-de-reembolso"
+    },
+    "reembolso-humana": {
+      "label": "Humana · Gestionar tus reembolsos",
+      "url": "https://servicio.humana.med.ec/hc/es/articles/4402788919693-Gestionar-tus-reembolsos"
+    },
+    "reembolso-bmi": {
+      "label": "BMI Ecuador · Formulario y documentos de gastos médicos",
+      "url": "https://www.bmicos.com/ecuador/wp-content/uploads/sites/9/2025/11/REEMBOLSO-DE-GASTOS-MEDICOS-CORPORATIVO-EDITABLE-WEB_20_11_2025.pdf"
+    },
+    "reembolso-ecuasanitas": {
+      "label": "Ecuasanitas · Formulario y requisitos de reclamación",
+      "url": "https://www.ecuasanitas.com/assets/files/SolicitudReembolso.pdf"
+    },
+    "reembolso-confiamed": {
+      "label": "Confiamed · Requisitos de gastos médicos",
+      "url": "https://www.confiamed.com/preguntas-frecuentes/"
+    },
+    "reembolso-bupa": {
+      "label": "Bupa Ecuador · Documentos para reembolsos",
+      "url": "https://www.bupasalud.com.ec/infografias/reembolsos"
+    },
+    "reembolso-privilegio": {
+      "label": "Privilegio · Formulario de reclamación",
+      "url": "https://www.privilegioseguros.com.ec/wp-content/uploads/2025/12/Formulario-de-Reclamacion.pdf"
+    },
+    "reembolso-mediken": {
+      "label": "Mediken · Reembolsos en línea",
+      "url": "https://www.mediken.com.ec/reembolsos.html"
+    },
+    "reembolso-vidasana": {
+      "label": "VidaSana · Canal oficial",
+      "url": "https://vidasana.ec/contact"
     }
   },
   "items": [
@@ -224,8 +260,8 @@
       "id": "reembolso-documentos",
       "category": "Si ocurre un evento",
       "question": "¿Qué documentos preparo para un reembolso médico?",
-      "answer": "Conserva facturas y soportes de la atención. Solicita la lista y el plazo de presentación de tu plan; puede requerir documentos adicionales. Envía información personal únicamente por los canales oficiales.",
-      "source": "salud",
+      "answer": "Los documentos dependen de la compañía, tu plan y la atención recibida. Elige tu aseguradora de salud para ver el detalle confirmado y su fuente oficial. No envíes documentos médicos a este chat.",
+      "source": "reembolso-saludsa",
       "aliases": [
         "documentos para reembolso",
         "documentos de reembolso",
@@ -236,7 +272,12 @@
         "solicito reembolso",
         "tramitar reembolso",
         "quiero un reembolso",
-        "solicitar un reembolso"
+        "solicitar un reembolso",
+        "documentos para un reembolso",
+        "documentos se necesitan para un reembolso",
+        "requisitos para reembolso",
+        "documentos para un rembolso",
+        "rembolso documentos"
       ]
     },
     {
@@ -320,6 +361,159 @@
         "cancelacion",
         "cambiar de aseguradora",
         "terminar poliza"
+      ]
+    },
+    {
+      "id": "reembolso-saludsa",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Saludsa?",
+      "answer": "Ambulatorio:\n• Consulta: factura con diagnóstico.\n• Medicinas: receta con diagnóstico y factura de compra; indicar si el tratamiento es continuo.\n• Exámenes: orden con diagnóstico, resultados y factura desglosada.\n• Procedimientos: orden, informe o resultados y factura detallada.\n\nEmergencia: historia de la atención y hoja 008.\nHospitalización o cirugía: historia clínica, protocolo operatorio, anamnesis, anestesia, evolución y epicrisis, según la atención.\n\nSaludsa puede pedir historia clínica o certificado adicional. Confirma las condiciones de tu plan.",
+      "source": "reembolso-saludsa",
+      "reimbursement_provider": "Saludsa",
+      "aliases": [
+        "reembolso saludsa",
+        "reembolso en saludsa",
+        "reembolso de saludsa",
+        "requisitos saludsa",
+        "documentos saludsa",
+        "documentos para reembolso saludsa",
+        "rembolso saludsa"
+      ]
+    },
+    {
+      "id": "reembolso-humana",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Humana?",
+      "answer": "Prepara:\n• Solicitud de reembolso completada, con firmas y sello del médico, y firmas del titular y paciente.\n• Facturas originales o RIDE, con detalle de la atención.\n• Recetas con medicamento, cantidad, dosis, frecuencia y duración.\n• Órdenes, resultados e informes de exámenes, imágenes o terapias.\n\nPara hospitalización: factura desglosada e historia clínica completa, con epicrisis, protocolo operatorio y registro de anestesia cuando correspondan.\nPara emergencias: formulario 008.\nPara coordinación de beneficios: liquidación del primer financiador y respaldos.\nPara gastos en el exterior: comprobantes de pago.\n\nConfirma los requisitos particulares de tu contrato.",
+      "source": "reembolso-humana",
+      "reimbursement_provider": "Humana",
+      "aliases": [
+        "reembolso humana",
+        "reembolso en humana",
+        "reembolso de humana",
+        "requisitos humana",
+        "documentos humana",
+        "documentos para reembolso humana",
+        "rembolso humana"
+      ]
+    },
+    {
+      "id": "reembolso-bmi",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en BMI?",
+      "answer": "Usa el formulario correspondiente a BMI del Ecuador o BMI Igualas Médicas, individual o corporativo.\n\nLos formularios médicos contemplan:\n• Datos del afiliado y paciente; información médica completada y firmada por el tratante.\n• Facturas originales desglosadas de honorarios, farmacia y laboratorio.\n• Pedidos u órdenes médicas y resultados de exámenes.\n• Factura y planilla detallada de la clínica, si corresponde.\n• Historia clínica y protocolo operatorio para atención hospitalaria, según el caso.\n• Hoja de emergencia 008 cuando aplique.\n\nLa fuente enlazada corresponde al formulario corporativo de BMI Igualas. Confirma el formulario y los anexos vigentes de tu plan antes de enviarlos.",
+      "source": "reembolso-bmi",
+      "reimbursement_provider": "BMI",
+      "aliases": [
+        "reembolso bmi",
+        "reembolso en bmi",
+        "reembolso de bmi",
+        "requisitos bmi",
+        "documentos bmi",
+        "documentos para reembolso bmi",
+        "rembolso bmi"
+      ]
+    },
+    {
+      "id": "reembolso-ecuasanitas",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Ecuasanitas?",
+      "answer": "Para planes Total y Elegir, el formulario oficial indica:\n• Formulario de reclamación completo, con las firmas del titular y médico y el sello del tratante.\n• Facturas originales de consultas u hospitalización, desglosadas; RIDE impreso para facturas electrónicas.\n• Recetas con datos del paciente, fecha e indicaciones.\n• Órdenes de exámenes o procedimientos e informes y resultados.\n\nEmergencias: hoja 008.\nHospitalización: historia clínica certificada, evolución, anamnesis, epicrisis, protocolo operatorio y anestesia, según corresponda.\nAccidentes: documentos del evento y cédulas del titular y paciente; SPPAT o denuncia cuando aplique.\nCoordinación de beneficios: liquidación previa y respaldos certificados.\n\nVerifica el plazo y las condiciones de tu contrato.",
+      "source": "reembolso-ecuasanitas",
+      "reimbursement_provider": "Ecuasanitas",
+      "aliases": [
+        "reembolso ecuasanitas",
+        "reembolso en ecuasanitas",
+        "reembolso de ecuasanitas",
+        "requisitos ecuasanitas",
+        "documentos ecuasanitas",
+        "documentos para reembolso ecuasanitas",
+        "rembolso ecuasanitas"
+      ]
+    },
+    {
+      "id": "reembolso-confiamed",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Confiamed?",
+      "answer": "Prepara:\n• Solicitud de reembolso con diagnóstico, completada y firmada por el médico.\n• Facturas originales o RIDE; detalle de los valores por servicio.\n• Recetas para medicamentos.\n• Órdenes y resultados de laboratorio o imagen.\n• Ficha o certificado médico, según la revisión.\n\nEmergencias: hoja 008 y detalle de medicamentos e insumos.\nHospitalización: historia clínica completa, evolución, epicrisis y protocolo operatorio cuando corresponda, más el detalle de insumos y medicinas.\n\nLos documentos deben identificar al paciente. Presenta la solicitud por la app o el portal autorizado y confirma los requisitos de tu plan.",
+      "source": "reembolso-confiamed",
+      "reimbursement_provider": "Confiamed",
+      "aliases": [
+        "reembolso confiamed",
+        "reembolso en confiamed",
+        "reembolso de confiamed",
+        "requisitos confiamed",
+        "documentos confiamed",
+        "documentos para reembolso confiamed",
+        "rembolso confiamed"
+      ]
+    },
+    {
+      "id": "reembolso-bupa",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Bupa?",
+      "answer": "Ten a mano:\n• Formulario de reembolso correspondiente a tu póliza.\n• Facturas de los servicios médicos.\n• Comprobantes de pago.\n• Información médica que respalde la atención.\n• Datos bancarios para el pago, registrados en el canal oficial.\n\nEn Mi Bupa podrás cargar los documentos que solicite tu caso. Confirma si debes entregar originales y qué anexos exige tu producto. La documentación y el procedimiento pueden variar según la póliza.",
+      "source": "reembolso-bupa",
+      "reimbursement_provider": "Bupa",
+      "aliases": [
+        "reembolso bupa",
+        "reembolso en bupa",
+        "reembolso de bupa",
+        "requisitos bupa",
+        "documentos bupa",
+        "documentos para reembolso bupa",
+        "rembolso bupa"
+      ]
+    },
+    {
+      "id": "reembolso-privilegio",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Privilegio?",
+      "answer": "El formulario oficial solicita:\n• Datos del titular y paciente, incluida su identificación.\n• Descripción de la enfermedad o accidente y desglose de los gastos reclamados.\n• Firma del afiliado.\n• Sección médica con diagnóstico, antecedentes, fechas y procedimientos; firma, sello y código del tratante.\n• Autorización de la empresa cuando corresponda a un contrato corporativo.\n\nEl formulario público no establece una lista completa de anexos por tipo de atención. Pide al equipo operativo de Efy que confirme las facturas y soportes exigidos por tu contrato antes de presentarlo.",
+      "source": "reembolso-privilegio",
+      "reimbursement_provider": "Privilegio",
+      "aliases": [
+        "reembolso privilegio",
+        "reembolso en privilegio",
+        "reembolso de privilegio",
+        "requisitos privilegio",
+        "documentos privilegio",
+        "documentos para reembolso privilegio",
+        "rembolso privilegio"
+      ]
+    },
+    {
+      "id": "reembolso-mediken",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en Mediken?",
+      "answer": "El canal oficial permite solicitar el reembolso desde el portal de afiliados:\n• Selecciona al beneficiario que recibió la atención.\n• Completa los datos de la solicitud y adjunta los documentos médicos requeridos por el portal.\n• Revisa los datos bancarios registrados.\n\nLa página pública no desglosa todos los anexos según el tipo de atención. Confirma con el equipo operativo de Efy o con Mediken la lista de facturas, recetas y soportes que corresponda a tu contrato. Conserva la documentación original y revisa el plazo del plan.",
+      "source": "reembolso-mediken",
+      "reimbursement_provider": "Mediken",
+      "aliases": [
+        "reembolso mediken",
+        "reembolso en mediken",
+        "reembolso de mediken",
+        "requisitos mediken",
+        "documentos mediken",
+        "documentos para reembolso mediken",
+        "rembolso mediken"
+      ]
+    },
+    {
+      "id": "reembolso-vidasana",
+      "category": "Si ocurre un evento",
+      "question": "¿Qué documentos necesito para un reembolso en VidaSana?",
+      "answer": "No disponemos de una lista pública de requisitos de reembolso que haya podido verificarse para VidaSana.\n\nEl equipo operativo de Efy puede ayudarte a confirmar el formulario, los soportes de la atención y el plazo aplicables a tu contrato. Conserva tus facturas y documentos médicos hasta recibir esas indicaciones. Evita compartir diagnósticos o historia clínica en este chat; usa el canal autorizado para tu trámite.",
+      "source": "reembolso-vidasana",
+      "reimbursement_provider": "VidaSana",
+      "aliases": [
+        "reembolso vidasana",
+        "reembolso en vidasana",
+        "reembolso de vidasana",
+        "requisitos vidasana",
+        "documentos vidasana",
+        "documentos para reembolso vidasana",
+        "rembolso vidasana"
       ]
     }
   ]

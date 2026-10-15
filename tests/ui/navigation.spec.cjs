@@ -156,6 +156,24 @@ async function expanded(page, index, value) {
       assert.equal(await touch.locator('#site-nav .nav-link[aria-expanded="true"]').count(), 0);
       assert.equal(await touch.locator('#site-nav .nav-preview:not([hidden])').count(), 0);
     });
+    await check('Touch submenu controls reveal vertical bullet links without replacing module navigation', async () => {
+      await touch.goto(base.href, { waitUntil: 'domcontentloaded' });
+      await touch.locator('.menu-toggle').tap();
+      const toggle = touch.locator('.nav-submenu-toggle').nth(1);
+      await toggle.tap();
+      assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+      const panel = touch.locator('#nav-preview-servicios');
+      assert.equal(await panel.locator('.nav-bullet').count(), 4);
+      const positions = await panel.locator('.nav-preview-link').evaluateAll(links => links.map(link => ({ top:link.getBoundingClientRect().top, left:link.getBoundingClientRect().left })));
+      assert(positions.every((position,index) => index === 0 || position.top > positions[index - 1].top));
+      assert(positions.every(position => Math.abs(position.left - positions[0].left) < 1));
+      await touch.keyboard.press('Escape');
+      assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+      assert(await toggle.evaluate(button => button === document.activeElement));
+      await toggle.tap();
+      await panel.getByRole('link', { name:'Salud', exact:true }).tap();
+      await touch.waitForURL(url => url.pathname.endsWith('/servicios.html') && url.hash === '#salud');
+    });
     console.log(`Navigation verification passed: ${passed} checks.`);
   } finally {
     await browser.close();

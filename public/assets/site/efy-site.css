@@ -268,3 +268,39 @@ body:not([data-page="inicio"]) .experience-stat:nth-child(2){border-top-color:va
 body:not([data-page="inicio"]) .assistance-option{border-radius:18px}
 body:not([data-page="inicio"]) .assistance-option:first-child{border-top-color:var(--magenta)}
 @media(hover:hover) and (pointer:fine){body:not([data-page="inicio"]) .assistance-option:hover{border-color:var(--magenta)}}
+
+/* Reimbursement checklists and a manual case enquiry using the existing operations team. */
+.faq-item .faq-answer{white-space:pre-line}
+.reimbursement-guides{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 14px}
+.reimbursement-guides a{display:inline-flex;align-items:center;min-height:40px;padding:8px 14px;border:1px solid var(--line);border-radius:22px;background:white;color:var(--blue);font-size:12px;text-decoration:none}
+.lookup-result{border-top:1px solid var(--line);padding-top:22px;margin-top:24px}
+.lookup-result .actions{gap:12px;margin-top:18px}
+.lookup-result .button{font-size:13px}
+#lookup-status{font-size:12px;line-height:1.6;color:var(--muted)}
+@media(hover:hover){.reimbursement-guides a:hover{border-color:var(--blue);background:#edf1f8}}
+
+/* Direct module links and vertically sliding blue crystal option lists. */
+.nav-submenu-toggle{display:none}
+.site-nav .nav-preview-link{display:flex;align-items:center;gap:10px}
+.nav-bullet{flex:0 0 7px;font-size:17px;line-height:1;color:currentColor;opacity:.9}
+.nav-preview{animation:efy-menu-slide 180ms var(--ease)}
+@keyframes efy-menu-slide{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1180px),(hover:none),(pointer:coarse){
+ .header-inner{flex-wrap:wrap;gap:12px;padding-block:12px}
+ .header-chat{display:none}
+ .site-nav{width:100%;display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:8px 12px 12px;border:1px solid #ffffff24;border-radius:16px;background:linear-gradient(135deg,#445ea52b,#17233d66);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);max-height:calc(100dvh - 172px);overflow-y:auto;overscroll-behavior:contain}
+ .js .menu-toggle{display:inline-flex}
+ .js .site-nav{display:none}
+ .js .site-nav.is-open{display:grid}
+ .nav-item{display:grid;grid-template-columns:minmax(0,1fr) 44px;align-items:center;gap:0 8px;border-bottom:1px solid #ffffff18}
+ .nav-item:last-child{border-bottom:0}
+ .site-nav .nav-link{display:block;width:fit-content;max-width:100%;padding:16px 4px;white-space:normal}
+ .site-nav .nav-link>.nav-chevron{display:none!important}
+ .js .nav-submenu-toggle{display:grid;place-items:center;width:44px;height:44px;padding:12px;border:1px solid #ffffff30;border-radius:12px;background:#445ea540;color:var(--white)}
+ .nav-submenu-toggle svg{width:14px;height:14px;transition:transform 180ms var(--ease)}
+ .nav-submenu-toggle[aria-expanded=true] svg{transform:rotate(180deg)}
+ .site-nav .nav-preview:not([hidden]){display:block!important;position:static;grid-column:1/-1;width:100%;min-width:0;max-width:none;margin:0 0 12px;inset:auto;transform:none}
+ .site-nav .nav-preview-links{display:flex;flex-direction:column}
+ .site-nav .nav-preview-link{width:100%;padding:12px;font-size:13px;line-height:1.5;white-space:normal}
+}
+@media(prefers-reduced-motion:reduce){.nav-preview{animation:none}.nav-submenu-toggle svg{transition:none}}

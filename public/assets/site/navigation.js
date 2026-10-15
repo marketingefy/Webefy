@@ -6,7 +6,8 @@
   const entries = [...nav.querySelectorAll('.nav-item')].flatMap(item => {
     const link = item.querySelector('.nav-link[aria-controls]');
     const panel = link && document.getElementById(link.getAttribute('aria-controls'));
-    return panel?.matches('.nav-preview') && item.contains(panel) ? [{ item, link, panel }] : [];
+    const toggle = item.querySelector('.nav-submenu-toggle');
+    return panel?.matches('.nav-preview') && item.contains(panel) ? [{ item, link, panel, toggle }] : [];
   });
   if (!entries.length) return;
 
@@ -15,14 +16,15 @@
   let restoringFocus = null;
 
   function markCurrentSelection() {
-    const path = location.pathname.replace(/\/siniestros\.html$/, '/reportar-siniestro.html');
+    const normalizePath = path => path.replace(/\/index\.html$/, '/').replace(/\/siniestros\.html$/, '/reportar-siniestro.html');
+    const path = normalizePath(location.pathname);
     const links = [...nav.querySelectorAll('.nav-preview-link')];
     const category = document.querySelector('[data-service-category][aria-pressed="true"]');
     const hash = category ? (category.id ? '#' + category.id : '') : location.hash;
     const destinations = links.map(link => ({ link, url: new URL(link.href, location.href) }));
-    const matchesSection = hash && destinations.some(({ url }) => url.pathname === path && url.hash === hash);
+    const matchesSection = hash && destinations.some(({ url }) => normalizePath(url.pathname) === path && url.hash === hash);
     destinations.forEach(({ link, url }) => {
-      const selected = url.pathname === path && (matchesSection ? url.hash === hash : !url.hash);
+      const selected = normalizePath(url.pathname) === path && (matchesSection ? url.hash === hash : !url.hash);
       if (selected) link.setAttribute('aria-current', matchesSection ? 'location' : 'page');
       else link.removeAttribute('aria-current');
     });
@@ -42,19 +44,22 @@
     cancelLeave();
     if (!opened) return;
     opened.link.setAttribute('aria-expanded', 'false');
+    opened.toggle?.setAttribute('aria-expanded', 'false');
     opened.panel.hidden = true;
     opened.item.classList.remove('is-preview-open');
     opened = null;
   }
 
-  function open(entry) {
-    if (!desktop.matches) return;
+  function open(entry, trigger = entry.link, force = false) {
+    if (!desktop.matches && !force) return;
     markCurrentSelection();
     cancelLeave();
     if (opened === entry) return;
     close();
     opened = entry;
+    entry.returnFocus = trigger;
     entry.link.setAttribute('aria-expanded', 'true');
+    entry.toggle?.setAttribute('aria-expanded', 'true');
     entry.panel.hidden = false;
     entry.item.classList.add('is-preview-open');
   }
@@ -62,6 +67,20 @@
   entries.forEach(entry => {
     // Hidden panels remain out of the reading and keyboard order on touch screens.
     entry.link.setAttribute('aria-expanded', 'false');
+    entry.toggle?.setAttribute('aria-expanded', 'false');
+    entry.toggle?.addEventListener('click', () => {
+      if (opened === entry) close();
+      else open(entry, entry.toggle, true);
+    });
+    entry.link.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      open(entry, entry.link, true);
+      entry.panel.querySelector('a')?.focus();
+    });
+    entry.panel.addEventListener('click', event => {
+      if (event.target.closest('a')) close();
+    });
     entry.panel.hidden = true;
     entry.item.classList.remove('is-preview-open');
 
@@ -93,7 +112,7 @@
     if (event.target.closest?.('dialog[open]')) return;
     event.preventDefault();
     event.stopPropagation();
-    const link = opened.link;
+    const link = opened.returnFocus || opened.link;
     close();
     restoringFocus = link;
     link.focus({ preventScroll: true });

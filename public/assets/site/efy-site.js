@@ -146,6 +146,13 @@
     const cleaned = normalize(question);
     const exact = faq.find(item => normalize(item.question) === cleaned);
     if (exact) return { text: exact.answer, id: exact.id };
+    if (/reembolso|rembolso/.test(cleaned) && /document|requisit|necesit|prepar|solicit/.test(cleaned)) {
+      const compact = cleaned.replace(/[^a-z0-9]/g, '');
+      const company = faq.find(item => item.reimbursement_provider && compact.includes(normalize(item.reimbursement_provider).replace(/[^a-z0-9]/g, '')));
+      const requirements = company || faq.find(item => item.id === 'reembolso-documentos');
+      return { text: requirements.answer, id: requirements.id };
+    }
+
     if (/^(hola|buenas|buenos dias|buenas tardes|buenas noches|hey)[!.\s]*$/.test(cleaned)) return { text: 'Hola. Puedo ayudarte con conceptos de seguros y preguntas frecuentes de Efy. ¿Quieres conocer qué es una cobertura, un deducible o cómo preparar una consulta?' };
     if (/^(gracias|muchas gracias|perfecto|listo)[!.\s]*$/.test(cleaned)) return { text: 'Con gusto. Puedes seguir preguntando o revisar el centro de ayuda.' };
     if (/contact|comunicar|whatsapp|telefono|llamar|hablar con/.test(cleaned) && contacts.providers.some(provider => (` ${cleaned.replace(/[^a-z0-9]+/g, ' ')} `).includes(` ${normalize(provider).replace(/[^a-z0-9]+/g, ' ')} `))) {
@@ -234,6 +241,7 @@
         entry.append(assistanceLink);
       }
     }
+    if (faqId === 'reembolso-documentos') appendBusinessOptions(entry, faq.filter(item => item.reimbursement_provider).map(item => ({faq:item.id,label:item.reimbursement_provider})));
     stampMessage(entry);
     messages.append(entry);
     messages.scrollTop = messages.scrollHeight;
@@ -344,10 +352,12 @@
       filters.forEach(filter => filter.setAttribute('aria-pressed', String(filter === button)));
       filterQuestions();
     }));
-    if (location.hash) {
+    function revealLinkedQuestion() {
       const target = document.getElementById(location.hash.slice(1));
       if (target?.classList.contains('faq-item')) target.open = true;
     }
+    revealLinkedQuestion();
+    window.addEventListener('hashchange', revealLinkedQuestion);
   }
 
   const consult = document.querySelector('#consult-form');
@@ -362,7 +372,7 @@
       questionField.setCustomValidity(question ? '' : 'Escribe tu pregunta para preparar la consulta.');
       if (!consult.reportValidity()) return;
       summary.value = `Consulta para Efy Seguros\nTema: ${document.querySelector('#consult-topic').value}\n\n${question}`;
-      document.querySelector('#consult-whatsapp').href = contacts.whatsapp[0].url + '?text=' + encodeURIComponent(summary.value);
+      document.querySelector('#consult-whatsapp').href = contacts.whatsapp[0].url;
       document.querySelector('#consult-result').hidden = false;
       status.textContent = 'Resumen preparado. No se ha enviado al equipo de Efy.';
       summary.focus();

@@ -458,3 +458,48 @@ propio de Efy. Sin errores ni desbordamiento; se conservan servicios, socios,
 contactos, historia y preguntas verificadas. Las dos copias suman 362 enlaces y
 anclas locales válidos. Las rutas de reporte raíz y previa cargan la configuración
 del mismo endpoint, comprobado con tres GET simulados y sin enviar reportes.
+
+## WhatsApp, ubicación y preparación de consultas de estado
+
+El propietario entrega el saludo exacto con emojis y saltos de línea. Se guarda
+en `contactos.json` y se aplica a todos los enlaces de WhatsApp de Efy: botones
+del sitio, servicios, chat, consultas preparadas y teléfonos comerciales u
+operativos. Los WhatsApp de aseguradoras externas conservan sus propios destinos.
+El botón de Maps usa el enlace de ubicación facilitado por el propietario.
+
+La consulta manual permite escribir cédula o placa (esta última solo en un
+siniestro vehicular), validar el formato y preparar un resumen para copiar y
+compartir con el equipo operativo. Ningún identificador se envía automáticamente
+ni se incorpora al enlace de WhatsApp. No se afirma una búsqueda de estados.
+La integración sigue pendiente del nombre y acceso al sistema del propietario,
+que se han solicitado nuevamente por tratarse del bloqueo de la consulta real.
+
+EVIA y Ayuda incorporan nueve opciones de salud y fuentes oficiales. Saludsa,
+Humana, BMI, Ecuasanitas, Confiamed y Bupa tienen documentación detallada.
+Privilegio tiene datos del formulario confirmado, pero no una lista exhaustiva
+de anexos; Mediken publica pasos y carga de documentos en su portal. VidaSana
+no tiene una lista pública que se haya podido verificar, y se remite al equipo.
+No se generalizan requisitos ni plazos entre compañías o productos.
+
+## Navegación azul cristalizada · 15 de octubre de 2026
+
+Se integra esta actualización sobre `13430af`, conservando las mejoras recientes
+de imágenes, servicios, tipografía y borradores por correo. Los nombres de los
+ocho módulos mantienen enlaces directos a sus páginas; los submenús son listas
+verticales con viñetas «•», superficie azul de marca cristalizada y una entrada
+vertical breve. En móvil y dispositivos táctiles se añade una flecha independiente
+para desplegar las opciones, sin interceptar el enlace del módulo. Se conservan
+foco visible, cierre por Escape, navegación por teclado y movimiento reducido.
+
+La consulta de estados conserva el borrador por correo aprobado el 13 de octubre,
+y añade copiar el resumen y un enlace al WhatsApp operativo con el saludo exacto
+del propietario. No hay búsqueda automática de estados ni envío de datos al
+preparar el borrador. El saludo común se conserva también en la consulta comercial
+preparada; su texto específico se puede copiar desde el resumen.
+
+Revisión: nueve pruebas de navegación (incluido submenú táctil), catálogo y consultas
+en raíz y copia previa a 320, 390 y 1440 px. 32 pruebas de acceso a módulos y 944
+enlaces/anclas locales válidos. Mensaje de WhatsApp exacto, cuatro números, Maps,
+nueve opciones de reembolso y sus fuentes, preguntas libres y apertura de FAQ
+comprobados en navegador. El test de consultas excluye únicamente la carga tardía
+del icono del sitio; sigue rechazando solicitudes de red de los borradores.

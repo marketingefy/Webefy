@@ -115,7 +115,10 @@ async function checkDraft(page, topic, identifier, method) {
 
         assert.equal(page.url(), initialURL);
         assert.deepEqual(await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } })), storageBefore);
-        assert.deepEqual(requests.slice(initialRequests), [], 'Preparing a draft must make no network request.');
+        // Chromium can request the site icon late; it is unrelated to the draft.
+        const iconURL = new URL(await page.locator('link[rel=icon]').getAttribute('href'), page.url()).href;
+        const draftRequests = requests.slice(initialRequests).filter(request => request.type !== 'other' || request.url !== iconURL);
+        assert.deepEqual(draftRequests, [], 'Preparing a draft must make no network request.');
         assert.deepEqual(errors, []);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth), false);
         console.log('PASS ' + route + ' at ' + width + ' px: editable inputs, validation, type switching, local draft, no network or storage.');

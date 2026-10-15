@@ -83,6 +83,16 @@
     if (status) status.textContent = 'Consulta preparada. Revisa el resumen y abre tu correo para enviarla.';
   });
 
+  document.querySelector('#copy-lookup')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(summary.value);
+      status.textContent = 'Consulta copiada. Puedes pegarla en WhatsApp del equipo operativo.';
+    } catch {
+      summary.focus();
+      summary.select();
+      status.textContent = 'Seleccionamos el resumen para que puedas copiarlo.';
+    }
+  });
   updateLookup();
   // Identifiers stay in this page. Preparing the draft makes no request, stores
   // nothing and sends no email; only the visitor can open and send their draft.

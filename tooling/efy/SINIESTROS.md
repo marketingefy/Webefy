@@ -2,9 +2,9 @@
 
 El propietario pidió un módulo de reporte y confirmó el destinatario
 `siniestros@efyseguros.com`. El módulo se llama Asistencia y está en
-`/nueva/asistencia.html`, con el reporte en `/nueva/reportar-siniestro.html`. Figura en la navegación, portada y guía de EVIA.
+`/asistencia.html`, con el reporte en `/reportar-siniestro.html` y copias compatibles en `/nueva/`. Figura en la navegación, portada y guía de EVIA.
 La antigua URL `/nueva/siniestros.html` conserva el mismo contenido y formulario.
-La portada de espera sigue separada.
+La web completa está publicada en la raíz del dominio.
 
 ## Consulta de estados y líneas de asistencia
 
@@ -23,6 +23,8 @@ La integración futura debe verificar la identidad y autorización del cliente a
 de mostrar información del caso. Una cédula o placa no constituye autenticación.
 La referencia de recepción y sus metadatos privados tampoco son estados del
 siniestro o reembolso. Este flujo permite solicitar seguimiento al equipo por correo.
+También se puede copiar el resumen y abrir el WhatsApp operativo con el saludo
+aprobado. El identificador no se incorpora al enlace de WhatsApp.
 
 El directorio de 26 socios en `/nueva/lineas-asistencia.html` se filtra por nombre sin enviar datos. Teléfonos,
 etiquetas y fuentes proceden de `socios.json`, documentados en
