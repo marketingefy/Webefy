@@ -13,7 +13,7 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial. `resenas-demo.json` contiene diez ejemplos ficticios bajo el rótulo «Opiniones de demostración» mientras no haya reseñas reales.
 - Cotizaciones: las consultas actuales se preparan en el navegador y continúan por WhatsApp comercial. El CRM facilitado es `https://app.latamyanez.com/login`; su recepción de solicitudes depende del acceso a la API o repo.
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; preguntas investigadas en fuentes oficiales, con nueve guías de documentos de reembolso por compañía, con enlaces y variantes para el chat.
-- EVIA: burbujas de conversación y menú de atención para cotizaciones, pólizas, asistencia y asesores. Panel de cristal difuminado, fucsia de la marca y botón flotante translúcido y disponible en todos los módulos. Tipografía de sistema dentro del chat y distintivo propio de Efy junto al nombre. Los enlaces internos conservan la versión del sitio.
+- EVIA: burbujas de conversación y menú de atención para cotizaciones, pólizas, asistencia y asesores. Panel de cristal difuminado, fucsia de la marca y botón flotante translúcido y disponible en todos los módulos. IBM Plex Sans con jerarquía 400/500/600 también dentro del chat y distintivo propio de Efy junto al nombre. Los enlaces internos conservan la versión del sitio.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
 - Vistas previas, catálogo deslizante y consultas: [mejoras de interacción](MEJORAS-INTERACCION.md).
 - Diseño y contenido del sitio: [brief de la web](tooling/efy/WEB-BRIEF.md).

@@ -1,8 +1,8 @@
 # Primera web Efy: Inicio, Servicios, Socios estratégicos, Conócenos, Asistencias, Reseñas, Contáctanos y Ayuda
 
-Petición del propietario: comenzar la web pública con cuatro módulos. La vista de
-trabajo está en `public/nueva/`; la portada de espera se mantiene en `public/index.html`
-mientras se completan los datos oficiales. Esta versión no cambia el hosting.
+Web pública con ocho módulos en `public/`, publicada en el dominio de Efy.
+La copia `public/nueva/` conserva los enlaces de revisión anteriores.
+El sitio mantiene su publicación en HostGator desde GitHub Actions.
 
 ## Dirección de diseño
 
@@ -11,9 +11,9 @@ Trabajo de la portada: presentar la marca y dirigir a la información o el conta
 
 Tokens: grafito #080E1D, tinta secundaria #17233D, blanco #F8F9FC, lienzo #F7F8FB,
 magenta de lectura #F25C9D, azul de acción #445EA5. Magenta #CE005E para acentos y botones con texto blanco (contraste 5,55:1).
-IBM Plex Sans 600 para títulos, 500 para menú y 400 para texto. Los pesos nuevos
-se alojan localmente, con la licencia IBM Plex ya incluida. Nunito Sans se conserva
-para algunos datos y para la portada de espera.
+IBM Plex Sans 600 para títulos y énfasis, 500 para botones, llamados a la acción y
+menú, y 400 para información y beneficios. Los tres pesos se alojan localmente
+con su licencia; esta jerarquía también se aplica a formularios y EVIA.
 
 Firma: EVIA trabajando en el universo digital de Efy, integrada en una portada
 cinematográfica; el resto de la web ofrece superficies claras y lectura sencilla.
@@ -513,3 +513,17 @@ para ambos equipos, ubicación y redes. Asistencias y Ayuda conservan sus págin
 auxiliares bajo la misma categoría activa. Los títulos de los ocho módulos
 continúan abriendo sus páginas, y los elementos de los desplegables llevan a la
 sección nombrada. Se conserva la navegación azul cristalizada y las viñetas.
+
+## Jerarquía tipográfica confirmada · 26 de octubre de 2026
+
+Se aplica la tabla del propietario a los ocho módulos, páginas auxiliares y EVIA:
+IBM Plex Sans 600 para títulos y énfasis, 400 para información y beneficios, y
+500 para botones y llamados a la acción. Los contactos, emergencias, leyendas
+de formularios y enlaces de acción dejan de usar Nunito. Los párrafos finales
+de la historia y la dirección mantienen peso Regular; los énfasis semánticos
+usan SemiBold, evitando el peso 700 sintetizado. Los tres pesos se alojan y
+precargan localmente; los recursos y enlaces comparten la nueva versión.
+
+Verificación de esta actualización: 13 páginas a 320, 390 y 1440 px (39 vistas),
+con los tres pesos locales cargados, jerarquía calculada correcta en títulos,
+énfasis y acciones, sin errores de JavaScript ni desbordamiento horizontal.

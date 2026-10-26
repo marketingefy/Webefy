@@ -90,3 +90,12 @@ siendo los elementos de identidad de ese encabezado.
 Los desplegables usan azul Efy cristalizado, con texto blanco. La opción señalada,
 enfocada o actual recibe el rosa Efy; la selección refleja también la categoría
 activa del carrusel. Las superficies interiores conservan su cristal blanco.
+
+## Tipografía corporativa de la web · 26 de octubre de 2026
+
+La web completa usa IBM Plex Sans alojada localmente: SemiBold 600 para títulos,
+leyendas de pasos y palabras importantes; Regular 400 para información y
+beneficios; Medium 500 para botones y llamados a la acción. Los tres pesos se
+precargan en las páginas compartidas. Se elimina Nunito de los estilos activos
+del sitio y se aplica IBM Plex Sans también a la conversación de EVIA.
+Los tamaños y el interlineado siguen siendo adaptables para móvil y escritorio.
