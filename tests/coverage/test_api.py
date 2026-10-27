@@ -165,12 +165,15 @@ class CoverageApi(unittest.TestCase):
         self.assertEqual(len(self.calls()), 10)
 
     def test_missing_config_stays_unavailable_without_exposing_paths(self):
-        for scenario in ['unconfigured', 'public-config', 'bad-url', 'bad-key', 'noisy-config']:
+        for scenario, reason in [('unconfigured', 'CONFIG_FILE_UNAVAILABLE'), ('public-config', 'CONFIG_INVALID'),
+                                 ('bad-url', 'API_URL_INVALID'), ('bad-key', 'API_KEY_FORMAT_INVALID'),
+                                 ('noisy-config', 'CONFIG_INVALID')]:
             with self.subTest(scenario=scenario):
                 status, config, headers = self.call(scenario=scenario)
                 self.assertEqual(status, 200)
                 self.assertFalse(config['ready'])
-                self.assertEqual(set(config), {'ok', 'version', 'ready', 'csrf'})
+                self.assertEqual(set(config), {'ok', 'version', 'ready', 'csrf', 'unavailable_reason'})
+                self.assertEqual(config['unavailable_reason'], reason)
                 status, data, _ = self.call(self.valid(), scenario=scenario)
                 self.assertEqual(status, 503)
                 self.assertNotIn('/fixtures', json.dumps(data))

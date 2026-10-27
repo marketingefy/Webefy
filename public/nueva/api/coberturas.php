@@ -29,23 +29,26 @@ function coverageIsPrivate(string $path): bool {
     return true;
 }
 
-function coverageConfiguration(): ?array {
+function coverageConfiguration(?string &$failure = null): ?array {
+    $failure = null;
     $path = realpath(getenv('EFY_MASIVOS_CONFIG_FILE') ?: '/home1/brayanez/efy-secrets/masivos.php');
-    if (!$path || !coverageIsPrivate($path) || !is_file($path) || !is_readable($path)) return null;
+    if (!$path || !is_file($path) || !is_readable($path)) { $failure = 'CONFIG_FILE_UNAVAILABLE'; return null; }
+    if (!coverageIsPrivate($path)) { $failure = 'CONFIG_INVALID'; return null; }
     $level = ob_get_level();
     ob_start();
     try {
         $config = (static function (string $file) { return require $file; })($path);
         $output = ob_get_clean();
-        if ($output !== '' || !is_array($config)) return null;
+        if ($output !== '' || !is_array($config)) { $failure = 'CONFIG_INVALID'; return null; }
     } catch (Throwable $error) {
         while (ob_get_level() > $level) ob_end_clean();
+        $failure = 'CONFIG_INVALID';
         return null;
     }
     $key = $config['MASIVOS_API_KEY'] ?? null;
     $url = $config['EFYANALYZER_URL'] ?? null;
-    if (!is_string($key) || !preg_match('/^[A-Za-z0-9_-]{32,256}$/D', $key)) return null;
-    if (!is_string($url) || rtrim($url, '/') !== 'https://app.latamyanez.com') return null;
+    if (!is_string($key) || !preg_match('/^[A-Za-z0-9_-]{32,256}$/D', $key)) { $failure = 'API_KEY_FORMAT_INVALID'; return null; }
+    if (!is_string($url) || rtrim($url, '/') !== 'https://app.latamyanez.com') { $failure = 'API_URL_INVALID'; return null; }
     return ['key' => $key];
 }
 
@@ -189,11 +192,17 @@ function coverageHandleRequest(?callable $transport = null): void {
         if (empty($_SESSION['masivos_csrf'])) $_SESSION['masivos_csrf'] = bin2hex(random_bytes(32));
         $csrf = $_SESSION['masivos_csrf'];
         session_write_close();
-        $config = coverageConfiguration();
+        $configurationFailure = null;
+        $config = coverageConfiguration($configurationFailure);
         $directory = null;
         try { $directory = coveragePrivateDirectory(); } catch (Throwable $error) { /* Availability is reported without private path details. */ }
         $ready = $config !== null && $directory !== null && (function_exists('curl_init') || $transport !== null);
-        if ($method === 'GET') { coverageRespond(200, ['ok' => true, 'version' => COVERAGE_VERSION, 'ready' => $ready, 'csrf' => $csrf]); return; }
+        if ($method === 'GET') {
+            $status = ['ok' => true, 'version' => COVERAGE_VERSION, 'ready' => $ready, 'csrf' => $csrf];
+            if (!$ready) $status['unavailable_reason'] = $configurationFailure ?? ($directory === null ? 'PRIVATE_STORAGE_UNAVAILABLE' : 'CURL_UNAVAILABLE');
+            coverageRespond(200, $status);
+            return;
+        }
         if (!$ready) { coverageRespond(503, ['ok' => false, 'message' => COVERAGE_UNAVAILABLE]); return; }
         if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 2048) { coverageRespond(413, ['ok' => false, 'message' => 'La solicitud supera el tamaño permitido.']); return; }
         if (strtolower(trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0])) !== 'application/json') { coverageRespond(415, ['ok' => false, 'message' => 'Actualiza la página y vuelve a intentarlo.']); return; }
