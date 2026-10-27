@@ -4,10 +4,13 @@
   if (!form) return;
 
   const endpoint = '/nueva/api/coberturas.php';
+  const branding = JSON.parse(document.querySelector('#coverage-branding').textContent);
   const workspace = document.querySelector('.coverage-workspace');
   const cooperative = document.querySelector('#coverage-cooperative');
   const confirmation = document.querySelector('#coverage-confirm');
   const cooperativeCard = document.querySelector('#coverage-cooperative-card');
+  const cooperativeLogo = cooperativeCard.querySelector('img');
+  cooperativeLogo?.addEventListener('error', () => { cooperativeLogo.hidden = true; });
   const queryFields = document.querySelector('#coverage-query-fields');
   const cedula = document.querySelector('#coverage-cedula');
   const consent = document.querySelector('#coverage-consent');
@@ -122,7 +125,17 @@
       const stateClass = { VIGENTE: 'vigente', VENCIDA: 'vencida' }[record.estado];
       if (stateClass) card.classList.add('coverage-record--' + stateClass);
       const title = document.createElement('h3');
-      title.textContent = text(record.aseguradora);
+      const insurer = branding.aseguradoras[record.aseguradora];
+      title.textContent = insurer?.nombre || text(record.aseguradora);
+      if (insurer?.logo) {
+        const logo = document.createElement('img');
+        logo.className = 'coverage-insurer-logo';
+        logo.src = insurer.logo;
+        logo.alt = 'Logo de ' + insurer.nombre;
+        logo.referrerPolicy = 'no-referrer';
+        logo.addEventListener('error', () => { logo.hidden = true; });
+        card.append(logo);
+      }
       const details = document.createElement('dl');
       const rows = [
         ['Contrato', text(record.contrato) || 'No informado'],
@@ -141,6 +154,40 @@
         details.append(row);
       });
       card.append(title, details);
+      if (insurer?.contactos?.length) {
+        const contacts = document.createElement('section');
+        contacts.className = 'coverage-contacts';
+        const heading = document.createElement('h4');
+        heading.textContent = 'Contactos para tu atención';
+        contacts.append(heading);
+        insurer.contactos.forEach(contact => {
+          if (!/^\+593[0-9]{8,9}$/.test(contact.telefono)) return;
+          const link = document.createElement('a');
+          link.className = 'coverage-contact-link';
+          link.href = contact.canal === 'whatsapp'
+            ? 'https://wa.me/' + contact.telefono.slice(1) + '?text=' + encodeURIComponent('Hola, quisiera información para agendar una cita de mi seguro de Coopartamos.')
+            : 'tel:' + contact.telefono;
+          if (contact.canal === 'whatsapp') { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+          const label = document.createElement('span');
+          const phone = document.createElement('strong');
+          label.textContent = contact.etiqueta;
+          phone.textContent = contact.mostrar;
+          link.append(label, phone);
+          contacts.append(link);
+        });
+        if (insurer.horario) { const hours = document.createElement('p'); hours.textContent = insurer.horario; contacts.append(hours); }
+        const note = document.createElement('p');
+        note.textContent = record.estado === 'VENCIDA'
+          ? 'Este registro figura vencido. Confirma tu cobertura con la aseguradora antes de agendar.'
+          : 'La atención está sujeta a la vigencia y las condiciones de tu contrato.';
+        const source = document.createElement('a');
+        source.href = insurer.fuente;
+        source.textContent = 'Ver canales oficiales';
+        source.target = '_blank'; source.rel = 'noopener noreferrer';
+        source.className = 'coverage-contact-source';
+        contacts.append(note, source);
+        card.append(contacts);
+      }
       records.append(card);
     });
     if (text(data.fecha_consulta)) queryDate.textContent = 'Fecha de consulta: ' + displayDate(data.fecha_consulta);

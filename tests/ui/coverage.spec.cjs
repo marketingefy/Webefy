@@ -82,6 +82,7 @@ async function choose(page) {
             else await route.fulfill({ status: response.status, contentType: 'application/json', body: JSON.stringify(response.data) });
           }
         });
+        await page.route('https://**/*', route => route.abort());
         await page.goto(server.base + pathname, { waitUntil: 'networkidle' });
         const storage = await page.evaluate(() => ({ local: { ...localStorage }, session: { ...sessionStorage } }));
         const initialUrl = page.url();
@@ -103,7 +104,9 @@ async function choose(page) {
         assert.deepEqual(submissions[0], { cooperativa: 'coopartamos', cedula: synthetic, consent: true, csrf });
         assert.match(await page.locator('#coverage-records').textContent(), /vencida/i);
         assert.match(await page.locator('#coverage-records').textContent(), /No informada/);
-        assert.equal(await page.locator('#coverage-records img').count(), 0);
+        assert.equal(await page.locator('#coverage-records img[src="x"]').count(), 0);
+        assert.equal(await page.locator('.coverage-insurer-logo').count(), 2);
+        assert.equal(await page.locator('a[href="tel:+59323827331"]').count(), 2);
         assert.equal(await page.evaluate(() => window.__injected), undefined);
         assert.match(await page.locator('#coverage-query-date').textContent(), /26.*octubre.*2026/);
         assert.match(await page.locator('body').textContent(), /Privilegio.*pendiente/s);
@@ -114,6 +117,13 @@ async function choose(page) {
           await page.screenshot({ path: path.resolve('output/coverage/coverage-result-' + width + '.png'), fullPage: true });
         }
 
+        response = { status: 200, data: { ...match, fuentes_pendientes: [], registros: [{ ...match.registros[0], aseguradora: 'PRIVILEGIO', contrato: 'PRUEBA-PRIVILEGIO' }] } };
+        await page.locator('#coverage-submit').click();
+        await page.locator('.coverage-record h3').filter({ hasText: 'Privilegio' }).waitFor();
+        assert.equal(await page.locator('a[href="tel:+59326000700"]').count(), 1);
+        assert.equal(await page.locator('a[href^="https://wa.me/593968524251"]').count(), 1);
+        assert.equal(await page.locator('.coverage-insurer-logo').getAttribute('src'), '/assets/site/partners/privilegio.png');
+        assert.equal(await page.locator('#coverage-pending').isHidden(), true);
         await page.locator('#coverage-cedula').fill('0000000002');
         assert.equal(await page.locator('#coverage-results').isHidden(), true);
         response = { status: 200, data: { ...match, encontrado: false, registros: [] } };
