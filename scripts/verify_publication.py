@@ -10,33 +10,8 @@ import urllib.error
 
 site = Path(__file__).resolve().parents[1] / "public"
 client = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-# HostGator's request filter requires the same browser-compatible identity for
-# both the availability GET and the JSON POST.
+# HostGator rejects Python's default client identifier on static requests.
 USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
-
-
-def verify_coverage_connection(csrf):
-    """Check HostGator → EfyAnalyzer with the API's documented fictional ID.
-
-    No credential or returned record is printed or persisted.
-    """
-    request = urllib.request.Request(
-        "https://www.efyseguros.com/nueva/api/coberturas.php",
-        data=json.dumps({"cooperativa": "coopartamos", "cedula": "0000000001",
-                         "consent": True, "csrf": csrf}).encode(),
-        headers={"Origin": "https://www.efyseguros.com", "Content-Type": "application/json",
-                 "Accept": "application/json", "User-Agent": USER_AGENT,
-                 "Referer": "https://www.efyseguros.com/coberturas-cooperativas.html"},
-        method="POST",
-    )
-    with client.open(request, timeout=20) as response:
-        data = json.loads(response.read())
-        if not (response.status == 200 and data.get("ok") is True
-                and isinstance(data.get("encontrado"), bool)
-                and isinstance(data.get("registros"), list)
-                and "no-store" in response.headers.get("Cache-Control", "").lower()):
-            raise RuntimeError("Coverage upstream connection did not complete")
-    print("HostGator → EfyAnalyzer verified with a fictional identifier; no records logged.")
 
 
 for path in sorted(site.rglob("*")):
@@ -97,7 +72,6 @@ for path in sorted(site.rglob("*")):
                 raise RuntimeError("Coverage lookup session cookie is not protected")
             if set(data) != {"ok", "ready", "version", "csrf"}:
                 raise RuntimeError("Coverage configuration exposes unexpected fields")
-            verify_coverage_connection(data["csrf"])
         elif path.suffix == ".php":
             raise RuntimeError("A new PHP endpoint needs an explicit runtime check: " + relative)
         elif hashlib.sha256(content).digest() != hashlib.sha256(path.read_bytes()).digest():

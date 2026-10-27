@@ -8,6 +8,7 @@ on:
       - 'public/**'
       - 'scripts/deploy_sftp.py'
       - 'scripts/verify_publication.py'
+      - 'scripts/verify_coverage_browser.cjs'
       - '.github/hostgator_known_hosts'
       - '.github/workflows/publish.yml'
 
@@ -60,3 +61,10 @@ jobs:
           python3 scripts/deploy_sftp.py
       - name: Verificar página publicada
         run: python3 scripts/verify_publication.py
+      - name: Verificar consulta completa desde el navegador
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/efy-browser-verification/node_modules/playwright-core
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: |
+          npm install --prefix "$RUNNER_TEMP/efy-browser-verification" --no-audit --no-fund playwright-core@1.56.1
+          node scripts/verify_coverage_browser.cjs

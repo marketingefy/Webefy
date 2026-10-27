@@ -29,8 +29,9 @@ de hasta 256 KiB.
 HostGator necesita PHP con cURL, sesiones y acceso de salida HTTPS al destino.
 `GET` devuelve disponibilidad local, versión y token CSRF; no lee la cartera ni
 verifica por sí solo la validez remota de la clave. El chequeo de publicación
-comprueba esa disponibilidad y hace una consulta con el identificador ficticio
-documentado por la API, sin imprimir ni guardar resultados. Así valida la clave
+comprueba esa disponibilidad y usa el formulario publicado en Chromium para
+consultar el identificador ficticio documentado por la API, sin imprimir ni
+guardar resultados. Exige HTTP 200 y el resultado visible. Así valida la clave
 y la conexión de HostGator a EfyAnalyzer sin extraer el secreto.
 
 ## Datos y resultados
@@ -66,3 +67,6 @@ reales. Ejecutar los chequeos descritos en `tests/coverage/` y
 
 La verificación real se ejecuta después de publicar la integración. La clave
 permanece en el servidor durante esa prueba.
+`scripts/verify_coverage_browser.cjs` usa `playwright-core` temporal del runner y
+su Chrome instalado. Sólo informa etapa, estado HTTP y un resultado acotado;
+no guarda capturas, cuerpos de respuesta ni credenciales.
