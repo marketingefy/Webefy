@@ -81,7 +81,11 @@ for path in sorted(site.rglob("*")):
             if not (data.get("ok") is True and data.get("ready") is True
                     and data.get("version") == "coverage-20261026"
                     and len(data.get("csrf", "")) == 64):
-                raise RuntimeError("Cooperative coverage lookup is not ready on the deployed server")
+                reason = data.get("unavailable_reason")
+                allowed_reasons = {"CONFIG_FILE_UNAVAILABLE", "CONFIG_INVALID", "API_KEY_FORMAT_INVALID",
+                                   "API_URL_INVALID", "PRIVATE_STORAGE_UNAVAILABLE", "CURL_UNAVAILABLE"}
+                safe_reason = reason if isinstance(reason, str) and reason in allowed_reasons else "UNKNOWN"
+                raise RuntimeError("Cooperative coverage lookup is not ready: " + safe_reason)
             if "no-store" not in response.headers.get("Cache-Control", "").lower():
                 raise RuntimeError("Coverage responses must not be cached")
             cookies = response.headers.get("Set-Cookie", "").lower()
