@@ -10,6 +10,9 @@ import urllib.error
 
 site = Path(__file__).resolve().parents[1] / "public"
 client = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+# HostGator's request filter requires the same browser-compatible identity for
+# both the availability GET and the JSON POST.
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 
 
 def verify_coverage_connection(csrf):
@@ -22,7 +25,8 @@ def verify_coverage_connection(csrf):
         data=json.dumps({"cooperativa": "coopartamos", "cedula": "0000000001",
                          "consent": True, "csrf": csrf}).encode(),
         headers={"Origin": "https://www.efyseguros.com", "Content-Type": "application/json",
-                 "Accept": "application/json", "User-Agent": "Mozilla/5.0"},
+                 "Accept": "application/json", "User-Agent": USER_AGENT,
+                 "Referer": "https://www.efyseguros.com/coberturas-cooperativas.html"},
         method="POST",
     )
     with client.open(request, timeout=20) as response:
@@ -46,7 +50,7 @@ for path in sorted(site.rglob("*")):
     request = urllib.request.Request(url, headers={
         "Cache-Control": "no-cache",
         "Accept": "*/*",
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        "User-Agent": USER_AGENT,
     })
     if path.name == '.htaccess':
         try:
