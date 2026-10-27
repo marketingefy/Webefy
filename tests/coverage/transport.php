@@ -1,20 +1,22 @@
 <?php
-// Invoke with the five cURL functions below disabled so PHP permits these stubs.
+// Invoke with the six cURL functions below disabled so PHP permits these stubs.
 declare(strict_types=1);
 define('EFY_MASIVOS_LIBRARY_ONLY', true);
 require '/site/public/nueva/api/coberturas.php';
+ini_set('display_errors', '1'); // Only this isolated fake transport uses diagnostic output.
 
 $GLOBALS['scenario'] = 'match';
-function curl_init($url) { $GLOBALS['url'] = $url; return (object)[]; }
-function curl_setopt_array($curl, $options) { $GLOBALS['options'] = $options; return true; }
+function curl_init($url) { $GLOBALS['url'] = $url; return $GLOBALS['scenario'] === 'init-failed' ? false : (object)[]; }
+function curl_setopt_array($curl, $options) { $GLOBALS['options'] = $options; return $GLOBALS['scenario'] !== 'options-failed'; }
 function curl_exec($curl) {
-    if ($GLOBALS['scenario'] === 'timeout') return false;
-    $body = $GLOBALS['scenario'] === 'malformed' ? '{invalid' : json_encode(['encontrado' => false]);
+    if (in_array($GLOBALS['scenario'], ['timeout', 'tls', 'connection', 'dns'], true)) return false;
+    if ($GLOBALS['scenario'] === 'internal-error') throw new RuntimeException('RAW_PRIVATE_ERROR_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+    $body = $GLOBALS['scenario'] === 'malformed' ? '{RAW_PRIVATE_ERROR_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' : json_encode(['encontrado' => false]);
     if ($GLOBALS['scenario'] === 'oversized') $body = str_repeat('x', 262145);
     return ($GLOBALS['options'][CURLOPT_WRITEFUNCTION])($curl, $body) === strlen($body);
 }
-function curl_getinfo($curl, $option) { return $GLOBALS['scenario'] === 'unauthorized' ? 401 : ($GLOBALS['scenario'] === 'busy' ? 429 : 200); }
-function curl_errno($curl) { return $GLOBALS['scenario'] === 'timeout' ? CURLE_OPERATION_TIMEDOUT : 0; }
+function curl_getinfo($curl, $option) { return ['unauthorized' => 401, 'forbidden' => 403, 'unavailable' => 503, 'http-error' => 500, 'busy' => 429][$GLOBALS['scenario']] ?? 200; }
+function curl_errno($curl) { return ['timeout' => CURLE_OPERATION_TIMEDOUT, 'tls' => 60, 'connection' => CURLE_COULDNT_CONNECT, 'dns' => CURLE_COULDNT_RESOLVE_HOST, 'oversized' => CURLE_WRITE_ERROR][$GLOBALS['scenario']] ?? 0; }
 function curl_close($curl) {}
 function check($condition, $message) { if (!$condition) throw new RuntimeException($message); }
 
@@ -28,15 +30,18 @@ check(in_array('Content-Type: application/json', $options[CURLOPT_HTTPHEADER], t
 check($options[CURLOPT_SSL_VERIFYPEER] === true && $options[CURLOPT_SSL_VERIFYHOST] === 2, 'TLS verification');
 check($options[CURLOPT_PROTOCOLS] === CURLPROTO_HTTPS && $options[CURLOPT_FOLLOWLOCATION] === false && $options[CURLOPT_MAXREDIRS] === 0, 'HTTPS without credential redirects');
 check($options[CURLOPT_CONNECTTIMEOUT] > 0 && $options[CURLOPT_TIMEOUT] <= 15, 'Bounded request time');
-foreach (['unauthorized' => 502, 'busy' => 429, 'timeout' => 504] as $scenario => $status) {
+foreach ([
+    'unauthorized' => [502, 'UPSTREAM_AUTHENTICATION'], 'forbidden' => [502, 'UPSTREAM_ACCESS_DENIED'],
+    'unavailable' => [502, 'UPSTREAM_UNAVAILABLE'], 'http-error' => [502, 'UPSTREAM_HTTP_ERROR'],
+    'busy' => [429, 'UPSTREAM_RATE_LIMITED'], 'timeout' => [504, 'UPSTREAM_TIMEOUT'],
+    'tls' => [502, 'UPSTREAM_TLS_ERROR'], 'connection' => [502, 'UPSTREAM_CONNECTION_ERROR'],
+    'dns' => [502, 'UPSTREAM_CONNECTION_ERROR'], 'malformed' => [502, 'UPSTREAM_RESPONSE_INVALID'],
+    'oversized' => [502, 'UPSTREAM_RESPONSE_INVALID'], 'init-failed' => [502, 'PROXY_UNAVAILABLE'],
+    'options-failed' => [502, 'PROXY_UNAVAILABLE'], 'internal-error' => [502, 'PROXY_UNAVAILABLE'],
+] as $scenario => $expected) {
     $GLOBALS['scenario'] = $scenario;
-    check(coverageRequest(['key' => $key], '0000000001')['status'] === $status, 'Transport error ' . $scenario);
+    $result = coverageRequest(['key' => $key], '0000000001');
+    check($result === ['status' => $expected[0], 'data' => null, 'reason' => $expected[1]], 'Transport error ' . $scenario);
+    check(strpos(json_encode($result), $key) === false && strpos(json_encode($result), 'RAW_PRIVATE_ERROR') === false, 'Private transport details excluded');
 }
-$GLOBALS['scenario'] = 'malformed';
-try { coverageRequest(['key' => $key], '0000000001'); throw new LogicException('Malformed JSON was accepted'); }
-catch (JsonException $expected) {}
-$GLOBALS['scenario'] = 'oversized';
-$curl = curl_init(COVERAGE_API_URL);
-// The callback must reject the whole chunk instead of accumulating unbounded data.
-check(($GLOBALS['options'][CURLOPT_WRITEFUNCTION])($curl, str_repeat('x', 262145)) === 0, 'Bounded response size');
 echo "PASS fixed HTTPS request, credential boundary, identifier, transport errors, response bounds\n";

@@ -105,7 +105,20 @@ async function verify() {
       page.waitForResponse(response => isEndpoint(response, 'POST'), { timeout: 25000 }),
       page.locator('#coverage-submit').click()
     ]);
-    if (logStatus('lookup', lookup) !== 200) fail('LOOKUP_HTTP_ERROR');
+    if (logStatus('lookup', lookup) !== 200) {
+      const allowedReasons = new Set([
+        'UPSTREAM_AUTHENTICATION', 'UPSTREAM_ACCESS_DENIED', 'UPSTREAM_UNAVAILABLE', 'UPSTREAM_RATE_LIMITED',
+        'UPSTREAM_HTTP_ERROR', 'UPSTREAM_TIMEOUT', 'UPSTREAM_TLS_ERROR',
+        'UPSTREAM_CONNECTION_ERROR', 'UPSTREAM_RESPONSE_INVALID', 'PROXY_UNAVAILABLE'
+      ]);
+      let reason = 'UNKNOWN';
+      try {
+        const errorResult = await lookup.json();
+        if (allowedReasons.has(errorResult?.unavailable_reason)) reason = errorResult.unavailable_reason;
+      } catch { /* An HTML or unreadable error remains an HTTP failure. */ }
+      console.log(`coverage-browser stage=lookup reason=${reason}`);
+      fail('LOOKUP_HTTP_ERROR');
+    }
     const result = await json(lookup);
     if (result?.ok !== true || typeof result.encontrado !== 'boolean' || !Array.isArray(result.registros) ||
         result.encontrado !== (result.registros.length > 0)) {
