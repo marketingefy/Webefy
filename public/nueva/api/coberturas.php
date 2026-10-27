@@ -63,7 +63,7 @@ function coveragePrivateDirectory(): string {
     return $real;
 }
 
-function coverageRateLimit(string $directory): bool {
+function coveragePrivateSalt(string $directory): string {
     $saltPath = $directory . '/salt';
     $handle = @fopen($saltPath, 'c+');
     if (!$handle) throw new RuntimeException('rate state unavailable');
@@ -74,9 +74,28 @@ function coverageRateLimit(string $directory): bool {
             $salt = bin2hex(random_bytes(32));
             if (fwrite($handle, $salt) !== strlen($salt) || !fflush($handle)) throw new RuntimeException('rate state unavailable');
         }
+        if (!is_string($salt) || !preg_match('/^[a-f0-9]{64}$/D', $salt)) throw new RuntimeException('rate state unavailable');
+        return $salt;
     } finally { fclose($handle); }
-    $ip = (string)($_SERVER['REMOTE_ADDR'] ?? 'unknown');
-    $path = $directory . '/rate-' . hash_hmac('sha256', $ip, $salt) . '.json';
+}
+
+function coverageVisitor(string $directory, string $anonymous = ''): string {
+    // REMOTE_ADDR is supplied by PHP's server. Visitor-controlled proxy headers are never trusted.
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    if (is_string($ip) && filter_var($ip, FILTER_VALIDATE_IP) !== false) $identity = $ip;
+    else {
+        if ($anonymous === '') $anonymous = (string)($_SESSION['masivos_csrf'] ?? session_id());
+        if ($anonymous === '') throw new RuntimeException('visitor unavailable');
+        $identity = 'session:' . $anonymous;
+    }
+    // This private random salt belongs to this web server; it is never the API credential.
+    return hash_hmac('sha256', $identity, coveragePrivateSalt($directory));
+}
+
+function coverageRateLimit(string $directory, ?string $visitor = null): bool {
+    $visitor = $visitor ?? coverageVisitor($directory);
+    if (!preg_match('/^[a-f0-9]{64}$/D', $visitor)) throw new RuntimeException('visitor unavailable');
+    $path = $directory . '/rate-' . $visitor . '.json';
     $handle = @fopen($path, 'c+');
     if (!$handle) throw new RuntimeException('rate state unavailable');
     try {
@@ -147,16 +166,18 @@ function coveragePublicResult(array $data): array {
     return ['ok' => true, 'encontrado' => $data['encontrado'], 'fecha_consulta' => $consulted, 'fuentes_pendientes' => $pending, 'registros' => $records, 'advertencias' => $warnings];
 }
 
-function coverageRequest(array $config, string $cedula): array {
+function coverageRequest(array $config, string $cedula, string $visitor = ''): array {
+    if (!preg_match('/^[a-f0-9]{64}$/D', $visitor)) return ['status' => 502, 'data' => null, 'reason' => 'PROXY_UNAVAILABLE'];
     $curl = curl_init(COVERAGE_API_URL);
     if ($curl === false) return ['status' => 502, 'data' => null, 'reason' => 'PROXY_UNAVAILABLE'];
     $body = '';
     $tooLarge = false;
+    $retryAfter = 60;
     try {
         $configured = curl_setopt_array($curl, [
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => json_encode(['cedula' => $cedula]),
-            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $config['key'], 'Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $config['key'], 'X-Efy-Visitante: ' . $visitor, 'Content-Type: application/json', 'Accept: application/json'],
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_TIMEOUT => 8,
             CURLOPT_FOLLOWLOCATION => false,
@@ -164,6 +185,18 @@ function coverageRequest(array $config, string $cedula): array {
             CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_HEADERFUNCTION => static function ($handle, string $line) use (&$retryAfter): int {
+                // Keep only a bounded numeric delay, never other headers or their values.
+                if (strpos($line, 'HTTP/') === 0) $retryAfter = 60;
+                if (strncasecmp($line, 'Retry-After:', 12) === 0) {
+                    $retryAfter = 60;
+                    if (strlen($line) <= 64 && preg_match('/^Retry-After:[ \t]*([0-9]{1,4})[ \t]*\r?\n?$/iD', $line, $match)) {
+                        $seconds = (int)$match[1];
+                        if ($seconds >= 1 && $seconds <= 3600) $retryAfter = $seconds;
+                    }
+                }
+                return strlen($line);
+            },
             CURLOPT_WRITEFUNCTION => static function ($handle, string $chunk) use (&$body, &$tooLarge): int {
                 if (strlen($body) + strlen($chunk) > 262144) { $tooLarge = true; return 0; }
                 $body .= $chunk;
@@ -183,7 +216,9 @@ function coverageRequest(array $config, string $cedula): array {
         }
         if ($status !== 200) {
             $reasons = [401 => 'UPSTREAM_AUTHENTICATION', 403 => 'UPSTREAM_ACCESS_DENIED', 429 => 'UPSTREAM_RATE_LIMITED', 503 => 'UPSTREAM_UNAVAILABLE'];
-            return ['status' => $status === 429 ? 429 : 502, 'data' => null, 'reason' => $reasons[$status] ?? 'UPSTREAM_HTTP_ERROR'];
+            $failure = ['status' => $status === 429 ? 429 : 502, 'data' => null, 'reason' => $reasons[$status] ?? 'UPSTREAM_HTTP_ERROR'];
+            if ($status === 429) $failure['retry_after'] = $retryAfter;
+            return $failure;
         }
         try { $data = json_decode($body, true, 32, JSON_THROW_ON_ERROR); }
         catch (JsonException $error) { return ['status' => 502, 'data' => null, 'reason' => 'UPSTREAM_RESPONSE_INVALID']; }
@@ -226,14 +261,19 @@ function coverageHandleRequest(?callable $transport = null): void {
         if (!is_array($data)) { coverageRespond(400, ['ok' => false, 'message' => 'Revisa los datos de la consulta.']); return; }
         if (!is_string($data['csrf'] ?? null) || !hash_equals($csrf, $data['csrf'])) { coverageRespond(419, ['ok' => false, 'message' => 'La sesión de la consulta venció. Actualiza la página e inténtalo otra vez.']); return; }
         if (($data['cooperativa'] ?? '') !== 'coopartamos' || ($data['consent'] ?? null) !== true || !is_string($data['cedula'] ?? null) || !preg_match('/^[0-9]{10}$/D', $data['cedula'])) { coverageRespond(422, ['ok' => false, 'message' => 'Selecciona Coopartamos, escribe los 10 dígitos de tu cédula y confirma la autorización.']); return; }
-        if (!coverageRateLimit($directory)) { header('Retry-After: 900'); coverageRespond(429, ['ok' => false, 'message' => 'Has alcanzado el límite de consultas. Espera unos minutos o contacta al equipo de Efy.']); return; }
-        $result = ($transport ?? 'coverageRequest')($config, $data['cedula']);
+        $visitor = coverageVisitor($directory, $csrf);
+        if (!coverageRateLimit($directory, $visitor)) { header('Retry-After: 900'); coverageRespond(429, ['ok' => false, 'message' => 'Has alcanzado el límite de consultas. Espera unos minutos o contacta al equipo de Efy.']); return; }
+        $result = ($transport ?? 'coverageRequest')($config, $data['cedula'], $visitor);
         if (($result['status'] ?? 502) !== 200) {
             $status = in_array($result['status'] ?? null, [429, 504], true) ? $result['status'] : 502;
-            if ($status === 429) header('Retry-After: 60');
+            if ($status === 429) {
+                $retryAfter = $result['retry_after'] ?? null;
+                if (!is_int($retryAfter) || $retryAfter < 1 || $retryAfter > 3600) $retryAfter = 60;
+                header('Retry-After: ' . $retryAfter);
+            }
             $allowedReasons = ['UPSTREAM_AUTHENTICATION', 'UPSTREAM_ACCESS_DENIED', 'UPSTREAM_UNAVAILABLE', 'UPSTREAM_HTTP_ERROR', 'UPSTREAM_RATE_LIMITED', 'UPSTREAM_TIMEOUT', 'UPSTREAM_TLS_ERROR', 'UPSTREAM_CONNECTION_ERROR', 'UPSTREAM_RESPONSE_INVALID', 'PROXY_UNAVAILABLE'];
             $reason = in_array($result['reason'] ?? null, $allowedReasons, true) ? $result['reason'] : 'PROXY_UNAVAILABLE';
-            coverageRespond($status, ['ok' => false, 'message' => $status === 429 ? 'La consulta está temporalmente ocupada. Espera un minuto e inténtalo de nuevo.' : COVERAGE_UNAVAILABLE, 'unavailable_reason' => $reason]);
+            coverageRespond($status, ['ok' => false, 'message' => $status === 429 ? 'La consulta está temporalmente ocupada. Espera antes de intentarlo de nuevo o contacta al equipo de Efy.' : COVERAGE_UNAVAILABLE, 'unavailable_reason' => $reason]);
             return;
         }
         try { $publicResult = coveragePublicResult($result['data']); }
