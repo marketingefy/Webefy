@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-ibm-plex-hierarchy-20261026'
+SITE_VERSION = 'efy-coopartamos-20261026'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -162,6 +162,7 @@ home = f'''
   </div>
   <p class="scene-note"><span></span>EVIA, dando forma a nuestro universo digital.</p>
 </section>
+<section class="container coverage-entry" aria-labelledby="coverage-entry-title"><div><p class="eyebrow">SEGUROS DE COOPERATIVAS</p><h2 id="coverage-entry-title">Consulta con qué aseguradora<br>está tu contrato.</h2><p>Si eres socio de Coopartamos, consulta el registro de tu seguro de asistencia médica con tu cédula.</p></div><a class="button blue" href="coberturas-cooperativas.html">Consultar mi cobertura {ARROW}</a></section>
 <section class="section container" aria-labelledby="start-title">
   <div class="section-heading"><p class="eyebrow">A TU RITMO</p><h2 id="start-title">La información que necesitas.<br><span>Un lugar para encontrarla.</span></h2></div>
   <div class="editorial-links">
@@ -355,12 +356,26 @@ def subpage_intro(section, title, description, parent='asistencia.html'):
 lookup_page = subpage_intro('Asistencias', 'Tu siniestro.<br><span>Tu reembolso.</span>', 'Un espacio para dar seguimiento a tu caso.') + lookup_content
 report_page = subpage_intro('Asistencias', 'Reporta un siniestro.<br><span>Estamos para ayudarte.</span>', 'Informa lo ocurrido al equipo de Efy y conserva la referencia de tu reporte.') + report_content
 lines_page = subpage_intro('Asistencias', 'La atención correcta.<br><span>A una llamada.</span>', 'Encuentra los canales oficiales de tu aseguradora o proveedor.') + lines_content
+coverage_support_url = 'https://wa.me/593' + OPERATIVE['phones'][0][1:] + '?text=' + quote('Hola, Efy. Necesito ayuda con la consulta de mi seguro de Coopartamos.', safe='')
+coverage_page = subpage_intro('Asistencias', 'Tu cooperativa.<br><span>Tu cobertura.</span>', 'Consulta la aseguradora, el contrato y la vigencia registrados para tu seguro de asistencia médica.') + f'''
+<section class="container coverage-layout" aria-label="Consulta de seguro de cooperativas">
+  <aside class="coverage-guide"><p class="small-label">SOCIOS DE COOPARTAMOS</p><h2>Encuentra el registro<br>de tu seguro.</h2><p>La aseguradora de tu contrato puede variar según la fecha de contratación. Selecciona tu cooperativa e ingresa tu propia cédula para consultar.</p><div class="coverage-note" id="coverage-pending"><strong>Información de Privilegio pendiente</strong><p>Por ahora se consulta la cartera disponible de Proassislife. Los registros de Privilegio aún no están incorporados. Si no encuentras tu registro, contacta a Efy para revisarlo.</p></div><div class="coverage-support"><p>¿Necesitas ayuda con tu consulta o con el canal de atención de tu contrato?</p><a class="text-link" href="{escape(coverage_support_url, quote=True)}" target="_blank" rel="noopener noreferrer">Hablar con el equipo operativo de Efy {ARROW}</a><p>El equipo de Efy puede ayudarte a confirmar los teléfonos y las condiciones de tu convenio.</p></div></aside>
+  <div class="coverage-workspace" aria-busy="false"><p id="coverage-status" class="coverage-status" role="status" aria-live="polite">Comprobando disponibilidad de la consulta…</p><form id="coverage-form" autocomplete="off">
+    <fieldset><legend>01 · Confirma tu cooperativa</legend><label for="coverage-cooperative">Cooperativa</label><select id="coverage-cooperative" name="cooperativa" required><option value="">Selecciona tu cooperativa</option><option value="coopartamos">Coopartamos</option></select><div id="coverage-cooperative-card" class="coverage-cooperative" hidden><p>COOPERATIVA DE AHORRO Y CRÉDITO</p><strong>Coopartamos</strong></div><label class="coverage-check"><input id="coverage-confirm" type="checkbox" required disabled><span>Confirmo que soy socio de Coopartamos y consulto mi propio seguro.</span></label></fieldset>
+    <fieldset id="coverage-query-fields" disabled><legend>02 · Consulta tu registro</legend><label for="coverage-cedula">Número de cédula</label><input id="coverage-cedula" name="cedula" type="text" inputmode="numeric" pattern="[0-9]{{10}}" minlength="10" maxlength="10" autocomplete="off" spellcheck="false" required aria-describedby="coverage-cedula-hint"><p id="coverage-cedula-hint" class="form-hint">Ingresa los 10 dígitos, sin espacios ni guiones.</p><label class="coverage-check"><input id="coverage-consent" type="checkbox" required><span>Autorizo el uso de mi número de cédula para consultar mi registro de seguro en la cooperativa seleccionada.</span></label></fieldset>
+    <div class="coverage-actions"><button id="coverage-submit" class="button blue" type="submit" disabled>Consultar mi cobertura {ARROW}</button><button id="coverage-clear" class="text-link" type="button">Limpiar consulta</button></div>
+  </form><button id="coverage-retry" class="text-link" type="button" hidden>Reintentar conexión</button>
+  <section id="coverage-results" class="coverage-results" aria-labelledby="coverage-results-title" tabindex="-1" hidden><h2 id="coverage-results-title">Resultado de tu consulta</h2><p id="coverage-summary" class="coverage-result-summary"></p><div id="coverage-records" class="coverage-records"></div><p class="coverage-disclaimer">La vigencia corresponde al listado recibido; no acredita pagos ni cancelaciones posteriores. La atención y los beneficios se rigen por las condiciones de tu contrato. Si tu modalidad es titular más familia, en la primera llamada se registrarán los dependientes para que puedan acceder a la atención según el convenio.</p><p id="coverage-query-date" class="coverage-query-date"></p></section>
+  <noscript><p>Activa JavaScript para realizar la consulta o habla con el <a href="{escape(coverage_support_url, quote=True)}" rel="noopener noreferrer">equipo operativo de Efy</a>.</p></noscript></div>
+</section>
+'''
 assistance_hub = f'''
 <section class="assistance-hero"><div class="container"><p class="eyebrow light">ASISTENCIAS</p><h1 id="page-title">Cuando lo necesitas.<br><span>Efy, cerca de ti.</span></h1><p class="large-copy">Reporta lo ocurrido, consulta por tu caso o encuentra el canal de atención de tu aseguradora.</p></div></section>
 <section class="section container assistance-hub" aria-label="Gestiones de asistencia">
 <a class="assistance-option" id="reportar" href="reportar-siniestro.html"><span class="option-number" aria-hidden="true">01</span><div><p class="small-label">REPORTE</p><h2>Reportar un siniestro</h2><p>Cuéntanos lo ocurrido y envía los datos al equipo de Efy.</p><span class="option-action">Iniciar reporte {ARROW}</span></div></a>
 <a class="assistance-option" id="consultar-estado" href="consultas.html"><span class="option-number" aria-hidden="true">02</span><div><p class="small-label">SEGUIMIENTO</p><h2>Estado de siniestros y reembolsos</h2><p>Prepara tu consulta por cédula o placa y envíala al equipo de Efy.</p><span class="option-action">Consultar por mi caso {ARROW}</span></div></a>
 <a class="assistance-option" id="lineas-asistencia" href="lineas-asistencia.html"><span class="option-number" aria-hidden="true">03</span><div><p class="small-label">LÍNEAS OFICIALES</p><h2>Asistencia de tu aseguradora</h2><p>Teléfonos verificados, organizados por compañía y servicio.</p><span class="option-action">Buscar un teléfono {ARROW}</span></div></a>
+<a class="assistance-option" id="cobertura-cooperativas" href="coberturas-cooperativas.html"><span class="option-number" aria-hidden="true">04</span><div><p class="small-label">SEGUROS DE COOPERATIVAS</p><h2>Consulta tu cobertura</h2><p>Si eres socio de Coopartamos, consulta la aseguradora y la vigencia de tu contrato.</p><span class="option-action">Consultar mi cobertura {ARROW}</span></div></a>
 </section><section class="soft-section"><div class="container emergency-line"><div><strong>Emergencias en Ecuador</strong><p>Si hay riesgo inmediato para la vida o la seguridad, llama al ECU 911.</p></div><a class="button blue" href="tel:911">Llamar al 911 {ARROW}</a></div></section>
 '''
 
@@ -382,6 +397,7 @@ pages = [
     ('ayuda.html','Ayuda','Ayuda · Efy Seguros',help_page),
 ]
 extras = [
+    ('coberturas-cooperativas.html','Asistencias','Cobertura de cooperativas · Efy Seguros',coverage_page),
     ('consultas.html','Asistencias','Estados y reembolsos · Efy Seguros',lookup_page),
     ('reportar-siniestro.html','Asistencias','Reportar un siniestro · Efy Seguros',report_page),
     ('siniestros.html','Asistencias','Reportar un siniestro · Efy Seguros',report_page),
@@ -393,7 +409,7 @@ NAV_PREVIEWS = {
     'servicios.html': ('Nuestros servicios.', '', [('servicios.html#movilidad', 'Movilidad', ''), ('servicios.html#salud', 'Salud', ''), ('servicios.html#vida-bienestar', 'Vida y bienestar', ''), ('servicios.html#patrimonio-actividad', 'Patrimonio y actividad', '')]),
     'socios.html': ('Nuestros socios.', '', [('socios.html#partners-title', 'Todas las aseguradoras', ''), ('socios.html#partner-search', 'Buscar mi aseguradora', '')]),
     'nosotros.html': ('Conoce a Efy.', '', [('nosotros.html#nuestra-historia', 'Nuestra trayectoria', ''), ('nosotros.html#nuestro-compromiso', 'Nuestro compromiso', ''), ('nosotros.html#evia-conocenos', 'Conoce a EVIA', '')]),
-    'asistencia.html': ('Estamos para acompañarte.', '', [('reportar-siniestro.html', 'Reportar un siniestro', ''), ('consultas.html', 'Siniestros y reembolsos', ''), ('lineas-asistencia.html', 'Líneas de asistencia', '')]),
+    'asistencia.html': ('Estamos para acompañarte.', '', [('reportar-siniestro.html', 'Reportar un siniestro', ''), ('consultas.html', 'Siniestros y reembolsos', ''), ('lineas-asistencia.html', 'Líneas de asistencia', ''), ('coberturas-cooperativas.html', 'Cobertura de cooperativas', '')]),
     'resenas.html': ('Reseñas.', '', [('resenas.html#reviews-title', 'Ver reseñas', '')]),
     'contactos.html': ('Conversemos.', '', [('contactos.html#contacto-comercial', 'Equipo comercial', ''), ('contactos.html#contacto-operativo', 'Equipo operativo', ''), ('contactos.html#oficina-quito', 'Nuestra ubicación', ''), ('contactos.html#social-title', 'Redes sociales', ''), ('contactos.html#consult-title', 'Preparar una consulta', '')]),
     'ayuda.html': ('Podemos ayudarte.', '', [('ayuda.html#faq-search', 'Preguntas frecuentes', ''), ('ayuda.html#faq-reembolso-documentos', 'Documentos para reembolso', ''), ('reportar-error.html', 'Reportar un error de la web', '')]),
@@ -432,6 +448,10 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', '<script src="../assets/site/evia-about.js?v=evia-20261010" defer></script></head>')
     if filename == 'consultas.html':
         document = document.replace('</head>', f'<script src="../assets/site/asistencia.js?v={SITE_VERSION}" defer></script></head>')
+    if filename in ('index.html', 'asistencia.html', 'coberturas-cooperativas.html'):
+        document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/coberturas.css?v={SITE_VERSION}"></head>')
+    if filename == 'coberturas-cooperativas.html':
+        document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script></head>')
@@ -446,7 +466,7 @@ for filename, label, title, content in pages + extras:
                 'srcset="../assets/site/evia-avatar-180.webp 180w, ../assets/site/evia-avatar-360.webp 360w" '
                 'sizes="135px">' + image + '</picture></span>')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', avatar_picture, document)
-    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#claim-form,.claim-progress,#claim-availability,#lookup-form,.service-filters,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
+    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#coverage-form,#coverage-status,#coverage-retry,#claim-form,.claim-progress,#claim-availability,#lookup-form,.service-filters,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)
     # The root is the published product; /nueva/ remains available for old review links.
     published = document.replace('../assets/', '/assets/').replace('content="noindex,nofollow"', 'content="index,follow"')

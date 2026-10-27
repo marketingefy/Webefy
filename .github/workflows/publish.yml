@@ -24,6 +24,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Validar consulta de cobertura con datos ficticios
+        run: |
+          docker run --rm --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/site,readonly" \
+            php:8.3-cli php -l /site/public/nueva/api/coberturas.php
+          node --check public/assets/site/coberturas.js
+          python3 tests/coverage/test_api.py
       - name: Validar recepción de siniestros sin enviar correos reales
         run: |
           chmod +x tests/claims/fake-sendmail.sh
