@@ -19,12 +19,20 @@ transfiere sólo `public/` y conserva ese archivo privado.
 
 El PHP envía `POST` a
 `https://app.latamyanez.com/api/integraciones/masivos/coopartamos/consulta`,
-con Bearer y cuerpo JSON `{"cedula":"0000000001"}`. El identificador de este
+con Bearer, `X-Efy-Visitante` y cuerpo JSON `{"cedula":"0000000001"}`. El identificador de este
 ejemplo es ficticio. Consulta el
 [contrato de EfyAnalyzer](https://github.com/brazio1994/efy-analyzer/blob/main/docs/masivos-api.md)
 para mantener la equivalencia de campos. El destino HTTPS es fijo, sin
 redirecciones, con verificación TLS, un límite de ocho segundos y respuestas
 de hasta 256 KiB.
+
+`X-Efy-Visitante` es una huella HMAC-SHA256 de `REMOTE_ADDR`, calculada con la
+sal aleatoria privada de la web en `.efy-masivos/salt`. No usa la clave de la
+API como secreto y no envía la IP. Si el servidor no tiene una IP válida, usa
+la sesión anónima del formulario. La huella no aparece en respuestas públicas
+ni logs. La API exige esta cabecera desde su versión 1.196.0 y limita a diez
+consultas por minuto y sesenta por hora por visitante, con un límite global
+adicional de trescientas por minuto. Se respeta su `Retry-After` de 1–3600 segundos.
 
 HostGator necesita PHP con cURL, sesiones y acceso de salida HTTPS al destino.
 `GET` devuelve disponibilidad local, versión y token CSRF; no lee la cartera ni

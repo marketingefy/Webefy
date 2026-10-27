@@ -4,6 +4,8 @@ Run: python3 tests/coverage/test_api.py
 Requires Docker with php:8.3-cli. No real key, upstream request or customer data.
 """
 import http.cookiejar
+import hashlib
+import hmac
 import json
 import os
 from pathlib import Path
@@ -34,6 +36,7 @@ class CoverageApi(unittest.TestCase):
     def setUpClass(cls):
         cls.fixtures = Path(tempfile.mkdtemp(prefix='efy-coverage-'))
         (cls.fixtures / 'masivos.php').write_text("<?php return ['MASIVOS_API_KEY'=>'" + KEY + "','EFYANALYZER_URL'=>'https://app.latamyanez.com'];\n")
+        (cls.fixtures / 'rotated-key.php').write_text("<?php return ['MASIVOS_API_KEY'=>'" + 'y' * 48 + "','EFYANALYZER_URL'=>'https://app.latamyanez.com'];\n")
         (cls.fixtures / 'bad-url.php').write_text("<?php return ['MASIVOS_API_KEY'=>'" + KEY + "','EFYANALYZER_URL'=>'https://example.invalid'];\n")
         (cls.fixtures / 'bad-key.php').write_text("<?php return ['MASIVOS_API_KEY'=>'short','EFYANALYZER_URL'=>'https://app.latamyanez.com'];\n")
         (cls.fixtures / 'noisy-config.php').write_text("<?php echo 'private-config-output'; return ['MASIVOS_API_KEY'=>'" + KEY + "','EFYANALYZER_URL'=>'https://app.latamyanez.com'];\n")
@@ -112,7 +115,12 @@ class CoverageApi(unittest.TestCase):
         response = json.dumps(data)
         for private in ['NOMBRE PRIVADO', '0000000001', '1980-01-01', 'archivo-privado', 'private-internal-id', KEY]:
             self.assertNotIn(private, response)
-        self.assertEqual(self.calls(), [{'key': KEY, 'cedula': '0000000001'}])
+        calls = self.calls()
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(calls[0]['key'], KEY)
+        self.assertEqual(calls[0]['cedula'], '0000000001')
+        self.assertRegex(calls[0]['visitor'], r'^[a-f0-9]{64}$')
+        self.assertNotIn(calls[0]['visitor'], response)
         self.assertIn('no-store', headers['Cache-Control'])
         self.assertEqual(headers['X-Content-Type-Options'], 'nosniff')
         self.assertEqual(docker('exec', self.container, 'stat', '-c', '%a', '/fixtures/state').strip(), '700')
@@ -177,6 +185,36 @@ class CoverageApi(unittest.TestCase):
         self.assertFalse(data['ok'])
         self.assertEqual(headers['Retry-After'], '900')
         self.assertEqual(len(self.calls()), 10)
+
+    def test_visitor_identity_and_retry_after_keep_private_boundaries(self):
+        for scenario, headers in [('trusted-ip-a', {}), ('trusted-ip-a', {'X-Forwarded-For': '198.51.100.1'}),
+                                  ('trusted-ip-b', {}), ('session-identity', {}), ('session-identity', {})]:
+            status, data, _ = self.call(self.valid(), scenario=scenario, headers=headers)
+            self.assertEqual(status, 200)
+        identities = [call['visitor'] for call in self.calls()]
+        self.assertEqual(identities[0], identities[1], 'X-Forwarded-For must not control identity')
+        self.assertNotEqual(identities[0], identities[2], 'Different trusted peers need different limits')
+        self.assertEqual(identities[3], identities[4], 'Fallback must remain stable for the form session')
+        self.assertNotEqual(identities[0], identities[3])
+        salt = docker('exec', self.container, 'cat', '/fixtures/state/salt').strip()
+        self.assertEqual(identities[0], hmac.new(salt.encode(), b'192.0.2.10', hashlib.sha256).hexdigest())
+        self.assertNotEqual(identities[0], hmac.new(KEY.encode(), b'192.0.2.10', hashlib.sha256).hexdigest())
+        self.assertNotIn(salt, json.dumps(self.calls()))
+        self.assertNotIn(salt, json.dumps(data))
+        files = docker('exec', self.container, 'sh', '-c', 'ls /fixtures/state').splitlines()
+        self.assertIn('rate-' + identities[0] + '.json', files)
+        # Changing the API credential must not reset the visitor boundary.
+        self.assertEqual(self.call(self.valid())[0], 200)
+        self.assertEqual(self.call(self.valid(), scenario='rotated-key')[0], 200)
+        self.assertEqual(self.calls()[-2]['visitor'], self.calls()[-1]['visitor'])
+        self.assertNotEqual(self.calls()[-2]['key'], self.calls()[-1]['key'])
+        for scenario, expected in [('retry-min', '1'), ('retry-max', '3600'), ('retry-zero', '60'),
+                                   ('retry-large', '60'), ('retry-unsafe', '60')]:
+            with self.subTest(scenario=scenario):
+                status, data, headers = self.call(self.valid(), scenario=scenario)
+                self.assertEqual(status, 429)
+                self.assertEqual(headers['Retry-After'], expected)
+                self.assertIsNone(headers['X-Evil'])
 
     def test_missing_config_stays_unavailable_without_exposing_paths(self):
         for scenario, reason in [('unconfigured', 'CONFIG_FILE_UNAVAILABLE'), ('public-config', 'CONFIG_INVALID'),
