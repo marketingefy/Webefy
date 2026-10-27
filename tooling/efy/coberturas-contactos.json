@@ -1,0 +1,43 @@
+{
+  "cooperativa": {
+    "nombre": "Coopartamos",
+    "logo": "https://cdn.sanity.io/images/q0vsroiq/production/adcd519b2a54d4e5f939c6eb09bf3525de80cdee-100x83.webp?auto=format&fit=max&w=420",
+    "fuente": "https://agenciacreativaec.com/"
+  },
+  "aseguradoras": {
+    "PROASSISLIFE": {
+      "nombre": "Proassislife",
+      "logo": "https://proassislife.com/wp-content/uploads/2024/07/Proassislife-Medicina-Prepagada-icon.png",
+      "fuente": "https://proassislife.com/",
+      "horario": "Lunes a viernes, de 08:30 a 17:30.",
+      "contactos": [
+        {
+          "telefono": "+59323827331",
+          "mostrar": "02 382 7331 · opción 1",
+          "canal": "telefono",
+          "etiqueta": "Agendamiento de citas médicas"
+        }
+      ]
+    },
+    "PRIVILEGIO": {
+      "nombre": "Privilegio",
+      "logo": "/assets/site/partners/privilegio.png",
+      "fuente": "https://www.privilegioseguros.com.ec/contactanos/",
+      "contactos": [
+        {
+          "telefono": "+59326000700",
+          "mostrar": "02 600 0700",
+          "canal": "telefono",
+          "etiqueta": "Agendamiento de citas · Asistencia médica"
+        },
+        {
+          "telefono": "+593968524251",
+          "mostrar": "096 852 4251",
+          "canal": "whatsapp",
+          "etiqueta": "Servicio al cliente · WhatsApp"
+        }
+      ]
+    }
+  },
+  "verificado": "2026-10-27"
+}

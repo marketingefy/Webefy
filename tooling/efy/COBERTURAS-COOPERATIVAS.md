@@ -55,8 +55,16 @@ se mantiene ese aviso visible. Cero coincidencias no confirma ausencia de seguro
 Un fallo, una clave incorrecta, un límite o una respuesta inválida muestran
 indisponibilidad y permiten contactar al equipo operativo de Efy.
 
-La API todavía no entrega modalidad, beneficios, logos ni teléfonos del convenio.
-No se deducen a partir de otros campos. Se conserva una indicación condicional
+La API todavía no entrega modalidad ni beneficios. Logos y canales oficiales se
+mantienen en `tooling/efy/coberturas-contactos.json`, editables por aseguradora.
+Proassislife: 02 382 7331, opción 1, para citas (sitio oficial). Privilegio:
+02 600 0700 para citas y 096 852 4251 para servicio al cliente por WhatsApp
+(página oficial de contactos). Se muestran según la aseguradora devuelta por
+la API, incluida Privilegio cuando tenga registros. La atención depende de la
+vigencia y las condiciones del contrato. Las fuentes y la fecha de verificación
+se conservan en el JSON. El logo de Coopartamos procede del portafolio de su
+agencia; Proassislife del sitio propio y Privilegio del recurso local existente.
+Las imágenes externas usan `no-referrer` y conservan el nombre como respaldo. Se conserva una indicación condicional
 para titular más familia: registro de dependientes en la primera llamada.
 
 ## Protección y comprobación

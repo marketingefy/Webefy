@@ -96,6 +96,22 @@ async function verify() {
 
     stage = 'form';
     await page.locator('#coverage-cooperative').selectOption('coopartamos');
+    stage = 'branding';
+    const logosLoaded = await page.evaluate(async () => {
+      const config = JSON.parse(document.querySelector('#coverage-branding').textContent);
+      const urls = [config.cooperativa.logo, ...Object.values(config.aseguradoras).map(item => item.logo)];
+      return Promise.all(urls.map(src => new Promise(resolve => {
+        const img = new Image();
+        const timer = setTimeout(() => resolve(false), 10000);
+        img.referrerPolicy = 'no-referrer';
+        img.onload = () => { clearTimeout(timer); resolve(img.naturalWidth > 0); };
+        img.onerror = () => { clearTimeout(timer); resolve(false); };
+        img.src = src;
+      })));
+    });
+    if (!logosLoaded.every(Boolean)) fail('BRAND_LOGO_UNAVAILABLE');
+    console.log('coverage-browser stage=branding result=ok');
+    stage = 'form';
     await page.locator('#coverage-confirm').check();
     await page.locator('#coverage-cedula').fill('0000000001');
     await page.locator('#coverage-consent').check();
@@ -145,7 +161,7 @@ verify().catch(error => {
   const known = new Set([
     'INVALID_LOCAL_TARGET', 'BROWSER_UNAVAILABLE', 'PLAYWRIGHT_UNAVAILABLE', 'INVALID_JSON',
     'PAGE_HTTP_ERROR', 'UNEXPECTED_REDIRECT', 'CONFIGURATION_HTTP_ERROR', 'CONFIGURATION_NOT_READY',
-    'LOOKUP_HTTP_ERROR', 'INVALID_LOOKUP_RESULT', 'RESULT_SUMMARY_MISSING', 'RESULT_COUNT_MISMATCH'
+    'LOOKUP_HTTP_ERROR', 'INVALID_LOOKUP_RESULT', 'RESULT_SUMMARY_MISSING', 'RESULT_COUNT_MISMATCH', 'BRAND_LOGO_UNAVAILABLE'
   ]);
   const code = known.has(error?.verificationCode) ? error.verificationCode :
     error?.name === 'TimeoutError' ? 'STAGE_TIMEOUT' : 'VERIFICATION_FAILED';
