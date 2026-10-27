@@ -1,0 +1,29 @@
+name: Comprobar configuración privada de coberturas
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/check_masivos.py'
+      - '.github/workflows/check-masivos.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Comprobar disponibilidad sin mostrar credenciales
+        env:
+          SSH_HOST: ${{ vars.SSH_HOST || '162.241.61.73' }}
+          SSH_PORT: ${{ vars.SSH_PORT || '2222' }}
+          SSH_DIRECTORY: ${{ vars.SSH_DIRECTORY || '/home1/brayanez/public_html' }}
+          SSH_USER: ${{ vars.SSH_USER || 'brayanez' }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KEY_PASSPHRASE: ${{ secrets.SSH_KEY_PASSPHRASE }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: python3 scripts/check_masivos.py
