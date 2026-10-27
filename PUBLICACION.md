@@ -44,6 +44,13 @@ servicios y asistencia. Así se evita reutilizar rutas de módulos que el navega
 pudiera haber almacenado antes de incorporar la regla de revalidación.
 
 La conexión SFTP y el directorio del dominio se validaron desde GitHub Actions.
+La consulta de Coopartamos lee su clave desde el archivo privado
+`/home1/brayanez/efy-secrets/masivos.php`; no se transfiere ni sobrescribe durante
+la publicación. El workflow valida el PHP con datos ficticios y comprueba por
+HTTPS la disponibilidad local del endpoint y su conexión con EfyAnalyzer usando
+el identificador ficticio documentado por la API, sin registrar resultados; véase
+[Coberturas de cooperativas](tooling/efy/COBERTURAS-COOPERATIVAS.md).
+
 Datos no secretos predeterminados, obtenidos del cPanel del usuario y pruebas reales:
 
 - Host: `162.241.61.73`

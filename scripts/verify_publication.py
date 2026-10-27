@@ -1,5 +1,6 @@
 """Verify the deployed static site against the files in this GitHub commit."""
 import hashlib
+import http.cookiejar
 import json
 from pathlib import Path
 import time
@@ -8,6 +9,32 @@ import urllib.request
 import urllib.error
 
 site = Path(__file__).resolve().parents[1] / "public"
+client = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+
+
+def verify_coverage_connection(csrf):
+    """Check HostGator → EfyAnalyzer with the API's documented fictional ID.
+
+    No credential or returned record is printed or persisted.
+    """
+    request = urllib.request.Request(
+        "https://www.efyseguros.com/nueva/api/coberturas.php",
+        data=json.dumps({"cooperativa": "coopartamos", "cedula": "0000000001",
+                         "consent": True, "csrf": csrf}).encode(),
+        headers={"Origin": "https://www.efyseguros.com", "Content-Type": "application/json",
+                 "Accept": "application/json", "User-Agent": "Mozilla/5.0"},
+        method="POST",
+    )
+    with client.open(request, timeout=20) as response:
+        data = json.loads(response.read())
+        if not (response.status == 200 and data.get("ok") is True
+                and isinstance(data.get("encontrado"), bool)
+                and isinstance(data.get("registros"), list)
+                and "no-store" in response.headers.get("Cache-Control", "").lower()):
+            raise RuntimeError("Coverage upstream connection did not complete")
+    print("HostGator → EfyAnalyzer verified with a fictional identifier; no records logged.")
+
+
 for path in sorted(site.rglob("*")):
     if not path.is_file():
         continue
@@ -23,14 +50,14 @@ for path in sorted(site.rglob("*")):
     })
     if path.name == '.htaccess':
         try:
-            with urllib.request.urlopen(request, timeout=45):
+            with client.open(request, timeout=45):
                 raise RuntimeError('Apache configuration must not be publicly readable')
         except urllib.error.HTTPError as error:
             if error.code not in (403, 404):
                 raise
         print('Apache configuration is not publicly readable:', relative)
         continue
-    with urllib.request.urlopen(request, timeout=45) as response:
+    with client.open(request, timeout=45) as response:
         if response.status != 200:
             raise RuntimeError("Unexpected HTTP status for " + relative)
         content = response.read()
@@ -49,6 +76,20 @@ for path in sorted(site.rglob("*")):
             cookies = response.headers.get("Set-Cookie", "").lower()
             if "secure" not in cookies or "httponly" not in cookies:
                 raise RuntimeError("Claim form session cookie is not protected")
+        elif relative == "nueva/api/coberturas.php":
+            data = json.loads(content)
+            if not (data.get("ok") is True and data.get("ready") is True
+                    and data.get("version") == "coverage-20261026"
+                    and len(data.get("csrf", "")) == 64):
+                raise RuntimeError("Cooperative coverage lookup is not ready on the deployed server")
+            if "no-store" not in response.headers.get("Cache-Control", "").lower():
+                raise RuntimeError("Coverage responses must not be cached")
+            cookies = response.headers.get("Set-Cookie", "").lower()
+            if "secure" not in cookies or "httponly" not in cookies:
+                raise RuntimeError("Coverage lookup session cookie is not protected")
+            if set(data) != {"ok", "ready", "version", "csrf"}:
+                raise RuntimeError("Coverage configuration exposes unexpected fields")
+            verify_coverage_connection(data["csrf"])
         elif path.suffix == ".php":
             raise RuntimeError("A new PHP endpoint needs an explicit runtime check: " + relative)
         elif hashlib.sha256(content).digest() != hashlib.sha256(path.read_bytes()).digest():

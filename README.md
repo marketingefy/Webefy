@@ -15,6 +15,7 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; preguntas investigadas en fuentes oficiales, con nueve guías de documentos de reembolso por compañía, con enlaces y variantes para el chat.
 - EVIA: burbujas de conversación y menú de atención para cotizaciones, pólizas, asistencia y asesores. Panel de cristal difuminado, fucsia de la marca y botón flotante translúcido y disponible en todos los módulos. IBM Plex Sans con jerarquía 400/500/600 también dentro del chat y distintivo propio de Efy junto al nombre. Los enlaces internos conservan la versión del sitio.
 - Regenerar sus páginas compartidas: `python3 scripts/build_site.py`.
+- Consulta de seguros de Coopartamos: `coberturas-cooperativas.html`, conectada desde el PHP propio con EfyAnalyzer. [Configuración privada y alcance](tooling/efy/COBERTURAS-COOPERATIVAS.md).
 - Vistas previas, catálogo deslizante y consultas: [mejoras de interacción](MEJORAS-INTERACCION.md).
 - Diseño y contenido del sitio: [brief de la web](tooling/efy/WEB-BRIEF.md).
 - Asistencia: reporte de siniestros, líneas oficiales y preparación de consultas al equipo por cédula o placa. El registro de estados aún no está conectado. [Recepción e integración](tooling/efy/SINIESTROS.md).
