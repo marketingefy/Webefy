@@ -8,6 +8,7 @@ from urllib.parse import quote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_VERSION = 'efy-coopartamos-20261026'
+COVERAGE_VERSION = 'coverage-state-colors-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'
@@ -449,9 +450,9 @@ for filename, label, title, content in pages + extras:
     if filename == 'consultas.html':
         document = document.replace('</head>', f'<script src="../assets/site/asistencia.js?v={SITE_VERSION}" defer></script></head>')
     if filename in ('index.html', 'asistencia.html', 'coberturas-cooperativas.html'):
-        document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/coberturas.css?v={SITE_VERSION}"></head>')
+        document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/coberturas.css?v={COVERAGE_VERSION}"></head>')
     if filename == 'coberturas-cooperativas.html':
-        document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={SITE_VERSION}" defer></script></head>')
+        document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={COVERAGE_VERSION}" defer></script></head>')
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script></head>')

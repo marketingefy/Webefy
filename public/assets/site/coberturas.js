@@ -119,6 +119,8 @@
     data.registros.forEach(record => {
       const card = document.createElement('article');
       card.className = 'coverage-record';
+      const stateClass = { VIGENTE: 'vigente', VENCIDA: 'vencida' }[record.estado];
+      if (stateClass) card.classList.add('coverage-record--' + stateClass);
       const title = document.createElement('h3');
       title.textContent = text(record.aseguradora);
       const details = document.createElement('dl');
@@ -134,6 +136,7 @@
         const description = document.createElement('dd');
         term.textContent = label;
         description.textContent = value;
+        if (label === 'Estado' && stateClass) description.className = 'coverage-state';
         row.append(term, description);
         details.append(row);
       });
