@@ -11,9 +11,20 @@ if (in_array($scenario, ['bad-url', 'bad-key', 'noisy-config'], true)) putenv('E
 
 coverageHandleRequest(static function (array $config, string $cedula) use ($scenario): array {
     file_put_contents('/fixtures/calls.jsonl', json_encode(['key' => $config['key'], 'cedula' => $cedula]) . "\n", FILE_APPEND);
-    if (in_array($scenario, ['unauthorized', 'unavailable', 'busy', 'timeout'], true)) {
-        return ['status' => ['unauthorized' => 401, 'unavailable' => 503, 'busy' => 429, 'timeout' => 504][$scenario], 'data' => null];
-    }
+    $failures = [
+        'unauthorized' => [502, 'UPSTREAM_AUTHENTICATION'],
+        'forbidden' => [502, 'UPSTREAM_ACCESS_DENIED'],
+        'unavailable' => [502, 'UPSTREAM_UNAVAILABLE'],
+        'http-error' => [502, 'UPSTREAM_HTTP_ERROR'],
+        'busy' => [429, 'UPSTREAM_RATE_LIMITED'],
+        'timeout' => [504, 'UPSTREAM_TIMEOUT'],
+        'tls' => [502, 'UPSTREAM_TLS_ERROR'],
+        'connection' => [502, 'UPSTREAM_CONNECTION_ERROR'],
+        'invalid-json' => [502, 'UPSTREAM_RESPONSE_INVALID'],
+        'unsafe-reason' => [502, 'RAW_PRIVATE_ERROR_' . $config['key']],
+    ];
+    if (isset($failures[$scenario])) return ['status' => $failures[$scenario][0], 'reason' => $failures[$scenario][1], 'data' => ['private_body' => 'NOMBRE PRIVADO', 'key' => $config['key']]];
+    if ($scenario === 'internal-error') throw new RuntimeException('RAW_PRIVATE_ERROR_' . $config['key']);
     $record = [
         'id' => 'private-internal-id', 'cedula' => $cedula, 'nombre' => 'NOMBRE PRIVADO',
         'fecha_nacimiento' => '1980-01-01', 'genero' => 'PRIVADO', 'origen' => 'archivo-privado.csv',

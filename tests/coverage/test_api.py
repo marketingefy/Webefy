@@ -130,13 +130,27 @@ class CoverageApi(unittest.TestCase):
         self.assertTrue(any('pendiente' in item for item in data['advertencias']))
 
     def test_upstream_failures_do_not_become_no_matches(self):
-        for scenario, expected in [('unauthorized', 502), ('unavailable', 502), ('busy', 429), ('timeout', 504), ('malformed', 502), ('inconsistent', 502)]:
+        for scenario, expected, reason in [
+            ('unauthorized', 502, 'UPSTREAM_AUTHENTICATION'), ('forbidden', 502, 'UPSTREAM_ACCESS_DENIED'),
+            ('unavailable', 502, 'UPSTREAM_UNAVAILABLE'), ('http-error', 502, 'UPSTREAM_HTTP_ERROR'),
+            ('busy', 429, 'UPSTREAM_RATE_LIMITED'), ('timeout', 504, 'UPSTREAM_TIMEOUT'),
+            ('tls', 502, 'UPSTREAM_TLS_ERROR'), ('connection', 502, 'UPSTREAM_CONNECTION_ERROR'),
+            ('invalid-json', 502, 'UPSTREAM_RESPONSE_INVALID'), ('malformed', 502, 'UPSTREAM_RESPONSE_INVALID'),
+            ('inconsistent', 502, 'UPSTREAM_RESPONSE_INVALID'), ('unsafe-reason', 502, 'PROXY_UNAVAILABLE'),
+            ('internal-error', 502, 'PROXY_UNAVAILABLE'),
+        ]:
             with self.subTest(scenario=scenario):
+                # Each fault is independent of the visitor rate-limit test.
+                docker('exec', self.container, 'sh', '-c', 'rm -rf /fixtures/state')
                 status, data, headers = self.call(self.valid(), scenario=scenario)
                 self.assertEqual(status, expected)
                 self.assertFalse(data['ok'])
+                self.assertEqual(data['unavailable_reason'], reason)
+                self.assertEqual(set(data), {'ok', 'message', 'unavailable_reason'})
                 self.assertNotIn('registros', data)
                 self.assertNotIn('encontrado', data)
+                for private in [KEY, 'NOMBRE PRIVADO', 'RAW_PRIVATE_ERROR', 'private_body']:
+                    self.assertNotIn(private, json.dumps(data))
                 if expected == 429:
                     self.assertEqual(headers['Retry-After'], '60')
 

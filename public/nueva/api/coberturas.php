@@ -149,34 +149,48 @@ function coveragePublicResult(array $data): array {
 
 function coverageRequest(array $config, string $cedula): array {
     $curl = curl_init(COVERAGE_API_URL);
-    if ($curl === false) throw new RuntimeException('upstream unavailable');
+    if ($curl === false) return ['status' => 502, 'data' => null, 'reason' => 'PROXY_UNAVAILABLE'];
     $body = '';
-    curl_setopt_array($curl, [
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode(['cedula' => $cedula]),
-        CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $config['key'], 'Content-Type: application/json', 'Accept: application/json'],
-        CURLOPT_CONNECTTIMEOUT => 5,
-        CURLOPT_TIMEOUT => 8,
-        CURLOPT_FOLLOWLOCATION => false,
-        CURLOPT_MAXREDIRS => 0,
-        CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => 2,
-        CURLOPT_WRITEFUNCTION => static function ($handle, string $chunk) use (&$body): int {
-            if (strlen($body) + strlen($chunk) > 262144) return 0;
-            $body .= $chunk;
-            return strlen($chunk);
-        },
-    ]);
+    $tooLarge = false;
     try {
+        $configured = curl_setopt_array($curl, [
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode(['cedula' => $cedula]),
+            CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . $config['key'], 'Content-Type: application/json', 'Accept: application/json'],
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_PROTOCOLS => CURLPROTO_HTTPS,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_WRITEFUNCTION => static function ($handle, string $chunk) use (&$body, &$tooLarge): int {
+                if (strlen($body) + strlen($chunk) > 262144) { $tooLarge = true; return 0; }
+                $body .= $chunk;
+                return strlen($chunk);
+            },
+        ]);
+        if (!$configured) return ['status' => 502, 'data' => null, 'reason' => 'PROXY_UNAVAILABLE'];
         $success = curl_exec($curl);
         $status = (int)curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
-        $timeout = curl_errno($curl) === CURLE_OPERATION_TIMEDOUT;
-        if ($success === false) return ['status' => $timeout ? 504 : 502, 'data' => null];
-        if ($status !== 200) return ['status' => $status === 429 ? 429 : 502, 'data' => null];
-        $data = json_decode($body, true, 32, JSON_THROW_ON_ERROR);
-        if (!is_array($data)) throw new RuntimeException('invalid upstream response');
+        if ($success === false) {
+            $error = curl_errno($curl);
+            $timeout = $error === CURLE_OPERATION_TIMEDOUT;
+            // Stable libcurl SSL error codes; no raw error or numeric detail leaves PHP.
+            $tls = in_array($error, [35, 51, 58, 59, 60, 64, 66, 77, 80, 82, 83, 90, 91, 98], true);
+            $reason = $tooLarge ? 'UPSTREAM_RESPONSE_INVALID' : ($timeout ? 'UPSTREAM_TIMEOUT' : ($tls ? 'UPSTREAM_TLS_ERROR' : 'UPSTREAM_CONNECTION_ERROR'));
+            return ['status' => $timeout ? 504 : 502, 'data' => null, 'reason' => $reason];
+        }
+        if ($status !== 200) {
+            $reasons = [401 => 'UPSTREAM_AUTHENTICATION', 403 => 'UPSTREAM_ACCESS_DENIED', 429 => 'UPSTREAM_RATE_LIMITED', 503 => 'UPSTREAM_UNAVAILABLE'];
+            return ['status' => $status === 429 ? 429 : 502, 'data' => null, 'reason' => $reasons[$status] ?? 'UPSTREAM_HTTP_ERROR'];
+        }
+        try { $data = json_decode($body, true, 32, JSON_THROW_ON_ERROR); }
+        catch (JsonException $error) { return ['status' => 502, 'data' => null, 'reason' => 'UPSTREAM_RESPONSE_INVALID']; }
+        if (!is_array($data)) return ['status' => 502, 'data' => null, 'reason' => 'UPSTREAM_RESPONSE_INVALID'];
         return ['status' => 200, 'data' => $data];
+    } catch (Throwable $error) {
+        return ['status' => 502, 'data' => null, 'reason' => 'PROXY_UNAVAILABLE'];
     } finally { curl_close($curl); }
 }
 
@@ -217,13 +231,17 @@ function coverageHandleRequest(?callable $transport = null): void {
         if (($result['status'] ?? 502) !== 200) {
             $status = in_array($result['status'] ?? null, [429, 504], true) ? $result['status'] : 502;
             if ($status === 429) header('Retry-After: 60');
-            coverageRespond($status, ['ok' => false, 'message' => $status === 429 ? 'La consulta está temporalmente ocupada. Espera un minuto e inténtalo de nuevo.' : COVERAGE_UNAVAILABLE]);
+            $allowedReasons = ['UPSTREAM_AUTHENTICATION', 'UPSTREAM_ACCESS_DENIED', 'UPSTREAM_UNAVAILABLE', 'UPSTREAM_HTTP_ERROR', 'UPSTREAM_RATE_LIMITED', 'UPSTREAM_TIMEOUT', 'UPSTREAM_TLS_ERROR', 'UPSTREAM_CONNECTION_ERROR', 'UPSTREAM_RESPONSE_INVALID', 'PROXY_UNAVAILABLE'];
+            $reason = in_array($result['reason'] ?? null, $allowedReasons, true) ? $result['reason'] : 'PROXY_UNAVAILABLE';
+            coverageRespond($status, ['ok' => false, 'message' => $status === 429 ? 'La consulta está temporalmente ocupada. Espera un minuto e inténtalo de nuevo.' : COVERAGE_UNAVAILABLE, 'unavailable_reason' => $reason]);
             return;
         }
-        coverageRespond(200, coveragePublicResult($result['data']));
+        try { $publicResult = coveragePublicResult($result['data']); }
+        catch (Throwable $error) { coverageRespond(502, ['ok' => false, 'message' => COVERAGE_UNAVAILABLE, 'unavailable_reason' => 'UPSTREAM_RESPONSE_INVALID']); return; }
+        coverageRespond(200, $publicResult);
     } catch (Throwable $error) {
         // Do not log response bodies, credentials, cédulas, or configuration paths.
-        coverageRespond(502, ['ok' => false, 'message' => COVERAGE_UNAVAILABLE]);
+        coverageRespond(502, ['ok' => false, 'message' => COVERAGE_UNAVAILABLE, 'unavailable_reason' => 'PROXY_UNAVAILABLE']);
     }
 }
 
