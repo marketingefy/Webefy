@@ -40,10 +40,10 @@ for path in sorted(site.rglob("*")):
         if response.status != 200:
             raise RuntimeError("Unexpected HTTP status for " + relative)
         content = response.read()
-        if path.suffix == '.html' and relative.startswith('nueva/'):
+        if path.suffix == '.html':
             cache = response.headers.get('Cache-Control', '').lower()
             if not all(value in cache for value in ('no-cache', 'max-age=0', 'must-revalidate')):
-                raise RuntimeError('Preview HTML must revalidate its cached version: ' + relative)
+                raise RuntimeError('HTML must revalidate its cached version: ' + relative)
         if relative == "nueva/api/siniestros.php":
             data = json.loads(content)
             if not (data.get("ok") is True and data.get("ready") is True

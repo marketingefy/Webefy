@@ -1,5 +1,27 @@
 # Efy Seguros: el próximo capítulo
 
+## Recorrido de protección, 28 de octubre de 2026
+
+La portada conserva el taller cinematográfico y al astronauta aprobado. Sus dos
+acciones principales son Solicitar cotización y Necesito asistencia. El selector
+de Auto, Salud, Vida, Hogar y Empresa usa iconos lineales azules sobre tarjetas
+blancas, con un reflejo rosa al interactuar. Las superficies claras equilibran
+la escena espacial sin añadir imágenes de clientes o personal no confirmadas.
+
+Se mantienen grafito `#080e1d`, azul `#445ea5`, rosa `#f25c9d`, magenta `#ce005e`
+y blanco `#f8f9fc`. La tipografía de la web completa es IBM Plex Sans local:
+Regular 400 en información, Medium 500 en acciones y SemiBold 600 en títulos y
+énfasis. Los archivos del logo y videos conservan su identidad gráfica original.
+
+La animación acompaña acciones concretas: entrada breve al desplazar, elevación
+de las tarjetas con puntero y avance entre los tres pasos de una consulta. El
+movimiento reducido suprime estas transiciones. Los contenidos permanecen
+visibles si una animación o JavaScript no se ejecutan. El área Clientes reúne
+atención real; no presenta datos privados ni un portal autenticado ficticio.
+
+El resto del documento registra las decisiones anteriores y la procedencia de
+los medios que se siguen utilizando.
+
 Brief vigente: una página informativa de espera con EVIA construyendo la futura
 web en un taller digital espacial. El propietario autorizó este rediseño y la
 integración de un video de Higgsfield con reproducción de ida y vuelta.

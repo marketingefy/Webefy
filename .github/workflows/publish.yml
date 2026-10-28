@@ -25,6 +25,14 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Validar cotización guiada, navegación y configuración de caché
+        env:
+          PLAYWRIGHT_MODULE: ${{ runner.temp }}/efy-browser-verification/node_modules/playwright-core
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: |
+          python3 -m unittest discover -s tests -p test_deploy_cache.py
+          npm install --prefix "$RUNNER_TEMP/efy-browser-verification" --no-audit --no-fund playwright-core@1.56.1
+          node tests/ui/guided-experience.spec.cjs
       - name: Validar consulta de cobertura con datos ficticios
         run: |
           docker run --rm --mount "type=bind,src=$GITHUB_WORKSPACE,dst=/site,readonly" \
@@ -66,5 +74,4 @@ jobs:
           PLAYWRIGHT_MODULE: ${{ runner.temp }}/efy-browser-verification/node_modules/playwright-core
           CHROMIUM_PATH: /usr/bin/google-chrome
         run: |
-          npm install --prefix "$RUNNER_TEMP/efy-browser-verification" --no-audit --no-fund playwright-core@1.56.1
           node scripts/verify_coverage_browser.cjs

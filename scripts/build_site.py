@@ -5,9 +5,10 @@ from datetime import date
 from html import escape
 from pathlib import Path
 from urllib.parse import quote, urlsplit
+from experience_sections import need_selector, quote_page, business_page, clients_page
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-coopartamos-20261026'
+SITE_VERSION = 'efy-guided-protection-20261028'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -158,11 +159,12 @@ home = f'''
   </figure>
   <div class="container hero-copy">
     <h1 id="page-title">Elegir bien.<br>Vivir con<br><span>tranquilidad.</span></h1>
-    <p class="hero-lead">Elegir un seguro empieza por entenderlo.<br>Conoce Efy y encuentra el próximo paso para ti.</p>
-    <div class="actions"><a class="button primary" href="nosotros.html">Conócenos {ARROW}</a><button class="button ghost" type="button" data-open-chat>Habla con EVIA</button></div>
+    <p class="hero-lead">Protege lo que más importa.<br>Encuentra tu seguro con asesoría cercana.</p>
+    <div class="actions"><a class="button primary" href="cotizar.html">Solicitar cotización {ARROW}</a><a class="button ghost" href="asistencia.html">Necesito asistencia {ARROW}</a></div>
   </div>
   <p class="scene-note"><span></span>EVIA, dando forma a nuestro universo digital.</p>
 </section>
+{need_selector(ARROW)}
 <section class="container coverage-entry" aria-labelledby="coverage-entry-title"><div><p class="eyebrow">SEGUROS DE COOPERATIVAS</p><h2 id="coverage-entry-title">Consulta con qué aseguradora<br>está tu contrato.</h2><p>Si eres socio de Coopartamos, consulta el registro de tu seguro de asistencia médica con tu cédula.</p></div><a class="button blue" href="coberturas-cooperativas.html">Consultar mi cobertura {ARROW}</a></section>
 <section class="section container" aria-labelledby="start-title">
   <div class="section-heading"><p class="eyebrow">A TU RITMO</p><h2 id="start-title">La información que necesitas.<br><span>Un lugar para encontrarla.</span></h2></div>
@@ -228,7 +230,7 @@ service_cards = []
 for service in SERVICES:
     illustration_index = service_illustrations[service['id']]
     details = ''.join(f'<li>{escape(item)}</li>' for item in service['details'])
-    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}" data-service-group="{escape(service['group'], quote=True)}"><div class="service-visual" style="--tile-col:{illustration_index % 4};--tile-row:{illustration_index // 4}"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async"></div><div class="service-card-body"><p class="service-category">{escape(service['group'])}</p><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="{whatsapp_url()}">Consultar este ramo {ARROW}</a></div></article>''')
+    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}" data-service-group="{escape(service['group'], quote=True)}"><div class="service-visual" style="--tile-col:{illustration_index % 4};--tile-row:{illustration_index // 4}"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async"></div><div class="service-card-body"><p class="service-category">{escape(service['group'])}</p><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="cotizar.html?ramo={service['id']}">Solicitar cotización {ARROW}</a></div></article>''')
 service_groups = [('movilidad', 'Movilidad'), ('salud', 'Salud'), ('vida-bienestar', 'Vida y bienestar'), ('patrimonio-actividad', 'Patrimonio y actividad')]
 catalog = '<div class="catalog-nav service-filters" role="group" aria-label="Filtrar seguros por categoría"><button type="button" data-service-category="Todas" aria-pressed="true">Todos los seguros</button>' + ''.join(f'<button type="button" id="{key}" data-service-category="{escape(name, quote=True)}" aria-pressed="false">{name}</button>' for key, name in service_groups) + '</div>'
 catalog += '<div class="catalog-heading"><p>Desliza para descubrir cada opción.</p><div class="catalog-controls"><span id="service-position" role="status" aria-live="polite" aria-atomic="true"></span><div><button type="button" id="service-prev" aria-label="Ver seguro anterior" aria-controls="service-rail">' + ARROW + '</button><button type="button" id="service-next" aria-label="Ver siguiente seguro" aria-controls="service-rail">' + ARROW + '</button></div></div></div>'
@@ -236,6 +238,7 @@ catalog += '<div class="service-catalog service-rail" id="service-rail" role="re
 catalog += '<p class="form-hint">El alcance, las coberturas y los requisitos se confirman con la propuesta y las condiciones de cada póliza o plan.</p>'
 services_page = f'''
 <section class="services-hero"><div class="container services-hero-grid"><div><p class="eyebrow light">SERVICIOS</p><h1 id="page-title">Empieza por<br>lo que quieres<br><span>proteger.</span></h1><p class="large-copy">Cada elección empieza con algo que importa. Aquí reunimos la información para ayudarte a dar el siguiente paso.</p><a class="button primary" href="#catalogo">Explorar servicios {ARROW}</a></div><aside class="services-compass"><details><summary><span class="small-label">ANTES DE DECIDIR</span><span class="compass-title">Una elección clara empieza contigo.</span><span class="compass-plus" aria-hidden="true">+</span></summary><div class="compass-content"><p>¿Qué quieres proteger?</p><p>¿Qué necesitas que incluya?</p><p>¿Qué condiciones debes revisar?</p><a class="text-link" href="ayuda.html#faq-elegir">Encuentra por dónde empezar {ARROW}</a></div></details></aside></div></section>
+{need_selector(ARROW)}
 <section class="section container services-section" id="catalogo" aria-labelledby="catalog-title"><div class="section-heading"><p class="eyebrow">SEGUROS CON EFY</p><h2 id="catalog-title">Explora nuestros seguros.</h2></div>{catalog}</section>
 <section class="soft-section"><div class="container"><div class="section-heading"><p class="eyebrow">PARA COMPARAR MEJOR</p><h2>Hay más que un precio<br><span>en cada propuesta.</span></h2></div><div class="principles service-checklist"><article><h3>Qué incluye.</h3><p>Revisa los riesgos cubiertos y los límites de cada cobertura. Pide que te expliquen cualquier concepto que no esté claro.</p><a class="text-link" href="ayuda.html#faq-cobertura">Entender las coberturas {ARROW}</a></article><article><h3>Qué asumes tú.</h3><p>Comprueba cómo se aplica el deducible y qué parte de un evento cubierto te corresponde pagar.</p><a class="text-link" href="ayuda.html#faq-deducible">Entender el deducible {ARROW}</a></article><article><h3>Qué queda fuera.</h3><p>Lee las exclusiones y las condiciones que debes cumplir. La protección concreta se define en la póliza.</p><a class="text-link" href="ayuda.html#faq-exclusiones">Revisar las exclusiones {ARROW}</a></article></div></div></section>
 <section class="section container help-cta"><div><p class="eyebrow">TU SIGUIENTE PASO</p><h2>Lleva tus preguntas claras.</h2><p>Prepara tu consulta o conversa con EVIA sobre conceptos generales.</p></div><div class="actions"><a class="button blue" href="contactos.html#consult-title">Preparar mi consulta {ARROW}</a><button class="text-link" type="button" data-open-chat>Consultar a EVIA {ARROW}</button></div></section>
@@ -401,6 +404,9 @@ pages = [
     ('ayuda.html','Ayuda','Ayuda · Efy Seguros',help_page),
 ]
 extras = [
+    ('cotizar.html','Cotización','Solicita tu cotización · Efy Seguros',quote_page(SERVICES, ARROW, whatsapp_url())),
+    ('empresas.html','Empresas','Seguros para empresas · Efy Seguros',business_page(SERVICES, ARROW)),
+    ('clientes.html','Clientes','Clientes · Efy Seguros',clients_page(ARROW, whatsapp_url())),
     ('coberturas-cooperativas.html','Asistencias','Cobertura de cooperativas · Efy Seguros',coverage_page),
     ('consultas.html','Asistencias','Estados y reembolsos · Efy Seguros',lookup_page),
     ('reportar-siniestro.html','Asistencias','Reportar un siniestro · Efy Seguros',report_page),
@@ -419,6 +425,35 @@ NAV_PREVIEWS = {
     'ayuda.html': ('Podemos ayudarte.', '', [('ayuda.html#faq-search', 'Preguntas frecuentes', ''), ('ayuda.html#faq-reembolso-documentos', 'Documentos para reembolso', ''), ('reportar-error.html', 'Reportar un error de la web', '')]),
 }
 
+# Grouped navigation keeps every published module reachable at its original URL.
+NAV_GROUPS = [
+    ('servicios.html', 'Seguros', {'Servicios', 'Cotización'}),
+    ('empresas.html', 'Empresas', {'Empresas'}),
+    ('asistencia.html', 'Asistencias', {'Asistencias'}),
+    ('nosotros.html', 'Nosotros', {'Conócenos', 'Socios estratégicos', 'Reseñas'}),
+    ('clientes.html', 'Clientes', {'Clientes', 'Contáctanos', 'Ayuda'}),
+]
+NAV_PREVIEWS['servicios.html'][2].insert(0, ('cotizar.html', 'Solicitar cotización', ''))
+NAV_PREVIEWS['empresas.html'] = ('Tu empresa.', '', [
+    ('empresas.html#business-title', 'Protección para empresas', ''),
+    ('servicios.html#seguro-pymes', 'Seguro para pymes', ''),
+    ('servicios.html#seguro-responsabilidad-civil', 'Responsabilidad civil', ''),
+    ('servicios.html#seguro-transporte-pesado', 'Transporte pesado', ''),
+    ('cotizar.html?ramo=pymes', 'Asesoría para mi empresa', ''),
+])
+NAV_PREVIEWS['nosotros.html'][2].extend([
+    ('socios.html', 'Socios estratégicos', ''), ('resenas.html', 'Reseñas', ''),
+    ('contactos.html', 'Contáctanos', ''),
+])
+NAV_PREVIEWS['clientes.html'] = ('Atención para clientes.', '', [
+    ('clientes.html', 'Accesos para clientes', ''),
+    ('coberturas-cooperativas.html', 'Cobertura de cooperativas', ''),
+    ('consultas.html', 'Siniestros y reembolsos', ''),
+    ('contactos.html#contacto-operativo', 'Hablar con el equipo', ''),
+    ('ayuda.html', 'Centro de ayuda', ''),
+    ('reportar-error.html', 'Reportar un error', ''),
+])
+
 def navigation_item(filename, name, current, active_page):
     _, _, links = NAV_PREVIEWS[filename]
     panel_id = 'nav-preview-' + filename.removesuffix('.html')
@@ -434,11 +469,11 @@ def navigation_item(filename, name, current, active_page):
 
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
-    nav = ''.join(navigation_item(file, name, name == label, filename) for file,name,_,_ in pages)
+    nav = ''.join(navigation_item(file, name, label in owners, filename) for file,name,owners in NAV_GROUPS)
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
 <body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><picture><source type="image/webp" srcset="../assets/efy-brand-360.webp 360w, ../assets/efy-brand-720.webp 720w" sizes="(max-width:760px) 144px, 178px"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887" fetchpriority="high" decoding="async"></picture></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><button class="header-chat" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></header>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><picture><source type="image/webp" srcset="../assets/efy-brand-360.webp 360w, ../assets/efy-brand-720.webp 720w" sizes="(max-width:760px) 144px, 178px"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887" fetchpriority="high" decoding="async"></picture></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><a class="button primary header-quote" href="cotizar.html">Solicitar cotización {ARROW}</a></div></header>
 <main id="contenido">{content}</main>
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>© 2026 Efy Seguros.</p><span>Tu mejor elección.</span></div></div></footer>
 <button class="chat-fab" type="button" data-open-chat aria-controls="evia-dialog" aria-expanded="false"><img src="../assets/site/evia-portrait.jpg" alt="" width="40" height="40"><span>Habla con EVIA</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H5l-3 3V11.5a9 9 0 0 1 18 0Z"/></svg></button>
@@ -458,12 +493,12 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={COVERAGE_VERSION}" defer></script></head>')
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
-    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script></head>')
+    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)
     document = document.replace('<meta name="robots"', f'<meta name="efy-site-version" content="{SITE_VERSION}"><meta name="robots"')
-    document = re.sub(r'href="([a-z0-9-]+\.html)(#[^"]*)?"', lambda match: f'href="{match[1]}?v={SITE_VERSION}{match[2] or ""}"', document)
+    document = re.sub(r'href="([a-z0-9-]+\.html)(\?[^"#]*)?(#[^"]*)?"', lambda match: f'href="{match[1]}{match[2] or "?"}{"&amp;" if match[2] else ""}v={SITE_VERSION}{match[3] or ""}"', document)
     def avatar_picture(match):
         image = re.sub(r'width="[0-9]+" height="[0-9]+"', 'width="960" height="1280"', match[1])
         return ('<span class="evia-avatar"><picture><source type="image/webp" '

@@ -1,0 +1,59 @@
+/* Efy's protection selector: warm pink light on blue crystal, with room to read. */
+.header-quote{font-size:.8125rem;gap:12px;white-space:nowrap;flex-shrink:0}
+.site-nav .nav-link{font-size:.8125rem;letter-spacing:.045em}
+.site-nav .nav-item:last-child>.nav-link{color:var(--pink)}
+.hero-copy .actions{max-width:none}
+.protection-section{position:relative;background:var(--canvas)}
+.protection-heading{display:flex;justify-content:space-between;align-items:end;gap:32px}
+.protection-heading>p{max-width:380px;color:var(--muted);margin:0}
+.protection-heading h2 span{color:var(--magenta)}
+.protection-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+.protection-card{position:relative;display:flex;flex-direction:column;min-width:0;min-height:264px;padding:28px 22px 22px;background:white;border:1px solid var(--line);border-radius:18px;text-decoration:none;overflow:hidden;transition:transform 220ms var(--ease),border-color 220ms ease,box-shadow 220ms ease}
+.protection-icon{width:38px;height:42px;margin-bottom:24px;color:var(--blue);transition:color 220ms ease,transform 220ms var(--ease)}
+.protection-card h3{font-size:1.375rem;margin-bottom:12px}
+.protection-card p{font-size:.875rem;line-height:1.6;color:var(--muted);margin:0 0 24px}
+.protection-link{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:auto;color:#a81555;font-size:.75rem;font-weight:500}
+.protection-link svg{width:17px;height:17px;transition:transform 220ms var(--ease)}
+.protection-all{margin-top:28px}
+.business-grid,.client-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.business-card{background:var(--glass-white);padding:32px;border:1px solid var(--line);border-radius:18px;box-shadow:var(--glass-shadow)}
+.business-card p{color:var(--muted);font-size:.9375rem;margin:18px 0 20px}
+.business-detail{display:block;font-size:.8125rem;margin-top:18px;color:var(--muted);text-underline-offset:4px}
+.client-action{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:32px;background:white;border:1px solid var(--line);border-radius:18px;text-decoration:none;transition:border-color 200ms ease,transform 200ms var(--ease)}
+.client-action h3{font-size:1.375rem}.client-action p{color:var(--muted);font-size:.9375rem;margin:12px 0 0;max-width:460px}.client-action>svg{color:var(--blue)}
+.client-access-note{border-left:2px solid var(--pink);padding:6px 0 6px 28px;margin-top:48px;max-width:800px}.client-access-note h3{font-size:1.375rem}.client-access-note p{color:var(--muted);font-size:.9375rem}
+.quote-intro{padding-bottom:32px}
+.quote-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:84px;align-items:start;padding-top:24px}
+.quote-guide{padding-top:26px}.quote-guide h2{font-size:2rem}.quote-guide>p:not(.eyebrow),.quote-guide li{font-size:.9375rem;color:var(--muted);line-height:1.8}.quote-guide ul{padding:12px 0 12px 20px}.quote-guide li+li{margin-top:10px}.quote-guide>.text-link{font-size:.8125rem;max-width:370px;line-height:1.6}
+.quote-workspace{min-width:0;background:var(--glass-white);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:var(--glass-shadow);scroll-margin-top:24px}
+.quote-step-label{font-size:.8125rem;color:var(--blue);margin:0 0 10px}
+#quote-progress{display:block;appearance:none;-webkit-appearance:none;width:100%;height:4px;border:0;background:#e7eaf3;border-radius:4px;margin-bottom:34px;overflow:hidden;color:var(--magenta)}
+#quote-progress::-webkit-progress-bar{background:#e7eaf3;border-radius:4px}#quote-progress::-webkit-progress-value{background:var(--magenta);border-radius:4px;transition:width 240ms ease}#quote-progress::-moz-progress-bar{background:var(--magenta);border-radius:4px}
+.quote-step{margin:0;padding:0;border:0;min-width:0;animation:efy-step-in 180ms ease-out}
+.quote-step legend{font-size:1.75rem;font-weight:600;line-height:1.25;letter-spacing:-.025em;margin-bottom:16px;padding:0;max-width:100%}
+.quote-step legend:focus{outline:0}.quote-step>p{color:var(--muted);font-size:.9375rem;line-height:1.7;margin:0 0 26px}
+.quote-step label{display:block;font-size:.875rem;margin:22px 0 10px;color:var(--ink)}.quote-step label span{color:var(--muted)}
+.quote-step select,.quote-step textarea{display:block;width:100%;min-height:50px;border:1px solid #b6c1d7;border-radius:10px;padding:12px 14px;background:#fff;color:var(--ink);font-size:1rem;line-height:1.6;resize:vertical}
+.quote-step select{padding-right:26px;text-overflow:ellipsis}.quote-step textarea[readonly]{background:var(--canvas)}.quote-step p.form-hint{font-size:.8125rem;margin-top:14px;margin-bottom:22px}
+.quote-controls{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:30px}.quote-controls #quote-next{margin-left:auto}.quote-share{margin-top:20px}.quote-share .button{font-size:.8125rem;padding-inline:20px;gap:12px}#quote-copy-status{font-size:.8125rem;color:var(--muted);margin:12px 0 0}
+/* Elements stay readable before JS and when printing; motion is an enhancement. */
+.motion-reveal{opacity:1;transform:none}
+.motion-reveal.is-revealed{animation:efy-reveal 440ms var(--ease) both}
+@keyframes efy-reveal{from{opacity:.35;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes efy-step-in{from{opacity:.5;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media(hover:hover) and (pointer:fine){
+ .protection-card:hover{transform:translateY(-5px);border-color:#f25c9d8c;box-shadow:0 14px 34px #17233d0a,inset 0 2px 0 #f25c9d80}
+ .protection-card:hover .protection-icon{color:var(--magenta);transform:translateY(-2px)}
+ .protection-card:hover .protection-link svg{transform:translateX(3px)}
+ .client-action:hover{border-color:var(--blue);transform:translateY(-3px)}
+}
+@media(max-width:1180px),(hover:none),(pointer:coarse){.header-quote{display:none}}
+@media(max-width:1100px){.protection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.quote-layout{gap:40px}.quote-workspace{padding:28px}.header-inner{gap:24px}}
+@media(max-width:760px){
+ .protection-heading{display:block}.protection-heading>p{margin-top:22px;font-size:.9375rem}
+ .protection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.protection-card{padding:24px 18px 20px;min-height:250px}.protection-card:last-child{grid-column:1/-1;min-height:0;display:grid;grid-template-columns:42px minmax(0,1fr);gap:6px 18px}.protection-card:last-child .protection-icon{grid-row:1/4;align-self:center;margin:0}.protection-card:last-child h3{margin:0}.protection-card:last-child p{margin:0}.protection-card:last-child .protection-link{justify-content:start;gap:14px}.protection-card h3{font-size:1.25rem}.protection-card p{font-size:.8125rem}.protection-link{font-size:.6875rem;gap:4px}.protection-link svg{width:16px}
+ .business-grid,.client-grid{grid-template-columns:1fr;gap:16px}.business-card,.client-action{padding:26px}.business-card h3{font-size:1.375rem}.client-action h3{font-size:1.25rem}.client-access-note{margin-top:34px;padding-left:22px}
+ .quote-layout{grid-template-columns:1fr;gap:30px}.quote-guide{padding-top:0}.quote-guide h2{font-size:1.75rem}.quote-guide ul{display:none}.quote-workspace{padding:26px 22px;order:-1}.quote-step legend{font-size:1.5rem}.quote-share{align-items:stretch;flex-direction:column}.quote-share .text-link{width:fit-content}.quote-intro .large-copy{font-size:1.0625rem}
+}
+@media(max-width:350px){.protection-card{padding-inline:14px}.protection-link{font-size:.625rem}.quote-workspace{padding:24px 18px}}
+@media(prefers-reduced-motion:reduce){.motion-reveal.is-revealed,.quote-step{animation:none}.protection-card,.protection-icon,.protection-link svg,.client-action,#quote-progress::-webkit-progress-value{transition:none}.protection-card:hover,.protection-card:hover .protection-icon,.protection-card:hover .protection-link svg,.client-action:hover{transform:none}}

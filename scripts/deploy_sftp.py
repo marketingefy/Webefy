@@ -8,6 +8,29 @@ import sys
 import tempfile
 import uuid
 
+CACHE_START = '# BEGIN EFY HTML REVALIDATION'
+CACHE_END = '# END EFY HTML REVALIDATION'
+CACHE_RULES = f'''{CACHE_START}
+<IfModule mod_headers.c>
+  <FilesMatch "\\.html$">
+    Header always set Cache-Control "no-cache, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+{CACHE_END}'''
+
+
+def merge_html_cache_rules(existing):
+    """Preserve cPanel, HTTPS and other site rules while managing only our block."""
+    starts, ends = existing.count(CACHE_START), existing.count(CACHE_END)
+    if starts != ends or starts > 1:
+        raise ValueError('Ambiguous Efy cache block; refusing to replace Apache configuration')
+    if starts:
+        first, last = existing.index(CACHE_START), existing.index(CACHE_END)
+        if last < first:
+            raise ValueError('Invalid Efy cache block order')
+        return existing[:first] + CACHE_RULES + existing[last + len(CACHE_END):]
+    return existing + ('\n' if existing and not existing.endswith('\n') else '') + CACHE_RULES + '\n'
+
 
 def required(name):
     value = os.environ.get(name, "").strip()
@@ -113,12 +136,35 @@ def publish(check_only=False):
         batch_path = root / "commands"
         batch_path.write_text("\n".join(commands) + "\n")
         with key_agent(root, key_path, os.environ.get("SSH_KEY_PASSPHRASE", "")) as agent_env:
-            subprocess.run([
-                "sftp", "-b", str(batch_path), "-i", str(key_path), "-P", str(port),
+            sftp_command = [
+                "sftp", "-i", str(key_path), "-P", str(port),
                 "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes",
                 "-o", "StrictHostKeyChecking=yes", "-o", "ConnectTimeout=30",
-                "-o", "UserKnownHostsFile=" + str(hosts_path), user + "@" + host,
-            ], check=True, env=agent_env)
+                "-o", "UserKnownHostsFile=" + str(hosts_path),
+            ]
+            if not check_only:
+                # The server's root .htaccess is not owned by this repo. Read and
+                # merge it instead of overwriting existing hosting configuration.
+                cache_path = root / 'existing-htaccess'
+                read_batch = root / 'read-cache'
+                read_batch.write_text('cd "' + directory + '"\nget ".htaccess" "' + str(cache_path) + '"\n')
+                fetched = subprocess.run(sftp_command + ['-b', str(read_batch), user + '@' + host],
+                                         env=agent_env, capture_output=True, text=True, timeout=60)
+                if fetched.returncode:
+                    missing = re.search(r'(?:File "[^"\n]*\.htaccess" not found|(?:stat|open) remote "[^"\n]*\.htaccess": No such file or directory)', fetched.stderr)
+                    if not missing:
+                        raise ValueError('Could not read existing Apache configuration; publication stopped to preserve it')
+                    existing = ''
+                else:
+                    existing = cache_path.read_text()
+                merged = root / 'merged-htaccess'
+                merged.write_text(merge_html_cache_rules(existing))
+                remote_cache = '.efy-cache-' + uuid.uuid4().hex
+                # Apply the cache rule after the assets and before the new homepage.
+                commands[-2:-2] = ['put "' + str(merged) + '" "' + remote_cache + '"',
+                                   'rename "' + remote_cache + '" ".htaccess"']
+                batch_path.write_text('\n'.join(commands) + '\n')
+            subprocess.run(sftp_command + ['-b', str(batch_path), user + '@' + host], check=True, env=agent_env)
     if check_only:
         print("SSH authentication and site directory access verified. No remote files modified.")
     else:

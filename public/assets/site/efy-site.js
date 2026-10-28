@@ -48,9 +48,9 @@
     inicio: {
       text: 'Hola, soy EVIA, tu asistente virtual de Efy. ¿En qué puedo ayudarte?',
       options: [
-        { menu: 'cotizar', label: 'Solicitar una cotización' },
-        { menu: 'poliza', label: 'Dudas sobre mi póliza' },
-        { menu: 'asistencia', label: 'Siniestros y asistencia' },
+        { href: 'cotizar.html', label: 'Solicitar asesoría y cotización' },
+        { menu: 'poliza', label: 'Entender mi póliza' },
+        { menu: 'asistencia', label: 'Necesito asistencia' },
         { faq: 'contacto', label: 'Hablar con un asesor' }
       ]
     },
@@ -215,6 +215,12 @@
         reportLink.href = siteLink('reportar-siniestro.html');
         reportLink.textContent = 'Reportar en Asistencia →';
         entry.append(reportLink);
+      }
+      if (faqId === 'cotizar') {
+        const quoteLink = document.createElement('a');
+        quoteLink.href = siteLink('cotizar.html');
+        quoteLink.textContent = 'Preparar mi solicitud de cotización →';
+        entry.append(quoteLink);
       }
       if (faqId === 'servicios') {
         const servicesLink = document.createElement('a');
