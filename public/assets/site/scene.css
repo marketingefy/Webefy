@@ -1,0 +1,18 @@
+/* All light cycles are slow and continuous; the text and character are untouched. */
+.workshop{overflow:hidden}
+.scene-effects{position:absolute;inset:0;overflow:hidden;pointer-events:none;clip-path:inset(0 0 0 54%);opacity:0}
+.effects-aligned .scene-effects{opacity:1}
+.scene-layer{position:absolute;left:0;top:0;width:var(--scene-width);height:var(--scene-height);max-width:none;transform-origin:0 0;transform:var(--scene-transform)}
+.scene-mobile{display:none}
+.holo-panel{stroke-width:1;opacity:.15;animation:panel-breathe 12s ease-in-out infinite}
+.holo-secondary{animation-duration:15s;animation-delay:-6s}
+.holo-line{stroke-width:2;stroke-linecap:round;stroke-dasharray:12 88;opacity:.35;animation:line-current 10s linear infinite}
+.holo-line-pink{animation-duration:14s;animation-delay:-7s;opacity:.25}
+.holo-particles{opacity:.22;animation:particle-drift 15s ease-in-out infinite}
+@keyframes panel-breathe{0%,100%{opacity:.12}50%{opacity:.45}}
+@keyframes line-current{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes particle-drift{0%,100%{opacity:.14;transform:translateY(3px)}50%{opacity:.4;transform:translateY(-5px)}}
+.effects-paused :is(.holo-panel,.holo-line,.holo-particles){animation-play-state:paused}
+@media(max-width:760px){.scene-desktop{display:none}.scene-mobile{display:block}.scene-effects{clip-path:inset(0 0 20% 0)}.holo-panel{animation-duration:15s}.holo-line{stroke-width:1.5}}
+@media(prefers-reduced-motion:reduce){.scene-effects{display:none}.holo-panel,.holo-line,.holo-particles{animation:none}}
+@media(prefers-reduced-transparency:reduce){.scene-effects{display:none}}

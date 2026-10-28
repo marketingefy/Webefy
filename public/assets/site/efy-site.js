@@ -426,32 +426,5 @@
     updateReviews();
   }
 
-  const video = document.querySelector('.workshop-video');
-  if (video) {
-    const scene = document.querySelector('.workshop');
-    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    const mobile = matchMedia('(max-width:760px)');
-    let visible = true;
-    let failed = false;
-    let attempt = 0;
-    const canPlay = () => !reduced.matches && !navigator.connection?.saveData && !document.hidden && visible && !failed;
-    async function playback() {
-      const request = ++attempt;
-      if (!canPlay()) { video.pause(); return; }
-      if (!video.getAttribute('src')) video.src = mobile.matches ? '../assets/evia-workshop-loop-mobile.mp4?v=evia-wide-restored-20261009' : '../assets/evia-workshop-loop.mp4?v=evia-wide-restored-20261009';
-      try {
-        await video.play();
-        if (request !== attempt || !canPlay()) { if (!canPlay()) video.pause(); return; }
-        scene.classList.add('is-ready');
-      } catch { /* Keep the poster when autoplay is unavailable. */ }
-    }
-    const preferenceChanged = () => { if (reduced.matches || navigator.connection?.saveData) scene.classList.remove('is-ready'); playback(); };
-    video.addEventListener('error', () => { failed = true; scene.classList.remove('is-ready'); video.pause(); });
-    reduced.addEventListener('change', preferenceChanged);
-    navigator.connection?.addEventListener('change', preferenceChanged);
-    document.addEventListener('visibilitychange', playback);
-    if ('IntersectionObserver' in window) new IntersectionObserver(entries => { visible = entries[0].isIntersecting; playback(); }).observe(scene);
-    playback();
-  }
   if (glassPreview) openChat(fab);
 })();

@@ -121,3 +121,15 @@ beneficios; Medium 500 para botones y llamados a la acción. Los tres pesos se
 precargan en las páginas compartidas. Se elimina Nunito de los estilos activos
 del sitio y se aplica IBM Plex Sans también a la conversación de EVIA.
 Los tamaños y el interlineado siguen siendo adaptables para móvil y escritorio.
+
+## Ambiente holográfico, 28 de octubre de 2026
+
+La portada mantiene la imagen original del taller como fondo fijo. EVIA no se
+anima: se retira la reproducción de video en Inicio. Capas SVG separadas añaden
+luz a las pantallas y recorridos luminosos sobre líneas existentes de la mesa.
+Los ciclos continuos duran entre 10 y 15 segundos, sin parpadeos. Las capas se
+alinean al recorte real de la imagen y se enmascaran fuera de la zona del texto.
+En móvil se usan solo dos partículas; no se utiliza movimiento por cursor.
+El movimiento o transparencia reducidos ocultan las capas, y la pestaña oculta,
+el ahorro de datos o la escena fuera de pantalla pausan las animaciones.
+El video de Conócenos y los medios originales se conservan.

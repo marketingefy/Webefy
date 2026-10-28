@@ -8,7 +8,7 @@ from urllib.parse import quote, urlsplit
 from experience_sections import need_selector, quote_page, business_page, clients_page
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-guided-protection-20261028'
+SITE_VERSION = 'efy-holographic-scene-20261028'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -155,7 +155,22 @@ home = f'''
 <section class="home-hero" aria-labelledby="page-title">
   <figure class="workshop" aria-hidden="true">
     <picture><source media="(max-width:760px)" srcset="../assets/evia-workshop-mobile.webp?v=evia-wide-restored-20261009"><img src="../assets/evia-workshop.webp?v=evia-wide-restored-20261009" alt="" width="1280" height="720" fetchpriority="high"></picture>
-    <video class="workshop-video" muted playsinline loop preload="none" tabindex="-1"></video><div class="workshop-shade"></div>
+    <div class="scene-effects" aria-hidden="true">
+      <svg class="scene-layer scene-desktop" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="panel-light"><stop stop-color="#789cff" stop-opacity=".04"/><stop offset=".55" stop-color="#aabfff" stop-opacity=".24"/><stop offset="1" stop-color="#f25c9d" stop-opacity=".12"/></linearGradient></defs>
+        <path class="holo-panel" d="M937 128 1140 91 1140 316 937 334Z" fill="url(#panel-light)" stroke="#b1c6ff"/>
+        <path class="holo-panel holo-secondary" d="m1008 329 122 0 0 70-122 0Z" fill="url(#panel-light)" stroke="#a2baff"/>
+        <path class="holo-line" d="M858 431Q1080 450 1275 427" stroke="#c8d4ff" pathLength="100"/>
+        <path class="holo-line holo-line-pink" d="M858 464Q1045 512 1274 469" stroke="#f25c9d" pathLength="100"/>
+        <g class="holo-particles" fill="#c1d1ff"><circle cx="970" cy="170" r="1.6"/><circle cx="1100" cy="210" r="1.2"/><circle cx="1160" cy="155" r="1.4"/><circle cx="1040" cy="370" r="1.2"/><circle cx="1190" cy="400" r="1.4"/><circle cx="1250" cy="260" r="1.1"/></g>
+      </svg>
+      <svg class="scene-layer scene-mobile" viewBox="0 0 720 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path class="holo-panel" d="M422 145 655 102 655 352 422 374Z" fill="#789cff" fill-opacity=".08" stroke="#b1c6ff"/>
+        <path class="holo-line" d="M400 478Q560 495 720 477" stroke="#c8d4ff" pathLength="100"/>
+        <path class="holo-line holo-line-pink" d="M410 530Q560 568 720 535" stroke="#f25c9d" pathLength="100"/>
+        <g class="holo-particles" fill="#c1d1ff"><circle cx="460" cy="190" r="1.5"/><circle cx="600" cy="300" r="1.3"/></g>
+      </svg>
+    </div><div class="workshop-shade"></div>
   </figure>
   <div class="container hero-copy">
     <h1 id="page-title">Elegir bien.<br>Vivir con<br><span>tranquilidad.</span></h1>
@@ -483,6 +498,8 @@ for filename, label, title, content in pages + extras:
 </body></html>'''
     if filename in ('reportar-siniestro.html', 'siniestros.html'):
         document = document.replace('</head>', f'<script src="../assets/site/siniestros.js?v={SITE_VERSION}" defer></script></head>')
+    if filename == 'index.html':
+        document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/scene.css?v={SITE_VERSION}"><script src="../assets/site/scene.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'nosotros.html':
         document = document.replace('</head>', '<script src="../assets/site/evia-about.js?v=evia-20261010" defer></script></head>')
     if filename == 'consultas.html':
