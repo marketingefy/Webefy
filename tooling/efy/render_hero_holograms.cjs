@@ -3,7 +3,7 @@ const {chromium}=require('playwright');
 const http=require('node:http'),fs=require('node:fs/promises'),path=require('node:path');
 const {once}=require('node:events');
 const root=path.resolve(__dirname,'../..');
-const output='/workspace/output/efy-evia-traje-giro-20261029';
+const output=process.env.EFY_HERO_OUTPUT || '/workspace/output/efy-evia-traje-giro-20261029';
 const full=process.argv.includes('--render');
 const server=http.createServer(async(req,res)=>{try{
  const route=new URL(req.url,'http://localhost').pathname;
@@ -30,7 +30,7 @@ const server=http.createServer(async(req,res)=>{try{
  const rotations=[];
  for(let i=0;i<3;i++){
   const matrices=[];
-  for(const phase of [.25,.5,.75]){await page.evaluate(t=>window.setHologramTime(t),[1,4.2,7.4][i]+phase*2.5);matrices.push(await page.locator('.turner').nth(i).evaluate(e=>Array.from(new DOMMatrix(getComputedStyle(e).transform).toFloat64Array(),v=>Math.round(v*1e6)/1e6||0)));}
+  for(const phase of [.25,.5,.75]){await page.evaluate(t=>window.setHologramTime(t),[1,4,7][i]+phase*2.5);matrices.push(await page.locator('.turner').nth(i).evaluate(e=>Array.from(new DOMMatrix(getComputedStyle(e).transform).toFloat64Array(),v=>Math.round(v*1e6)/1e6||0)));}
   rotations.push(matrices);
  }
  const assert=require('node:assert/strict');assert.deepEqual(rotations[0],rotations[1]);assert.deepEqual(rotations[1],rotations[2]);

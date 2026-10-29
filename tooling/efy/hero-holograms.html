@@ -1,6 +1,6 @@
 <!doctype html><html lang="es"><head><meta charset="utf-8"><style>
 @font-face{font-family:Plex;src:url('/font.woff2');font-weight:500}*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:#080e1d}.stage{position:relative;width:1280px;height:720px;overflow:hidden}.background{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.background.video{opacity:0}.ready .background.video{opacity:1}
-.hologram{position:absolute;width:112px;height:104px;perspective:650px;isolation:isolate;color:#dceaff;font:500 10px Plex,sans-serif;--glow:0;--angle:0deg}
+.hologram{position:absolute;width:112px;height:104px;perspective:650px;isolation:isolate;color:#dceaff;font:500 10px Plex,sans-serif;--glow:0;--angle:0deg;transform:translateY(var(--lift,0px))}
 .glass{position:absolute;inset:0 0 11px;border:1px solid #b6d8ff80;border-radius:10px;background:linear-gradient(135deg,#d4e6ff13,#4a86bd0c);box-shadow:inset 0 1px 0 #fff3,0 0 9px #57b7ff38;backdrop-filter:blur(1px)}
 .glass::after{content:'';position:absolute;inset:-1px;border:1px solid #ff8fc3;border-radius:10px;opacity:var(--glow);box-shadow:0 0 16px #f25c9d77,inset 0 0 16px #f25c9d18}
 .turner{position:absolute;left:6px;right:6px;top:4px;height:78px;transform-style:preserve-3d;transform:rotateY(var(--angle))}
@@ -12,8 +12,8 @@
 </style></head><body><div class="stage"><img class="background" src="/escena-referencia.jpg"><video class="background video" muted playsinline preload="auto" src="/base.mp4"></video><div id="cards"></div></div><script>
 const SPECS=[
  {name:'Vehículo',x:.580,y:.440,start:1,bbox:[43,231,744,390]},
- {name:'Hogar',x:.665,y:.480,start:4.2,bbox:[819,64,656,571]},
- {name:'Salud',x:.750,y:.520,start:7.4,bbox:[1595,92,474,555]}
+ {name:'Hogar',x:.665,y:.480,start:4,bbox:[819,64,656,571]},
+ {name:'Salud',x:.750,y:.520,start:7,bbox:[1595,92,474,555]}
 ];
 for(const spec of SPECS){
  const node=document.createElement('div');node.className='hologram';node.style.left=(spec.x*1280-56)+'px';node.style.top=(spec.y*720)+'px';node.dataset.name=spec.name;
@@ -24,7 +24,7 @@ for(const spec of SPECS){
 }
 const video=document.querySelector('video');
 window.setHologramTime=t=>{
- for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),ease=p*p*(3-2*p);s.node.style.setProperty('--angle',(360*ease)+'deg');s.node.style.setProperty('--glow',String(Math.sin(Math.PI*p)*.85));}
+ for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),ease=p*p*(3-2*p);s.node.style.setProperty('--lift',(-3*Math.sin(Math.PI*p))+'px');s.node.style.setProperty('--angle',(360*ease)+'deg');s.node.style.setProperty('--glow',String(Math.sin(Math.PI*p)*.85));}
 };
 window.drawFrame=async t=>{
  if(video.readyState<2)await new Promise((resolve,reject)=>{video.addEventListener('loadeddata',resolve,{once:true});video.addEventListener('error',reject,{once:true});});
