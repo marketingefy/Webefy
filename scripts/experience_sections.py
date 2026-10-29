@@ -13,10 +13,10 @@ NEEDS = [
 
 def need_selector(arrow):
     cards = ''.join(
-        f'<a class="protect-card protection-card" href="cotizar.html?ramo={key}" style="--delay:-{i * 1.7}s;--col:{tile % 4};--row:{tile // 4}">'
-        '<span class="product-stage"><span class="floor-ring"></span><span class="model"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy"></span>'
+        f'<a class="protect-card protection-card" href="cotizar.html?ramo={key}" style="--delay:-{i * 1.7}s">'
+        f'<span class="product-stage"><span class="floor-ring"></span><span class="model model-single"><img src="../assets/site/needs/{key}.webp" alt="" width="300" height="300" decoding="async"></span>'
         f'<span class="product-symbol">{arrow}</span></span><div class="product-body"><h3 class="product-title">{title}</h3><p class="product-copy">{description}</p><span class="product-action">Solicitar cotización {arrow}</span></div></a>'
-        for i, (key, title, description, tile) in enumerate(NEEDS)
+        for i, (key, title, description, _tile) in enumerate(NEEDS)
     )
     return f'''<div class="premium-home premium-selector"><section class="protection section shell protection-section" id="que-proteger" aria-labelledby="protection-title"><div class="section-top protection-heading"><div><p class="eyebrow">Una elección muy tuya</p><h2 id="protection-title">¿Qué quieres <span>proteger?</span></h2></div></div><div class="protection-grid">{cards}</div><div class="catalog-bottom"><p>Protección para personas, familias y empresas.</p><a class="text-action" href="servicios.html#catalogo">Explorar nuestros seguros {arrow}</a></div></section></div>'''
 

@@ -41,6 +41,19 @@ const root = path.resolve(__dirname, '../../public');
       assert.deepEqual(await page.locator('.hero-copy .actions a').allTextContents().then(a => a.map(t => t.trim())), ['Solicitar cotización', 'Necesito asistencia']);
       const needs = await page.locator('.protection-card').evaluateAll(nodes => nodes.map(n => ({url:n.href, title:n.querySelector('h3').textContent})));
       assert.deepEqual(needs.map(n => n.title), ['Auto','Salud','Vida','Hogar','Empresa']);
+      // Each need has its own in-frame image: Safari must not lazy-load an
+      // oversized, offscreen sprite whose selected tile can remain blank.
+      for (const card of await page.locator('.protection-card').all()) {
+        await card.scrollIntoViewIfNeeded();
+        const image = card.locator('.model-single img');
+        await image.evaluate(img => img.decode());
+        assert.equal(await image.getAttribute('loading'), null);
+        assert.equal(await image.evaluate(img => img.naturalWidth), 300);
+        const imageBox = await image.boundingBox(), stageBox = await card.locator('.product-stage').boundingBox();
+        assert.ok(imageBox.width > 60 && imageBox.height > 60);
+        assert.ok(imageBox.x >= stageBox.x && imageBox.x + imageBox.width <= stageBox.x + stageBox.width + 1);
+        assert.ok(Math.min(imageBox.y + imageBox.height, stageBox.y + stageBox.height) > Math.max(imageBox.y, stageBox.y));
+      }
       for (const need of needs) {
         const target = new URL(need.url);
         assert.equal(target.pathname, prefix + 'cotizar.html');
@@ -157,7 +170,7 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname,
-        width <= 760 ? '/assets/evia-seleccion-premium-mobile-20261029.mp4' : '/assets/evia-seleccion-premium-20261029.mp4');
+        width <= 760 ? '/assets/evia-interacciones-mobile-20261029.mp4' : '/assets/evia-interacciones-20261029.mp4');
       const media = await animationPage.locator('.scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, width <= 760 ? 720 : 1280);
       assert.equal(media.duration, 11.5);
