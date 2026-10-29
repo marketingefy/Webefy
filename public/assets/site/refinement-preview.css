@@ -1,0 +1,125 @@
+/* Review proposal. IBM Plex Sans and the established Efy palette are retained. */
+.premium-header .brand{width:180px;opacity:.94;transition:opacity 180ms ease}
+.premium-header .brand:hover,.premium-header .brand:focus-visible{opacity:1}
+@media(max-width:1250px){.premium-header .brand{width:162px}}
+@media(max-width:760px){.premium-header .brand{width:148px}}
+.premium-header .nav-products{width:320px}
+.premium-header .nav-products .nav-preview-links{display:flex;flex-direction:column;gap:0}
+.premium-header .nav-products .nav-preview-link{font-size:13px}
+
+/* White partner marks receive their approved dark support, never a recolor. */
+.premium-home .ally-logo{height:124px;padding:12px;flex-direction:column;gap:9px}
+.premium-home .ally-mark{display:grid;place-items:center;width:100%;min-height:0;height:67px;padding:9px;border-radius:8px}
+.premium-home .ally-mark.on-dark{background:#17233d}
+.premium-home .ally-mark img{width:100%;height:100%;max-height:49px;object-fit:contain}
+.premium-home .ally-name{color:#445270;text-align:center;font-size:11px;font-weight:500;line-height:1.35}
+
+/* A film dissolves on all four edges into the exact navy module surface. */
+.evia-film{position:relative;width:100%;max-width:470px;aspect-ratio:3/4;margin:0;isolation:isolate;mix-blend-mode:lighten;justify-self:center;overflow:hidden;
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent),linear-gradient(0deg,transparent,#000 10%,#000 92%,transparent);
+ mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent),linear-gradient(0deg,transparent,#000 10%,#000 92%,transparent);
+ -webkit-mask-composite:source-in;mask-composite:intersect}
+.evia-film>img,.evia-film>video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:contain}
+.evia-film>video{opacity:0;transition:opacity 350ms ease;pointer-events:none}
+.evia-film.is-playing>video{opacity:1}
+.about-hero .evia-film{max-width:440px}
+.premium-home .about-art{height:auto;max-width:470px;aspect-ratio:3/4;width:100%;justify-self:center}
+.premium-home .about-art>.evia-film{height:100%;width:100%}
+.reviews-intro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:70px;align-items:center}
+.reviews-intro-grid .evia-film{max-width:420px}
+.reviews-intro-grid .button{margin-top:30px}
+.reviews-hero:has(.reviews-intro-grid){padding-block:18px 38px}
+.reviews-intro-grid h1{font-size:clamp(48px,4.6vw,68px)}
+.premium-home .reviews-band{background:var(--ink);color:var(--white);overflow:hidden}
+.premium-home .reviews-band-grid{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:60px;padding-block:30px}
+.premium-home .reviews-band h2>span,.premium-home .reviews-band .eyebrow{color:var(--pink)}
+.premium-home .reviews-band p:not(.eyebrow){color:#b2bbce;margin-block:24px;font-size:16px}
+.premium-home .reviews-band .text-action{color:#d1dbf2;border-bottom:1px solid #f25c9d55}
+.premium-home .reviews-band .evia-film{max-width:360px}
+
+/* Contact's glass hub links the illustration to real contact destinations. */
+.contact-premium-hero{background:#080e1d;color:#f8f9fc;overflow:hidden;padding-block:32px 58px}
+.contact-premium-grid{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:55px;min-height:400px}
+.contact-premium h1{font-size:clamp(44px,4.8vw,72px);line-height:1.07;max-width:700px}
+.contact-premium h1>span{color:#f25c9d}
+.contact-premium-hero .large-copy{color:#b2bbce;font-size:18px;max-width:460px;margin-block:26px 30px}
+.contact-operating-link{display:inline-flex;align-items:center;gap:16px;min-height:48px;color:#d3ddf3;text-decoration:none;font-size:14px;font-weight:500}
+.contact-hub{position:relative;width:100%;max-width:470px;height:360px;justify-self:center;isolation:isolate}
+.contact-hub::before{content:'';position:absolute;inset:10% 8%;border-radius:50%;background:radial-gradient(ellipse,#445ea54d,transparent 68%);z-index:-1}
+.contact-hub-orbit{position:absolute;inset:13% 2%;border:1px solid #9cb6f447;border-radius:50%;transform:rotate(-24deg);box-shadow:inset 0 0 25px #445ea515,0 0 30px #445ea50c}
+.contact-hub-orbit.inner{inset:7% 12%;transform:rotate(24deg);border-color:#f25c9d40}
+.contact-hub-core{position:absolute;inset:24% 19%;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:25px 14px;border-radius:28px;border:1px solid #c8d7ff66;transform:rotate(-5deg);background:linear-gradient(140deg,#536fba55,#23345d55);backdrop-filter:blur(18px);box-shadow:0 25px 60px #0005,inset 0 1px 0 #fff3}
+.contact-hub-message{display:grid;place-items:center;border-radius:16px;width:57px;height:57px;background:linear-gradient(135deg,#f25c9d33,#ce005e11);border:1px solid #f25c9d70;color:#f6add0;box-shadow:inset 0 1px 0 #fff3}
+.contact-hub-message svg{width:29px;height:29px}
+.contact-hub-core p{font-size:13px;line-height:1.6;color:#afbedc;margin:16px 0 0}
+.contact-hub-core strong{color:#edf2ff;font-weight:500}
+.contact-hub-port{position:absolute;display:flex;align-items:center;gap:9px;padding:13px 17px;border:1px solid #aac5ff5c;border-radius:15px;background:linear-gradient(130deg,#365185b3,#17233dd4);backdrop-filter:blur(15px);box-shadow:0 14px 28px #0003,inset 0 1px 0 #fff2;color:#e2eaff;text-decoration:none;font-size:12px;font-weight:500;transition:transform 220ms ease,border-color 220ms ease;animation:contact-port-float 10s ease-in-out infinite}
+.contact-hub-port svg{width:20px;height:20px;color:#b6c9fb}
+.hub-commercial{left:1%;top:7%;border-color:#f25c9d66;animation-delay:-2s}.hub-commercial svg{color:#f3a2c5}
+.hub-operative{right:0;top:18%;animation-delay:-5s}
+.hub-email{left:0;bottom:9%;animation-delay:-7s}
+.hub-location{right:4%;bottom:3%;animation-delay:-3s}
+.contact-hub-port:hover{border-color:#f25c9d;transform:translateY(-4px);animation-play-state:paused}
+@keyframes contact-port-float{0%,100%{translate:0 0}50%{translate:0 -7px}}
+.contact-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:1px solid #c9d3e8;border-radius:18px;background:#fff;position:relative;margin-top:-24px;box-shadow:0 12px 40px #17233d0a;padding:8px;gap:8px}
+.contact-shortcuts a{min-height:55px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 18px;text-decoration:none;font-size:14px;font-weight:500;border-radius:11px;color:#445ea5;transition:background 180ms ease}
+.contact-shortcuts a:hover{background:#eef2fa}.contact-shortcuts svg{width:18px;height:18px}
+.contact-premium-directory{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:30px;padding-block:64px 36px;align-items:stretch}
+.contact-team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.contact-team{background:linear-gradient(140deg,#fff,#f4f6fc);border:1px solid #cbd5e9;border-radius:22px;padding:28px;box-shadow:0 10px 35px #17233d06;scroll-margin-top:24px}
+.contact-team-title{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.contact-team-title .eyebrow{margin:0}.contact-team-title .eyebrow::before{display:none}
+.contact-symbol{display:grid;place-items:center;width:42px;height:42px;flex-shrink:0;border:1px solid #f25c9d55;border-radius:13px;background:#f25c9d0d;color:#a92261}
+#contacto-operativo .contact-symbol{color:#445ea5;border-color:#445ea54d;background:#445ea50a}
+.contact-symbol svg{width:23px;height:23px}
+.contact-team h2{font-size:24px;letter-spacing:-.03em;line-height:1.2}
+.contact-team>p{font-size:14px;line-height:1.65;min-height:48px;color:#64718a;margin-block:16px 25px}
+.contact-direct-phone{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:55px;border-top:1px solid #dce1eb;color:#17233d;text-decoration:none;font-size:20px;font-weight:500;letter-spacing:-.02em}
+.contact-direct-phone svg{width:18px;height:18px;color:#aa205f;transition:translate 180ms ease}
+.contact-direct-phone:hover{color:#a82260}.contact-direct-phone:hover svg{translate:3px}
+.contact-channel-label{display:block;font-size:11px;font-weight:500;color:#64718a;padding-top:13px}
+.contact-email-panel{grid-column:1/-1;padding:28px 30px;border:1px solid #cbd5e9;border-radius:22px;background:white}
+.contact-email-panel .contact-team-title{margin-bottom:12px}
+.contact-email-panel .contact-symbol{color:#445ea5;border-color:#445ea530;background:#445ea50a}
+.contact-mail-row{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-block:17px;text-decoration:none;border-top:1px solid #e1e6f0;color:#445ea5}
+.contact-mail-row small{display:block;color:#64718a;font-size:12px;margin-bottom:5px}
+.contact-mail-row strong{font-size:16px;font-weight:500;overflow-wrap:anywhere}
+.contact-mail-row svg{width:18px;height:18px}
+.contact-office{position:relative;background:radial-gradient(ellipse at 100% 0,#445ea536,transparent 65%),#101a2e;border:1px solid #6e89c966;border-radius:24px;overflow:hidden;color:#f8f9fc;padding:36px;scroll-margin-top:24px}
+.contact-office::after{content:'';position:absolute;width:220px;height:220px;border:1px solid #f25c9d20;border-radius:50%;right:-100px;bottom:40px;pointer-events:none}
+.contact-office-icon{display:grid;place-items:center;width:58px;height:58px;border:1px solid #c2d2ff44;border-radius:18px;color:#f3a1c5;background:#445ea522;margin-bottom:30px}
+.contact-office-icon svg{width:29px;height:29px}
+.contact-office .eyebrow{font-size:12px;margin-bottom:15px}
+.contact-office h2{font-size:46px;line-height:1.1;letter-spacing:-.04em}.contact-office h2>span{color:#a9bde9}
+.contact-office address{display:grid;gap:5px;font-style:normal;font-size:14px;line-height:1.75;color:#c3cee4;margin-block:27px}
+.contact-office .button{font-size:12px;padding-inline:19px;gap:16px;width:100%}
+.contact-office-help{border-top:1px solid #ffffff22;margin-top:34px;padding-top:20px}
+.contact-office-help p{font-size:12px;color:#aab9d5;margin:0}
+.contact-office-help .text-link{color:#f0a0c6;border-color:#f25c9d55;font-size:13px}
+.contact-social-premium{padding-bottom:65px}
+.contact-social-premium .contact-department{padding:26px 30px;border:1px solid #d4ddec;border-radius:22px;background:#eef2fa}
+.contact-social-premium .small-label{font-size:14px;color:#17233d;font-weight:600;letter-spacing:0;text-transform:none;margin:0 0 20px}
+.contact-social-premium .contact-social-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.contact-social-premium .contact-social-link{border:1px solid #c9d3e8;background:#fff;border-radius:15px;padding:20px;box-shadow:0 8px 22px #17233d05}
+.contact-social-premium .contact-social-text>strong{color:#17233d}
+@media(max-width:1100px){.contact-premium-grid{gap:25px}.contact-premium-directory{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px}.contact-team-grid{gap:16px}.contact-team{padding:22px}.contact-direct-phone{font-size:17px}.contact-office{padding:28px}.reviews-intro-grid{gap:35px}}
+@media(max-width:900px){.contact-premium-grid{grid-template-columns:1fr .8fr}.contact-hub{height:330px}.contact-hub-port{padding:11px;font-size:11px}.contact-hub-core{inset:23% 12%}.contact-premium-directory{grid-template-columns:1fr}.contact-office{display:block}.contact-office .button{width:auto}.contact-office address{max-width:450px}.contact-office-help{max-width:450px}.contact-shortcuts a{font-size:12px;padding-inline:12px}.reviews-intro-grid{gap:24px}.reviews-intro-grid h1{font-size:46px}}
+@media(max-width:760px){
+ .premium-home .hero h1{font-size:clamp(48px,14.2vw,66px)}
+ .premium-home .ally-logo{height:114px;padding:9px;gap:5px}.premium-home .ally-mark{height:58px;padding:8px}.premium-home .ally-name{font-size:10px;line-height:1.35}
+ .premium-home .about-art{height:auto;max-width:350px;aspect-ratio:3/4}.premium-home .about-art>.evia-film{height:100%}
+ .about-hero .evia-film{max-width:340px}
+ .reviews-intro-grid{grid-template-columns:1fr;gap:8px}.reviews-intro-grid h1{font-size:clamp(42px,11vw,58px)}
+ .reviews-intro-grid .evia-film{max-width:310px}.reviews-hero:has(.reviews-intro-grid){padding-block:40px 10px}
+ .premium-home .reviews-band-grid{grid-template-columns:1fr;gap:0;padding-block:50px 0}.premium-home .reviews-band .evia-film{max-width:310px}
+ .premium-home .reviews-band p:not(.eyebrow){font-size:14px}.premium-home .reviews-band h2{font-size:36px}
+ .contact-premium-hero{padding-block:32px 48px}.contact-premium-grid{grid-template-columns:1fr;gap:20px}.contact-premium h1{font-size:clamp(40px,10vw,58px)}
+ .contact-premium-hero .large-copy{font-size:16px;margin-block:22px 25px}.contact-premium .actions{gap:14px}.contact-premium .actions .button{font-size:12px;gap:12px;padding-inline:18px}.contact-operating-link{font-size:12px;gap:10px}
+ .contact-hub{height:310px;max-width:390px}.contact-hub-core{inset:25% 17%;padding:15px 10px}.contact-hub-core p{font-size:11px;margin-top:12px}.contact-hub-message{width:44px;height:44px;border-radius:13px}.contact-hub-message svg{width:24px;height:24px}
+ .contact-hub-port{font-size:11px;padding:12px;gap:7px}.contact-hub-port svg{width:18px;height:18px}
+ .contact-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:6px}.contact-shortcuts a{min-height:46px;font-size:12px;padding:10px 12px}
+ .contact-premium-directory{padding-block:38px 24px}.contact-team-grid{grid-template-columns:1fr;gap:18px}.contact-team{padding:26px}.contact-team>p{min-height:0;margin-block:15px 24px}.contact-direct-phone{font-size:23px;min-height:59px}
+ .contact-email-panel{padding:25px}.contact-mail-row strong{font-size:14px}.contact-mail-row small{font-size:11px}.contact-office{padding:30px}.contact-office h2{font-size:43px}.contact-office .button{width:100%;font-size:11px;gap:12px}
+ .contact-social-premium{padding-bottom:45px}.contact-social-premium .contact-department{padding:25px}.contact-social-premium .contact-social-links{grid-template-columns:1fr;gap:14px}.contact-social-premium .contact-social-link{padding:18px}
+}
+@media(prefers-reduced-motion:reduce){.contact-hub-port{animation:none}.evia-film>video{display:none}.evia-film>video,.premium-header .brand{transition:none}}

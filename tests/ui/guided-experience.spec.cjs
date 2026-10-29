@@ -113,6 +113,14 @@ const root = path.resolve(__dirname, '../../public');
 
       await page.setViewportSize({width:1440,height:1000});
       await page.goto(base + prefix + 'index.html');
+      assert.equal(await page.locator('#page-title').innerText(), 'Elegir bien.\nVivir con\ntranquilidad.');
+      for (const name of ['Servicios','Asistencias','Aliados','Conócenos','Contacto','Ayuda']) {
+        const trigger = page.locator(`[aria-label="Desplegar opciones de ${name}"]`);
+        await trigger.hover();
+        assert.equal(await trigger.getAttribute('aria-expanded'), 'true');
+        const id = await trigger.getAttribute('aria-controls');
+        assert.equal(await page.locator('#' + id).isVisible(), true);
+      }
       await page.locator('[aria-label="Desplegar opciones de Conócenos"]').click();
       assert.equal(await page.locator('#nav-preview-nosotros').isVisible(), true);
       await page.keyboard.press('Escape');
@@ -149,10 +157,10 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname,
-        width <= 760 ? '/assets/evia-premium-gestures-mobile-20261029.mp4' : '/assets/evia-premium-gestures-20261029.mp4');
+        width <= 760 ? '/assets/evia-premium-consistent-preview-mobile.mp4' : '/assets/evia-premium-consistent-preview.mp4');
       const media = await animationPage.locator('.scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, width <= 760 ? 720 : 1280);
-      assert.ok(media.duration > 10 && media.duration < 13);
+      assert.equal(media.duration, 9.5);
       assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
       await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);

@@ -7,9 +7,11 @@ from pathlib import Path
 from urllib.parse import quote, urlsplit
 from experience_sections import need_selector, quote_page, business_page, clients_page
 from premium_site import premium_home
+from premium_contact import premium_contact
+from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-evia-gestos-20261029'
+SITE_VERSION = 'efy-preview-modulos-20261029'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -157,7 +159,7 @@ home = premium_home(PARTNERS, ABOUT, CONTACTS, ARROW, need_selector(ARROW), phon
 experience_stats = ''.join(f'<article class="experience-stat"><p class="experience-number"><span aria-hidden="true">{item["prefix"]}<span data-count="{item["years"]}">{item["years"]}</span> años</span><span class="sr-only">{item["prefix"]}{item["years"]} años</span></p><p>{escape(item["text"])}</p></article>' for item in ABOUT['milestones'])
 about_story = ''.join(f'<p>{escape(paragraph)}</p>' for paragraph in ABOUT['paragraphs'])
 about = f'''
-<section class="about-hero"><div class="container about-grid"><div><p class="eyebrow light">Conócenos</p><h1 id="page-title">Efy Seguros.<br><span>Tu mejor elección.</span></h1><p class="large-copy">La confianza se construye escuchando.<br>La tranquilidad, acompañándote.</p><a class="button primary" href="#nuestra-historia">Conoce nuestra historia {ARROW}</a></div><figure class="portrait-panel evia-motion" id="evia-conocenos"><img src="../assets/site/evia-about-poster.webp?v=evia-20261010" alt="EVIA, nuestra astronauta de traje crema y detalles magenta, interactuando con un panel holográfico azul sobre fondo grafito" width="720" height="960" fetchpriority="high"><video class="evia-portrait-video" muted playsinline loop preload="none" tabindex="-1" aria-hidden="true" data-source="../assets/site/evia-about-loop.mp4?v=evia-20261010"></video><figcaption>Nuestra guía digital.</figcaption></figure></div></section>
+<section class="about-hero"><div class="container about-grid"><div><p class="eyebrow light">Conócenos</p><h1 id="page-title">Efy Seguros.<br><span>Tu mejor elección.</span></h1><p class="large-copy">La confianza se construye escuchando.<br>La tranquilidad, acompañándote.</p><a class="button primary" href="#nuestra-historia">Conoce nuestra historia {ARROW}</a></div>{evia_film('conocenos', 'EVIA presenta una trayectoria de luz y un escudo que protege a una familia', 'evia-conocenos')}</div></section>
 <section class="section container experience-section" id="nuestra-historia" aria-labelledby="experience-title"><div class="experience-stats">{experience_stats}</div><div class="experience-intro"><h2 id="experience-title">{escape(ABOUT['headline'])}</h2><p>{escape(ABOUT['intro'])}</p></div></section>
 <section class="about-story-section" id="nuestro-compromiso"><div class="container about-story"><p class="eyebrow">Lo que nos mueve</p><div>{about_story}<a class="button primary" href="{whatsapp_url()}">Hablar con Efy por WhatsApp {ARROW}</a></div></div></section>
 '''
@@ -169,26 +171,13 @@ consult_section = f'''
 office_lines = [line[:1].upper() + line[1:] for line in CONTACTS['address'].split(', ', 2)]
 office_address = ''.join(f'<span>{escape(line.replace(", oficina", " · Oficina"))}</span>' for line in office_lines)
 
-department_rows = ''
-for department in CONTACTS['departments']:
-    phones = ''
-    for phone in department['phones']:
-        commercial = department['name'] == 'Comercial'
-        destination = phone_whatsapp_url(phone)
-        channel = 'WhatsApp comercial' if commercial else 'WhatsApp operativo'
-        phones += f'<div class="contact-phone"><a href="{destination}" aria-label="{channel}: {display_phone(phone)}">{display_phone(phone)} {ARROW}</a><span>{channel}</span></div>'
-    department_rows += f'<section class="contact-department" id="contacto-{escape(department["name"].lower(), quote=True)}"><p class="small-label">{escape(department["name"])}</p><p>{escape(department["description"])}</p><div class="contact-phones">{phones}</div></section>'
-email_rows = ''.join(f'<div class="contact-email"><span>{escape(item["label"])}</span><a href="mailto:{item["address"]}">{escape(item["address"])} {ARROW}</a></div>' for item in CONTACTS['emails'])
 social_icons = {
     'instagram': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>',
     'facebook': '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.8 22v-9.1h3.1l.5-3.5h-3.6V7.1c0-1 .3-1.7 1.8-1.7h1.9V2.3c-.3 0-1.5-.1-2.8-.1-2.8 0-4.6 1.7-4.6 4.8v2.4H7v3.5h3.1V22Z"/></svg>',
 }
 social_cards = ''.join(f'<a class="contact-social-link" href="{escape(item["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Efy Seguros en {escape(item["name"], quote=True)}: {escape(item["label"], quote=True)} (abre una nueva pestaña)"><span class="contact-social-icon {item["platform"]}">{social_icons[item["platform"]]}</span><span class="contact-social-text"><span>{escape(item["name"])}</span><strong>{escape(item["label"])}</strong></span>{ARROW}</a>' for item in CONTACTS.get('social_profiles', []))
-social_section = f'<section class="contact-department contact-social" aria-labelledby="social-title"><h2 class="small-label" id="social-title">CONECTA CON EFY</h2><div class="contact-social-links">{social_cards}</div></section>' if social_cards else ''
-contact = f'''
-<section class="page-intro container"><p class="eyebrow">Contáctanos</p><h1 id="page-title">Conversemos.<br><span>Estamos cerca de ti.</span></h1><p class="large-copy intro-copy">Elige el equipo que necesitas o visítanos en Quito.</p></section>
-<section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department" id="contacto-correos"><p class="small-label">Correos</p>{email_rows}</section>{social_section}</div><aside class="office-panel" id="oficina-quito"><p class="eyebrow light">Encuéntranos</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="{escape(CONTACTS['maps_url'], quote=True)}" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
-''' + consult_section
+social_section = f'<section class="contact-department contact-social" aria-labelledby="social-title"><h2 class="small-label" id="social-title">Conecta con Efy</h2><div class="contact-social-links">{social_cards}</div></section>' if social_cards else ''
+contact = premium_contact(CONTACTS, ARROW, phone_whatsapp_url, social_section, office_address) + consult_section
 
 # Tile identity follows the service ID, so reordering the catalogue keeps each image.
 service_illustrations = {
@@ -221,7 +210,7 @@ def partner_logo(partner):
     if not partner.get('logo'):
         return ''
     background = ' on-dark' if partner.get('logo_dark') else ''
-    return f'<div class="partner-logo{background}"><img src="../{partner["logo"]}" alt="{escape(partner["name"], quote=True)}" width="240" height="100" loading="lazy"></div>'
+    return f'<div class="partner-logo{background}"><img src="../{partner["logo"]}" alt="{escape(partner["name"], quote=True)}" width="240" height="100" loading="eager"></div>'
 
 def partner_card(partner):
     website = (f'<a class="text-link" href="{escape(partner["website"], quote=True)}" rel="noopener noreferrer">Sitio oficial {ARROW}</a>' if partner.get('website') else '')
@@ -267,7 +256,7 @@ if DEMO_REVIEWS:
 review_profile_label = 'Ver más reseñas' if REVIEWS else 'Leer reseñas en el perfil de Efy'
 review_profile_link = (f'<a class="button blue" href="{escape(REVIEW_PROFILE, quote=True)}" rel="noopener noreferrer">{review_profile_label} {ARROW}</a>' if REVIEW_PROFILE else '')
 reviews_page = f'''
-<section class="reviews-hero"><div class="container"><p class="eyebrow light">Reseñas de clientes</p><h1 id="page-title">Tu experiencia<br><span>también cuenta.</span></h1><p class="large-copy">La confianza se construye en cada conversación. Tu opinión nos ayuda a seguir acompañándote mejor.</p></div></section>
+<section class="reviews-hero"><div class="container reviews-intro-grid"><div><p class="eyebrow light">Reseñas de clientes</p><h1 id="page-title">Tu experiencia<br><span>también cuenta.</span></h1><p class="large-copy">La confianza se construye en cada conversación. Tu opinión nos ayuda a seguir acompañándote mejor.</p><a class="button primary" href="#reviews-title">Conoce nuestro espacio de reseñas {ARROW}</a></div>{evia_film('resenas', 'EVIA escucha y agradece junto a dos burbujas de conversación')}</div></section>
 <section class="section container reviews-section" aria-labelledby="reviews-title"><div class="section-heading"><p class="eyebrow"{' id="reviews-demo-label"' if DEMO_REVIEWS else ''}>{'Opiniones de demostración' if DEMO_REVIEWS else 'En sus propias palabras'}</p><h2 id="reviews-title">{'Cercanía, en cada conversación.' if DEMO_REVIEWS else 'Voces de nuestros clientes.'}</h2></div>{review_catalog}{f'<div class="review-source">{review_profile_link}</div>' if REVIEW_PROFILE else ''}</section>
 <section class="soft-section"><div class="container help-cta"><div><p class="eyebrow">Conoce más de Efy</p><h2>Una conversación<br>puede ser el comienzo.</h2><p>Conoce nuestra marca o prepara lo que te gustaría consultar.</p></div><div class="actions"><a class="button blue" href="nosotros.html">Conócenos {ARROW}</a><a class="text-link" href="contactos.html">Ir a Contactos {ARROW}</a></div></div></section>
 '''
@@ -435,6 +424,8 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<script src="../assets/site/siniestros.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'index.html':
         document = document.replace('</head>', f'<script src="../assets/site/premium.js?v={SITE_VERSION}" defer></script></head>')
+    if filename in ('index.html', 'nosotros.html', 'resenas.html'):
+        document = document.replace('</head>', f'<script src="../assets/site/evia-clips.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'nosotros.html':
         document = document.replace('</head>', '<script src="../assets/site/evia-about.js?v=evia-20261010" defer></script></head>')
     if filename == 'consultas.html':
@@ -446,6 +437,7 @@ for filename, label, title, content in pages + extras:
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/premium.css?v={SITE_VERSION}"></head>')
+    document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/refinement-preview.css?v={SITE_VERSION}"></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)

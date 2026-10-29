@@ -75,8 +75,10 @@
       if (opened === entry) close();
       else open(entry, entry.toggle, true);
     });
-    if (entry.link.tagName === 'BUTTON') entry.link.addEventListener('click', () => {
-      if (opened === entry) close();
+    if (entry.link.tagName === 'BUTTON') entry.link.addEventListener('click', event => {
+      // On desktop a mouse click keeps the panel opened by hover available.
+      if (desktop.matches && event.detail > 0) open(entry, entry.link, true);
+      else if (opened === entry) close();
       else open(entry, entry.link, true);
     });
     entry.link.addEventListener('keydown', event => {
@@ -96,17 +98,17 @@
     entry.item.classList.remove('is-preview-open');
 
     entry.item.addEventListener('pointerenter', event => {
-      if (entry.link.tagName !== 'BUTTON' && event.pointerType !== 'touch') open(entry);
+      if (event.pointerType !== 'touch') open(entry);
     });
     entry.item.addEventListener('pointerleave', () => {
       if (opened !== entry) return;
       cancelLeave();
       leaveTimer = setTimeout(() => {
         if (opened === entry && !entry.item.contains(document.activeElement)) close();
-      }, 100);
+      }, 200);
     });
     entry.item.addEventListener('focusin', event => {
-      if (entry.link.tagName !== 'BUTTON' && event.target !== restoringFocus) open(entry);
+      if (event.target !== restoringFocus) open(entry);
     });
     entry.item.addEventListener('focusout', event => {
       // relatedTarget identifies the next focus before the browser blurs the old link.

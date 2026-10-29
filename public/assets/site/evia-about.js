@@ -30,6 +30,7 @@
   } else revealExperience();
 
   const portrait = document.querySelector('.evia-motion');
+  if (!portrait) return;
   const video = portrait.querySelector('video');
   let visible = false, failed = false;
   const playbackAllowed = () => visible && !failed && !document.hidden && !reduced.matches && !navigator.connection?.saveData;

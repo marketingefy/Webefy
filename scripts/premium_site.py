@@ -1,13 +1,17 @@
 """Render the approved premium homepage with production destinations and owner data."""
 from html import escape
 from pathlib import Path
+from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def premium_home(partners, about, contacts, arrow, selector, phone_url):
     template = (ROOT / 'tooling/efy/templates/premium-home.html').read_text()
-    logos = ''.join(f'<a class="ally-logo" href="socios.html#socio-{item["id"]}"><img src="../{item["logo"]}" alt="{escape(item["name"], quote=True)}" width="180" height="80" loading="lazy"></a>' for item in partners if item.get('logo'))
+    logos = ''.join(
+        f'<a class="ally-logo" href="socios.html#socio-{item["id"]}"><span class="ally-mark{" on-dark" if item.get("logo_dark") else ""}"><img src="../{item["logo"]}" alt="{escape(item["name"], quote=True)}" width="180" height="80" loading="eager"></span><span class="ally-name">{escape(item["name"])}</span></a>'
+        for item in partners if item.get('logo')
+    )
     departments = []
     for item in contacts['departments']:
         identifier = item['name'].lower()
@@ -17,6 +21,6 @@ def premium_home(partners, about, contacts, arrow, selector, phone_url):
     departments.append(f'<article id="correos"><p class="small-title">Correos</p>{emails}</article>')
     socials = ''.join(f'<a href="{escape(item["url"], quote=True)}" target="_blank" rel="noopener noreferrer">{escape(item["name"])} · {escape(item["label"])}</a>' for item in contacts['social_profiles'])
     departments.append(f'<article id="conecta"><p class="small-title">Conecta con Efy</p><h3>Nos encontramos aquí.</h3><p>{escape(contacts["address"])} · {escape(contacts["city"])}</p><a href="{escape(contacts["maps_url"], quote=True)}">Buscar dirección en Maps {arrow}</a>{socials}</article>')
-    for key, value in {'PROTECTION_SELECTOR': selector, 'PARTNER_LOGOS': logos, 'CONTACT_CARDS': ''.join(departments), 'ABOUT_PARAGRAPH': escape(about['paragraphs'][0])}.items():
+    for key, value in {'PROTECTION_SELECTOR': selector, 'PARTNER_LOGOS': logos, 'CONTACT_CARDS': ''.join(departments), 'ABOUT_PARAGRAPH': escape(about['paragraphs'][0]), 'ABOUT_FILM': evia_film('conocenos', 'EVIA presenta la trayectoria de Efy'), 'REVIEWS_FILM': evia_film('resenas', 'EVIA escucha y agradece tus comentarios')}.items():
         template = template.replace('{{' + key + '}}', value)
     return template
