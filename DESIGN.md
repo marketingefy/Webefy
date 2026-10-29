@@ -133,3 +133,16 @@ En móvil se usan solo dos partículas; no se utiliza movimiento por cursor.
 El movimiento o transparencia reducidos ocultan las capas, y la pestaña oculta,
 el ahorro de datos o la escena fuera de pantalla pausan las animaciones.
 El video de Conócenos y los medios originales se conservan.
+
+## Entrada coordinada, 29 de octubre de 2026
+
+La referencia de video aportada por el propietario muestra una composición que
+se presenta por partes y revela nuevas secciones al desplazarse. La adaptación
+usa títulos por líneas con 140 ms de desfase, texto y acciones escalonados, y
+una revelación del taller de 1,4 segundos. EVIA conserva su imagen fija.
+El módulo motion.js coordina también tarjetas y encabezados al entrar en la
+ventana, con grupos breves y sin interceptar el desplazamiento nativo.
+Las animaciones no bloquean controles ni mantienen el contenido oculto: sus
+estilos finales son los originales. El teclado finaliza la animación de un
+control enfocado y el movimiento reducido cancela las transiciones activas.
+Se sustituye el efecto de aparición anterior para evitar animaciones duplicadas.

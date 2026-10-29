@@ -1,0 +1,5 @@
+/* Scoped to the wrappers created for the entrance: the final layout is unchanged. */
+h1 .entrance-line{display:inline-block;color:inherit!important;max-width:100%}
+h1 .entrance-line>span{color:var(--pink)}
+.page-intro h1 .entrance-line>span{color:var(--blue)}
+@media(prefers-reduced-motion:reduce){h1 .entrance-line{transform:none;opacity:1}}

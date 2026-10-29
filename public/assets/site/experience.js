@@ -2,27 +2,6 @@
 (() => {
   'use strict';
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-  const revealTargets = document.querySelectorAll('.protection-heading,.protection-card,.business-card,.client-action,.section-heading,.editorial-link');
-  if ('IntersectionObserver' in window && !reducedMotion.matches) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-revealed');
-        observer.unobserve(entry.target);
-      });
-    }, { threshold: 0.08 });
-    revealTargets.forEach(element => {
-      element.classList.add('motion-reveal');
-      observer.observe(element);
-    });
-    const showAll = () => {
-      if (!reducedMotion.matches) return;
-      observer.disconnect();
-      revealTargets.forEach(element => element.classList.add('is-revealed'));
-    };
-    reducedMotion.addEventListener('change', showAll);
-  }
-
   const form = document.getElementById('quote-form');
   if (!form) return;
   const contacts = JSON.parse(document.getElementById('contact-data').textContent);

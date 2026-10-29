@@ -8,7 +8,7 @@ from urllib.parse import quote, urlsplit
 from experience_sections import need_selector, quote_page, business_page, clients_page
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-holographic-scene-20261028'
+SITE_VERSION = 'efy-cinematic-entry-20261029'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -510,7 +510,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={COVERAGE_VERSION}" defer></script></head>')
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
-    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"></head>')
+    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)
