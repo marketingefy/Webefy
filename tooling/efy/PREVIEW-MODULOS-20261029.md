@@ -1,3 +1,5 @@
+> Actualización: el propietario autorizó publicar esta propuesta para revisarla en la web. El bloqueo de envíos pertenece únicamente al HTML descargable; no se añade a las páginas publicadas.
+
 # Efy: revisión de módulos, sin publicar
 
 Petición vigente: mostrar estos cambios en vista previa antes de publicarlos.

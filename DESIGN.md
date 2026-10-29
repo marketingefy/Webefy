@@ -1,11 +1,11 @@
 # Efy Seguros: el próximo capítulo
 
-## Propuesta de módulos en revisión, 29 de octubre de 2026
+## Propuesta de módulos aprobada para publicar, 29 de octubre de 2026
 
 La rama local `preview/efy-module-refinement-20261029` contiene una propuesta
 solicitada para revisar antes de publicar. Ver alcance, medios, entregables y
 comprobaciones en [PREVIEW-MODULOS-20261029.md](tooling/efy/PREVIEW-MODULOS-20261029.md).
-La web publicada permanece en `a78c695` hasta una nueva instrucción del propietario.
+El propietario autorizó publicar todos los cambios de esta propuesta para revisarlos en la web.
 
 ## Portada cinematográfica publicada, 29 de octubre de 2026
 
