@@ -1,3 +1,5 @@
+> Actualización: el propietario autorizó publicar todos los cambios pendientes, con una respuesta más animada de los iconos.
+
 # EVIA: interacción lateral más fluida — sin publicar
 
 El propietario aprobó escena, traje y colores y pidió reducir el gesto de subir

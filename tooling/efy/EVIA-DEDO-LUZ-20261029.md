@@ -1,3 +1,5 @@
+> Actualización: el propietario autorizó publicar todos los cambios pendientes, con una respuesta más animada de los iconos.
+
 # Señalamiento con luz y respuesta de iconos — vista previa
 
 El propietario pidió una alternativa al giro: señalar, mover el icono y dar luz

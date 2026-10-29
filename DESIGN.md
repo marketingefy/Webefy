@@ -1,3 +1,7 @@
+# Publicación autorizada de todos los ajustes
+
+El propietario autorizó ejecutar y publicar todos los cambios pendientes. La animación final conserva la luz en el dedo y refuerza la respuesta de los tres iconos: elevación de 29 px, acercamiento del 32%, oscilación y onda de activación. Se mantiene la preferencia de movimiento reducido.
+
 # Efy Seguros: el próximo capítulo
 
 ## Propuesta de módulos aprobada para publicar, 29 de octubre de 2026

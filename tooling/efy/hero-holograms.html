@@ -10,6 +10,7 @@
 .base{position:absolute;bottom:0;left:0;width:100%;height:15px;border:1px solid #9dd9ffbb;border-radius:50%;background:radial-gradient(ellipse,#62c5ff24,transparent 65%);box-shadow:0 0 12px #5ba9ff66,inset 0 0 9px #53c9ff55}
 .base::after{content:'';position:absolute;inset:3px 11px;border:1px solid #f9a0cc99;border-radius:50%;opacity:var(--glow)}
 .finger-light{position:absolute;z-index:5;width:7px;height:7px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 5px #fff,0 0 16px #9ceaff,0 0 28px #6db8ff,0 0 34px #f25c9d80;pointer-events:none}.signal{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}.signal path{fill:none;stroke:#a2ddff;stroke-width:1.2;filter:drop-shadow(0 0 3px #8bdfff)}
+.activation-ring{position:absolute;left:-5%;bottom:0;width:110%;height:18px;border:1px solid #b7ecff;border-radius:50%;box-shadow:0 0 12px #6ccaff99,0 0 24px #f25c9d44;opacity:var(--ring-opacity,0);transform:scale(var(--ring-scale,1));pointer-events:none}
 </style></head><body><div class="stage"><img class="background" src="/escena-referencia.jpg"><video class="background video" muted playsinline preload="auto" src="/base.mp4"></video><svg class="signal" viewBox="0 0 1280 720"><path id="signal-path"/></svg><div id="cards"></div><div class="finger-light"></div></div><script>
 const SPECS=[
  {name:'Vehículo',x:.580,y:.440,start:1,bbox:[43,231,744,390]},
@@ -20,14 +21,14 @@ for(const spec of SPECS){
  const node=document.createElement('div');node.className='hologram';node.style.left=(spec.x*1280-56)+'px';node.style.top=(spec.y*720)+'px';node.dataset.name=spec.name;
  const [x,y,w,h]=spec.bbox,scale=Math.min(97/w,72/h);
  const icon='<span class="crop" style="width:'+(w*scale)+'px;height:'+(h*scale)+'px"><img src="/iconos.png" style="width:'+(2172*scale)+'px;height:'+(724*scale)+'px;left:'+(-x*scale)+'px;top:'+(-y*scale)+'px"></span>';
- node.innerHTML='<div class="glass"></div><div class="turner"><div class="face">'+icon+'</div><div class="face back">'+icon+'</div></div><span class="label">'+spec.name+'</span><div class="base"></div>';
+ node.innerHTML='<div class="glass"></div><div class="turner"><div class="face">'+icon+'</div><div class="face back">'+icon+'</div></div><span class="label">'+spec.name+'</span><div class="base"></div><div class="activation-ring"></div>';
  document.getElementById('cards').append(node);spec.node=node;
 }
 const video=document.querySelector('video');
 const tracking=fetch('/finger-track.json').then(r=>r.json());let fingerPoints=[];tracking.then(data=>fingerPoints=data);
 window.setHologramTime=t=>{
  let best=null,energy=0;
- for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),pulse=Math.sin(Math.PI*p),response=Math.pow(pulse,.7);s.node.style.setProperty('--lift','0px');s.node.style.setProperty('--icon-y',(-15*response)+'px');s.node.style.setProperty('--icon-x',(3*Math.sin(2*Math.PI*p)*response)+'px');s.node.style.setProperty('--tilt',(-4*Math.sin(2*Math.PI*p)*response)+'deg');s.node.style.setProperty('--zoom',String(1+.18*response));s.node.style.setProperty('--glow',String(response*.9));if(response>energy){energy=response;best=s;}}
+ for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),pulse=Math.sin(Math.PI*p),response=Math.pow(pulse,.7);s.node.style.setProperty('--ring-scale',String(1+.6*p));s.node.style.setProperty('--ring-opacity',String(Math.sin(Math.PI*p)*.65));s.node.style.setProperty('--lift','0px');s.node.style.setProperty('--icon-y',(-29*response+3*Math.sin(4*Math.PI*p)*response)+'px');s.node.style.setProperty('--icon-x',(6*Math.sin(2*Math.PI*p)*response)+'px');s.node.style.setProperty('--tilt',(-8*Math.sin(2*Math.PI*p)*response)+'deg');s.node.style.setProperty('--zoom',String(1+.32*response));s.node.style.setProperty('--glow',String(response*.9));if(response>energy){energy=response;best=s;}}
  if(fingerPoints.length){const index=Math.min(fingerPoints.length-1,Math.round(t*24)),pt=fingerPoints[index];const fade=Math.max(0,Math.min(1,(t-.3)/.5,(11.8-t)/.7));const light=document.querySelector('.finger-light');light.style.left=pt[0]+'px';light.style.top=pt[1]+'px';light.style.opacity=String(fade*(.55+.45*energy));const line=document.getElementById('signal-path');line.style.opacity=String(energy*.28*fade);if(best){const tx=best.x*1280,ty=best.y*720+32-15*energy;line.setAttribute('d','M '+pt[0]+' '+pt[1]+' Q '+((pt[0]+tx)/2)+' '+(Math.min(pt[1],ty)-8)+' '+tx+' '+ty);}}
 };
 window.drawFrame=async t=>{

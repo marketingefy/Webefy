@@ -1,3 +1,5 @@
+> Actualización: el propietario autorizó publicar todos los cambios pendientes, con una respuesta más animada de los iconos.
+
 # EVIA: traje de referencia y tres giros equivalentes — revisión pendiente
 
 El usuario señaló el video `5bc71bc6-e988-4351-a0ca-e847b9782f70` y pidió

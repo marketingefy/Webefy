@@ -1,3 +1,5 @@
+> Actualización: el propietario autorizó publicar todos los cambios pendientes, con una respuesta más animada de los iconos.
+
 # Ajustes de coherencia — en revisión, sin publicar
 
 Solicitud: contraste blanco en opciones del menú y magenta de cristal más sutil;
