@@ -7,7 +7,7 @@ import re
 from urllib.parse import unquote, urlsplit
 
 root = Path(__file__).resolve().parents[2] / 'public'
-output = Path('/workspace/output/efy-module-preview-20261029')
+output = Path('/workspace/output/efy-coherent-preview-20261029')
 assets, identifiers = {}, {}
 
 

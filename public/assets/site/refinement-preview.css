@@ -1,4 +1,28 @@
 /* Review proposal. IBM Plex Sans and the established Efy palette are retained. */
+body[data-page="inicio"] .premium-header .header-quote{display:none}
+.premium-header .site-nav .nav-preview-link:is(:hover,:focus-visible,:active,[aria-current]){color:#fff!important;background:linear-gradient(135deg,#ce005e26,#f25c9d14);border:1px solid #f5a6cb50;box-shadow:inset 0 1px 0 #ffffff22;border-radius:9px;padding-inline:12px;opacity:1}
+.premium-header .site-nav .nav-preview-link:is(:hover,:focus-visible,:active,[aria-current]) span{color:#fff;opacity:1}
+.premium-header .nav-preview{background:linear-gradient(135deg,#263c64cc,#101c32df);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.premium-home .about-section{background:#080e1d}
+.premium-home .about-section::before{display:none}
+.premium-home .home-experience{gap:18px;margin-block:32px}
+.premium-home .home-experience .experience-stat{padding:24px 18px;background:linear-gradient(145deg,#263a5a88,#14203888);border:1px solid #aec2f03b;border-radius:18px;color:white}
+.premium-home .home-experience .experience-number{font-size:38px;color:#f25c9d;margin:0;line-height:1.2}
+.premium-home .home-experience .experience-stat:nth-child(2) .experience-number{color:#a9bfea}
+.premium-home .home-experience .experience-stat>p:last-child{font-size:12px;color:#c4cee2}
+.premium-home .contact-premium h2#home-contact-title{font-size:clamp(40px,4.5vw,65px);color:white;line-height:1.1}
+.premium-home .contact-premium h2#home-contact-title span{color:#f25c9d}
+.premium-home .contact-premium .container{width:calc(100% - 128px);max-width:1320px;margin-inline:auto}
+.coverage-note#coverage-pending{display:none!important}
+.site-footer .footer-bottom{border-color:transparent}
+.services-compass{position:relative;overflow:hidden;box-shadow:0 20px 65px #445ea522,inset 0 1px 0 #ffffff30}
+.services-compass::before{content:'';position:absolute;inset:-120% -70%;pointer-events:none;background:linear-gradient(110deg,transparent 43%,#b6cbff18 50%,transparent 57%);animation:services-crystal-pass 12s ease-in-out infinite}
+@keyframes services-crystal-pass{0%,25%{transform:translateX(-35%)}75%,100%{transform:translateX(35%)}}
+@media(prefers-reduced-motion:reduce){.services-compass::before{animation:none}}
+@media(hover:hover) and (pointer:fine){.service-visual img{animation:service-model-breathe 8s ease-in-out infinite}.service-card:hover .service-visual img{animation-play-state:paused;filter:drop-shadow(0 12px 9px #445ea52b)}}
+@keyframes service-model-breathe{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@media(max-width:760px){.premium-home .contact-premium .container{width:calc(100% - 40px)}.premium-home .home-experience .experience-number{font-size:30px}.premium-home .home-experience .experience-stat{padding:20px 14px}}
+@media(prefers-reduced-motion:reduce){.service-visual img{animation:none!important}}
 .premium-header .brand{width:180px;opacity:.94;transition:opacity 180ms ease}
 .premium-header .brand:hover,.premium-header .brand:focus-visible{opacity:1}
 @media(max-width:1250px){.premium-header .brand{width:162px}}

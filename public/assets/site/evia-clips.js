@@ -28,3 +28,12 @@
     playback();
   });
 })();
+
+(() => {
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ document.querySelectorAll('[data-count]').forEach(counter=>{
+  const end=Number(counter.dataset.count);let started=false;
+  const reveal=()=>{if(started)return;started=true;counter.closest('.experience-section')?.classList.add('is-visible');if(reduced.matches){counter.textContent=String(end);return;}const start=performance.now();const tick=now=>{const t=Math.min((now-start)/1500,1);counter.textContent=String(Math.round(end*(1-(1-t)**3)));if(t<1&&!reduced.matches)requestAnimationFrame(tick);else counter.textContent=String(end);};requestAnimationFrame(tick);};
+  if('IntersectionObserver' in window&&!reduced.matches){const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){reveal();observer.disconnect();}},{threshold:.35});observer.observe(counter);}else reveal();
+ });
+})();

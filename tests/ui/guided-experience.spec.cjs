@@ -88,10 +88,10 @@ const root = path.resolve(__dirname, '../../public');
 
       await page.locator('.menu-toggle').click();
       await page.locator('[aria-label="Desplegar opciones de Servicios"]').click();
-      assert.equal(await page.locator('#nav-preview-servicios a').count(), 17);
-      await page.locator('#nav-preview-servicios a').filter({hasText:'Seguro de hogar'}).click();
+      assert.equal(await page.locator('#nav-preview-servicios a').count(), 5);
+      await page.locator('#nav-preview-servicios a').filter({hasText:'Patrimonio y actividad'}).click();
       assert.equal(new URL(page.url()).pathname, prefix + 'servicios.html');
-      assert.equal(new URL(page.url()).hash, '#seguro-hogar');
+      assert.equal(new URL(page.url()).hash, '#patrimonio-actividad');
       await page.waitForFunction(() => document.querySelector('[data-service-category][aria-pressed=true]')?.dataset.serviceCategory === 'Patrimonio y actividad');
       assert.equal(await page.locator('[data-service-category][aria-pressed=true]').getAttribute('data-service-category'), 'Patrimonio y actividad');
 
@@ -113,7 +113,7 @@ const root = path.resolve(__dirname, '../../public');
 
       await page.setViewportSize({width:1440,height:1000});
       await page.goto(base + prefix + 'index.html');
-      assert.equal(await page.locator('#page-title').innerText(), 'Elegir bien.\nVivir con\ntranquilidad.');
+      assert.equal(await page.locator('#page-title').innerText(), 'Tu confianza.\nNuestro\ncompromiso.');
       for (const name of ['Servicios','Asistencias','Aliados','Conócenos','Contacto','Ayuda']) {
         const trigger = page.locator(`[aria-label="Desplegar opciones de ${name}"]`);
         await trigger.hover();

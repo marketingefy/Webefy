@@ -18,7 +18,7 @@ def need_selector(arrow):
         f'<span class="product-symbol">{arrow}</span></span><div class="product-body"><h3 class="product-title">{title}</h3><p class="product-copy">{description}</p><span class="product-action">Solicitar cotización {arrow}</span></div></a>'
         for i, (key, title, description, tile) in enumerate(NEEDS)
     )
-    return f'''<div class="premium-home premium-selector"><section class="protection section shell protection-section" id="que-proteger" aria-labelledby="protection-title"><div class="section-top protection-heading"><div><p class="eyebrow">Una elección muy tuya</p><h2 id="protection-title">¿Qué quieres <span>proteger?</span></h2></div><p>Tu vida tiene muchas dimensiones.<br>Tu seguro debería entenderlas.</p></div><div class="protection-grid">{cards}</div><div class="catalog-bottom"><p>Protección para personas, familias y empresas.</p><a class="text-action" href="servicios.html#catalogo">Explorar nuestros seguros {arrow}</a></div></section></div>'''
+    return f'''<div class="premium-home premium-selector"><section class="protection section shell protection-section" id="que-proteger" aria-labelledby="protection-title"><div class="section-top protection-heading"><div><p class="eyebrow">Una elección muy tuya</p><h2 id="protection-title">¿Qué quieres <span>proteger?</span></h2></div></div><div class="protection-grid">{cards}</div><div class="catalog-bottom"><p>Protección para personas, familias y empresas.</p><a class="text-action" href="servicios.html#catalogo">Explorar nuestros seguros {arrow}</a></div></section></div>'''
 
 
 def quote_page(services, arrow, whatsapp):

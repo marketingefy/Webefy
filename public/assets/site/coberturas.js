@@ -111,14 +111,10 @@
   function render(data) {
     clearResult();
     const pendingNames = data.fuentes_pendientes.map(source => ({ PRIVILEGIO: 'Privilegio', PROASSISLIFE: 'Proassislife' })[source]);
-    pendingNote.hidden = pendingNames.length === 0;
-    if (pendingNames.length) {
-      pendingNote.querySelector('strong').textContent = 'Información pendiente: ' + pendingNames.join(' y ');
-      pendingNote.querySelector('p').textContent = 'Estas carteras aún no están incorporadas. Si no encuentras tu registro, contacta a Efy para revisarlo.';
-    }
+    pendingNote.hidden = true;
     summary.textContent = data.encontrado
       ? 'Estos son los registros encontrados en la cartera consultada. Revisa la aseguradora y el estado de cada contrato.'
-      : 'No encontramos coincidencias en las carteras consultadas. Esto no confirma que no tengas seguro.' + (pendingNames.length ? ' La información de ' + pendingNames.join(' y ') + ' está pendiente de incorporación.' : ' Contacta a Efy para verificar tu registro.');
+      : 'No encontramos coincidencias en las carteras consultadas. Esto no confirma que no tengas seguro.' + ' Contacta a Efy para verificar tu registro.';
     data.registros.forEach(record => {
       const card = document.createElement('article');
       card.className = 'coverage-record';

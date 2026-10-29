@@ -15,7 +15,7 @@ if args.module == 'inicio':
         (root/'public/assets/evia-premium-consistent-preview-mobile', 'crop=trunc(ih*0.9/2)*2:ih:iw*0.384:0,scale=720:800', '23'),
     ]
 else:
-    variants = [(root/f'public/assets/site/evia-{args.module}-preview',
+    variants = [(root/('public/assets/site/evia-conocenos-corporativo-20261029' if args.module == 'conocenos' else f'public/assets/site/evia-{args.module}-preview'),
                  'scale=720:960:force_original_aspect_ratio=decrease,pad=720:960:(ow-iw)/2:(oh-ih)/2:color=0x080e1d', '22')]
 for stem, sizing, quality in variants:
     graph = (
