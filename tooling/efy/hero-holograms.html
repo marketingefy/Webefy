@@ -3,13 +3,14 @@
 .hologram{position:absolute;width:112px;height:104px;perspective:650px;isolation:isolate;color:#dceaff;font:500 10px Plex,sans-serif;--glow:0;--angle:0deg;transform:translateY(var(--lift,0px))}
 .glass{position:absolute;inset:0 0 11px;border:1px solid #b6d8ff80;border-radius:10px;background:linear-gradient(135deg,#d4e6ff13,#4a86bd0c);box-shadow:inset 0 1px 0 #fff3,0 0 9px #57b7ff38;backdrop-filter:blur(1px)}
 .glass::after{content:'';position:absolute;inset:-1px;border:1px solid #ff8fc3;border-radius:10px;opacity:var(--glow);box-shadow:0 0 16px #f25c9d77,inset 0 0 16px #f25c9d18}
-.turner{position:absolute;left:6px;right:6px;top:4px;height:78px;transform-style:preserve-3d;transform:rotateY(var(--angle))}
+.turner{position:absolute;left:6px;right:6px;top:4px;height:78px;transform-style:preserve-3d;transform:translateY(var(--icon-y,0px)) translateX(var(--icon-x,0px)) rotateZ(var(--tilt,0deg)) scale(var(--zoom,1))}
 .face{position:absolute;inset:0;display:flex;align-items:end;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(1.5px);filter:drop-shadow(0 3px 7px #4eb8ff66)}
 .face.back{transform:rotateY(180deg) translateZ(1.5px)}.crop{overflow:hidden;position:relative;flex-shrink:0;margin-bottom:4px}.crop img{position:absolute;max-width:none}
 .label{position:absolute;left:0;right:0;bottom:17px;text-align:center;letter-spacing:.02em;text-shadow:0 1px 4px #001b4b}
 .base{position:absolute;bottom:0;left:0;width:100%;height:15px;border:1px solid #9dd9ffbb;border-radius:50%;background:radial-gradient(ellipse,#62c5ff24,transparent 65%);box-shadow:0 0 12px #5ba9ff66,inset 0 0 9px #53c9ff55}
 .base::after{content:'';position:absolute;inset:3px 11px;border:1px solid #f9a0cc99;border-radius:50%;opacity:var(--glow)}
-</style></head><body><div class="stage"><img class="background" src="/escena-referencia.jpg"><video class="background video" muted playsinline preload="auto" src="/base.mp4"></video><div id="cards"></div></div><script>
+.finger-light{position:absolute;z-index:5;width:7px;height:7px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 5px #fff,0 0 16px #9ceaff,0 0 28px #6db8ff,0 0 34px #f25c9d80;pointer-events:none}.signal{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}.signal path{fill:none;stroke:#a2ddff;stroke-width:1.2;filter:drop-shadow(0 0 3px #8bdfff)}
+</style></head><body><div class="stage"><img class="background" src="/escena-referencia.jpg"><video class="background video" muted playsinline preload="auto" src="/base.mp4"></video><svg class="signal" viewBox="0 0 1280 720"><path id="signal-path"/></svg><div id="cards"></div><div class="finger-light"></div></div><script>
 const SPECS=[
  {name:'Vehículo',x:.580,y:.440,start:1,bbox:[43,231,744,390]},
  {name:'Hogar',x:.665,y:.480,start:4,bbox:[819,64,656,571]},
@@ -23,10 +24,14 @@ for(const spec of SPECS){
  document.getElementById('cards').append(node);spec.node=node;
 }
 const video=document.querySelector('video');
+const tracking=fetch('/finger-track.json').then(r=>r.json());let fingerPoints=[];tracking.then(data=>fingerPoints=data);
 window.setHologramTime=t=>{
- for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),ease=p*p*(3-2*p);s.node.style.setProperty('--lift',(-3*Math.sin(Math.PI*p))+'px');s.node.style.setProperty('--angle',(360*ease)+'deg');s.node.style.setProperty('--glow',String(Math.sin(Math.PI*p)*.85));}
+ let best=null,energy=0;
+ for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),pulse=Math.sin(Math.PI*p),response=Math.pow(pulse,.7);s.node.style.setProperty('--lift','0px');s.node.style.setProperty('--icon-y',(-15*response)+'px');s.node.style.setProperty('--icon-x',(3*Math.sin(2*Math.PI*p)*response)+'px');s.node.style.setProperty('--tilt',(-4*Math.sin(2*Math.PI*p)*response)+'deg');s.node.style.setProperty('--zoom',String(1+.18*response));s.node.style.setProperty('--glow',String(response*.9));if(response>energy){energy=response;best=s;}}
+ if(fingerPoints.length){const index=Math.min(fingerPoints.length-1,Math.round(t*24)),pt=fingerPoints[index];const fade=Math.max(0,Math.min(1,(t-.3)/.5,(11.8-t)/.7));const light=document.querySelector('.finger-light');light.style.left=pt[0]+'px';light.style.top=pt[1]+'px';light.style.opacity=String(fade*(.55+.45*energy));const line=document.getElementById('signal-path');line.style.opacity=String(energy*.28*fade);if(best){const tx=best.x*1280,ty=best.y*720+32-15*energy;line.setAttribute('d','M '+pt[0]+' '+pt[1]+' Q '+((pt[0]+tx)/2)+' '+(Math.min(pt[1],ty)-8)+' '+tx+' '+ty);}}
 };
 window.drawFrame=async t=>{
+ await tracking;
  if(video.readyState<2)await new Promise((resolve,reject)=>{video.addEventListener('loadeddata',resolve,{once:true});video.addEventListener('error',reject,{once:true});});
  if(Math.abs(video.currentTime-t)>.0001)await new Promise(resolve=>{video.addEventListener('seeked',resolve,{once:true});video.currentTime=t;});
  document.body.classList.add('ready');window.setHologramTime(t);await new Promise(requestAnimationFrame);

@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-interaccion-fluida-preview-20261029'
+SITE_VERSION = 'efy-dedo-luz-preview-20261029'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)

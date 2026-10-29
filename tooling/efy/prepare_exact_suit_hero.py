@@ -11,8 +11,8 @@ subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y',
                 '-an','-c:v','libx264','-preset','slow','-crf','17','-pix_fmt','yuv420p',
                 '-movflags','+faststart',str(source)],check=True)
 for stem, size, crf in [
-    ('evia-gestos-fluidos-20261029','scale=1280:720','22'),
-    ('evia-gestos-fluidos-mobile-20261029','crop=648:720:iw*0.45:0,scale=720:800','23'),
+    ('evia-dedo-luz-20261029','scale=1280:720','22'),
+    ('evia-dedo-luz-mobile-20261029','crop=648:720:iw*0.45:0,scale=720:800','23'),
 ]:
     target = root/'public/assets'/stem
     graph = (f'[0:v]fps=24,trim=duration=12,{size},setsar=1,split=2[b][h];'
