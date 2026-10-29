@@ -6,9 +6,10 @@ from html import escape
 from pathlib import Path
 from urllib.parse import quote, urlsplit
 from experience_sections import need_selector, quote_page, business_page, clients_page
+from premium_site import premium_home
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-cinematic-entry-20261029'
+SITE_VERSION = 'efy-premium-live-20261029'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -151,50 +152,7 @@ for faq in FAQ:
     if faq['id'] == 'contacto':
         faq['answer'] = f'Puedes hablar con el equipo comercial por WhatsApp al {" o al ".join(COMMERCIAL["phones"])}. Elige uno de los accesos para abrir la conversación. También puedes escribir a info@efyseguros.com. Para siniestros y reembolsos, escribe a siniestros@efyseguros.com.'
 
-home = f'''
-<section class="home-hero" aria-labelledby="page-title">
-  <figure class="workshop" aria-hidden="true">
-    <picture><source media="(max-width:760px)" srcset="../assets/evia-workshop-mobile.webp?v=evia-wide-restored-20261009"><img src="../assets/evia-workshop.webp?v=evia-wide-restored-20261009" alt="" width="1280" height="720" fetchpriority="high"></picture>
-    <div class="scene-effects" aria-hidden="true">
-      <svg class="scene-layer scene-desktop" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs><linearGradient id="panel-light"><stop stop-color="#789cff" stop-opacity=".04"/><stop offset=".55" stop-color="#aabfff" stop-opacity=".24"/><stop offset="1" stop-color="#f25c9d" stop-opacity=".12"/></linearGradient></defs>
-        <path class="holo-panel" d="M937 128 1140 91 1140 316 937 334Z" fill="url(#panel-light)" stroke="#b1c6ff"/>
-        <path class="holo-panel holo-secondary" d="m1008 329 122 0 0 70-122 0Z" fill="url(#panel-light)" stroke="#a2baff"/>
-        <path class="holo-line" d="M858 431Q1080 450 1275 427" stroke="#c8d4ff" pathLength="100"/>
-        <path class="holo-line holo-line-pink" d="M858 464Q1045 512 1274 469" stroke="#f25c9d" pathLength="100"/>
-        <g class="holo-particles" fill="#c1d1ff"><circle cx="970" cy="170" r="1.6"/><circle cx="1100" cy="210" r="1.2"/><circle cx="1160" cy="155" r="1.4"/><circle cx="1040" cy="370" r="1.2"/><circle cx="1190" cy="400" r="1.4"/><circle cx="1250" cy="260" r="1.1"/></g>
-      </svg>
-      <svg class="scene-layer scene-mobile" viewBox="0 0 720 800" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path class="holo-panel" d="M422 145 655 102 655 352 422 374Z" fill="#789cff" fill-opacity=".08" stroke="#b1c6ff"/>
-        <path class="holo-line" d="M400 478Q560 495 720 477" stroke="#c8d4ff" pathLength="100"/>
-        <path class="holo-line holo-line-pink" d="M410 530Q560 568 720 535" stroke="#f25c9d" pathLength="100"/>
-        <g class="holo-particles" fill="#c1d1ff"><circle cx="460" cy="190" r="1.5"/><circle cx="600" cy="300" r="1.3"/></g>
-      </svg>
-    </div><div class="workshop-shade"></div>
-  </figure>
-  <div class="container hero-copy">
-    <h1 id="page-title">Elegir bien.<br>Vivir con<br><span>tranquilidad.</span></h1>
-    <p class="hero-lead">Protege lo que más importa.<br>Encuentra tu seguro con asesoría cercana.</p>
-    <div class="actions"><a class="button primary" href="cotizar.html">Solicitar cotización {ARROW}</a><a class="button ghost" href="asistencia.html">Necesito asistencia {ARROW}</a></div>
-  </div>
-  <p class="scene-note"><span></span>EVIA, dando forma a nuestro universo digital.</p>
-</section>
-{need_selector(ARROW)}
-<section class="container coverage-entry" aria-labelledby="coverage-entry-title"><div><p class="eyebrow">SEGUROS DE COOPERATIVAS</p><h2 id="coverage-entry-title">Consulta con qué aseguradora<br>está tu contrato.</h2><p>Si eres socio de Coopartamos, consulta el registro de tu seguro de asistencia médica con tu cédula.</p></div><a class="button blue" href="coberturas-cooperativas.html">Consultar mi cobertura {ARROW}</a></section>
-<section class="section container" aria-labelledby="start-title">
-  <div class="section-heading"><p class="eyebrow">A TU RITMO</p><h2 id="start-title">La información que necesitas.<br><span>Un lugar para encontrarla.</span></h2></div>
-  <div class="editorial-links">
-    <a class="editorial-link" href="servicios.html"><div><p class="small-label">SERVICIOS</p><h3>Empieza por lo que quieres proteger.</h3><p>Conoce nuestro apartado de seguros y qué revisar antes de elegir.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="socios.html"><div><p class="small-label">SOCIOS ESTRATÉGICOS</p><h3>Las aseguradoras con las que trabajamos.</h3><p>Un espacio para conocer a nuestros socios estratégicos.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="nosotros.html"><div><p class="small-label">CONÓCENOS</p><h3>Conoce el mundo de Efy.</h3><p>Nuestra identidad, lo que nos mueve y EVIA, nuestra guía digital.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="asistencia.html#reportar"><div><p class="small-label">ASISTENCIAS</p><h3>Encuentra tu siguiente paso.</h3><p>Reporta un siniestro, consulta por tu caso y encuentra líneas de atención.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="resenas.html"><div><p class="small-label">RESEÑAS</p><h3>La experiencia de nuestros clientes.</h3><p>Un espacio para sus opiniones sobre Efy.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="contactos.html"><div><p class="small-label">CONTACTOS</p><h3>Encuentra tu siguiente paso.</h3><p>Prepara tus preguntas y conoce los canales de atención de Efy.</p></div>{ARROW}</a>
-    <a class="editorial-link" href="ayuda.html"><div><p class="small-label">AYUDA</p><h3>Entiende antes de decidir.</h3><p>Respuestas sobre coberturas, deducibles y conceptos de tu póliza.</p></div>{ARROW}</a>
-  </div>
-</section>
-<section class="guide-section" id="evia-inicio"><div class="container guide-grid"><div><p class="eyebrow light">CONOCE A EVIA</p><h2>Una guía cercana.<br><span>Para preguntas reales.</span></h2><p>EVIA te ayuda a encontrar información general sobre seguros y a organizar lo que quieres consultar.</p><button class="button primary" type="button" data-open-chat>Iniciar una conversación {ARROW}</button></div><div class="chat-preview"><div class="avatar-row"><img src="../assets/site/evia-portrait.jpg" alt="" width="56" height="56" loading="lazy"><div><strong>EVIA</strong><span>Guía de preguntas frecuentes</span></div></div><p class="preview-message">Hola, soy EVIA. ¿Qué te gustaría entender mejor?</p><button type="button" class="suggestion" data-chat-question="¿Qué significa deducible?">¿Qué significa deducible? {ARROW}</button><button type="button" class="suggestion" data-chat-question="¿Por dónde empiezo para elegir un seguro?">¿Por dónde empiezo? {ARROW}</button></div></div></section>
-'''
+home = premium_home(PARTNERS, ABOUT, CONTACTS, ARROW, need_selector(ARROW), phone_whatsapp_url)
 
 experience_stats = ''.join(f'<article class="experience-stat"><p class="experience-number"><span aria-hidden="true">{item["prefix"]}<span data-count="{item["years"]}">{item["years"]}</span> años</span><span class="sr-only">{item["prefix"]}{item["years"]} años</span></p><p>{escape(item["text"])}</p></article>' for item in ABOUT['milestones'])
 about_story = ''.join(f'<p>{escape(paragraph)}</p>' for paragraph in ABOUT['paragraphs'])
@@ -229,7 +187,7 @@ social_cards = ''.join(f'<a class="contact-social-link" href="{escape(item["url"
 social_section = f'<section class="contact-department contact-social" aria-labelledby="social-title"><h2 class="small-label" id="social-title">CONECTA CON EFY</h2><div class="contact-social-links">{social_cards}</div></section>' if social_cards else ''
 contact = f'''
 <section class="page-intro container"><p class="eyebrow">CONTÁCTANOS</p><h1 id="page-title">Conversemos.<br><span>Estamos cerca de ti.</span></h1><p class="large-copy intro-copy">Elige el equipo que necesitas o visítanos en Quito.</p></section>
-<section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department"><p class="small-label">CORREOS</p>{email_rows}</section>{social_section}</div><aside class="office-panel" id="oficina-quito"><p class="eyebrow light">ENCUÉNTRANOS</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="{escape(CONTACTS['maps_url'], quote=True)}" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
+<section class="container contact-directory" aria-label="Canales de Efy"><div class="contact-channel-list">{department_rows}<section class="contact-department" id="contacto-correos"><p class="small-label">CORREOS</p>{email_rows}</section>{social_section}</div><aside class="office-panel" id="oficina-quito"><p class="eyebrow light">ENCUÉNTRANOS</p><h2>{escape(CONTACTS['city'])}.</h2><address>{office_address}</address><a class="button primary" href="{escape(CONTACTS['maps_url'], quote=True)}" rel="noopener noreferrer">Buscar dirección en Maps {ARROW}</a><div class="office-chat"><p>¿Tienes una duda sobre seguros?</p><button class="text-link" type="button" data-open-chat>Conversa con EVIA {ARROW}</button></div></aside></section>
 ''' + consult_section
 
 # Tile identity follows the service ID, so reordering the catalogue keeps each image.
@@ -395,8 +353,9 @@ assistance_hub = f'''
 <section class="assistance-hero"><div class="container"><p class="eyebrow light">ASISTENCIAS</p><h1 id="page-title">Cuando lo necesitas.<br><span>Efy, cerca de ti.</span></h1><p class="large-copy">Reporta lo ocurrido, consulta por tu caso o encuentra el canal de atención de tu aseguradora.</p></div></section>
 <section class="section container assistance-hub" aria-label="Gestiones de asistencia">
 <a class="assistance-option" id="reportar" href="reportar-siniestro.html"><span class="option-number" aria-hidden="true">01</span><div><p class="small-label">REPORTE</p><h2>Reportar un siniestro</h2><p>Cuéntanos lo ocurrido y envía los datos al equipo de Efy.</p><span class="option-action">Iniciar reporte {ARROW}</span></div></a>
-<a class="assistance-option" id="consultar-estado" href="consultas.html"><span class="option-number" aria-hidden="true">02</span><div><p class="small-label">SEGUIMIENTO</p><h2>Estado de siniestros y reembolsos</h2><p>Prepara tu consulta por cédula o placa y envíala al equipo de Efy.</p><span class="option-action">Consultar por mi caso {ARROW}</span></div></a>
-<a class="assistance-option" id="lineas-asistencia" href="lineas-asistencia.html"><span class="option-number" aria-hidden="true">03</span><div><p class="small-label">LÍNEAS OFICIALES</p><h2>Asistencia de tu aseguradora</h2><p>Teléfonos verificados, organizados por compañía y servicio.</p><span class="option-action">Buscar un teléfono {ARROW}</span></div></a>
+<a class="assistance-option" id="consultar-reembolso" href="consultas.html?tipo=reembolso"><span class="option-number" aria-hidden="true">02</span><div><p class="small-label">REEMBOLSOS</p><h2>Consulta de reembolso</h2><p>Prepara tu consulta con tu cédula para el equipo de Efy.</p><span class="option-action">Consultar reembolso {ARROW}</span></div></a>
+<a class="assistance-option" id="consultar-estado" href="consultas.html?tipo=vehicular"><span class="option-number" aria-hidden="true">03</span><div><p class="small-label">SINIESTROS</p><h2>Consulta de siniestro</h2><p>Prepara tu consulta por cédula o placa para el equipo de Efy.</p><span class="option-action">Consultar siniestro {ARROW}</span></div></a>
+<a class="assistance-option" id="lineas-asistencia" href="lineas-asistencia.html"><span class="option-number" aria-hidden="true">05</span><div><p class="small-label">LÍNEAS OFICIALES</p><h2>Asistencia de tu aseguradora</h2><p>Teléfonos verificados, organizados por compañía y servicio.</p><span class="option-action">Buscar un teléfono {ARROW}</span></div></a>
 <a class="assistance-option" id="cobertura-cooperativas" href="coberturas-cooperativas.html"><span class="option-number" aria-hidden="true">04</span><div><p class="small-label">SEGUROS DE COOPERATIVAS</p><h2>Consulta tu cobertura</h2><p>Si eres socio de Coopartamos, consulta la aseguradora y la vigencia de tu contrato.</p><span class="option-action">Consultar mi cobertura {ARROW}</span></div></a>
 </section><section class="soft-section"><div class="container emergency-line"><div><strong>Emergencias en Ecuador</strong><p>Si hay riesgo inmediato para la vida o la seguridad, llama al ECU 911.</p></div><a class="button blue" href="tel:911">Llamar al 911 {ARROW}</a></div></section>
 '''
@@ -429,58 +388,34 @@ extras = [
     ('lineas-asistencia.html','Asistencias','Líneas de asistencia · Efy Seguros',lines_page),
     ('reportar-error.html','Ayuda','Reportar un error · Efy Seguros',error_page),
 ]
+# Owner-approved seven-module navigation. Every destination is a real page/section.
+NAV_GROUPS = [
+    ('index.html', 'Inicio', {'Inicio'}),
+    ('servicios.html', 'Servicios', {'Servicios', 'Cotización', 'Empresas'}),
+    ('asistencia.html', 'Asistencias', {'Asistencias', 'Clientes'}),
+    ('socios.html', 'Aliados', {'Socios estratégicos'}),
+    ('nosotros.html', 'Conócenos', {'Conócenos', 'Reseñas'}),
+    ('contactos.html', 'Contacto', {'Contáctanos'}),
+    ('ayuda.html', 'Ayuda', {'Ayuda'}),
+]
 NAV_PREVIEWS = {
-    'index.html': ('Bienvenido a Efy.', '', [('index.html#page-title', 'Bienvenido a Efy', ''), ('index.html#start-title', 'Primeros pasos', ''), ('index.html#evia-inicio', 'Conoce a EVIA', '')]),
-    'servicios.html': ('Nuestros servicios.', '', [('servicios.html#movilidad', 'Movilidad', ''), ('servicios.html#salud', 'Salud', ''), ('servicios.html#vida-bienestar', 'Vida y bienestar', ''), ('servicios.html#patrimonio-actividad', 'Patrimonio y actividad', '')]),
-    'socios.html': ('Nuestros socios.', '', [('socios.html#partners-title', 'Todas las aseguradoras', ''), ('socios.html#partner-search', 'Buscar mi aseguradora', '')]),
-    'nosotros.html': ('Conoce a Efy.', '', [('nosotros.html#nuestra-historia', 'Nuestra trayectoria', ''), ('nosotros.html#nuestro-compromiso', 'Nuestro compromiso', ''), ('nosotros.html#evia-conocenos', 'Conoce a EVIA', '')]),
-    'asistencia.html': ('Estamos para acompañarte.', '', [('reportar-siniestro.html', 'Reportar un siniestro', ''), ('consultas.html', 'Siniestros y reembolsos', ''), ('lineas-asistencia.html', 'Líneas de asistencia', ''), ('coberturas-cooperativas.html', 'Cobertura de cooperativas', '')]),
-    'resenas.html': ('Reseñas.', '', [('resenas.html#reviews-title', 'Ver reseñas', '')]),
-    'contactos.html': ('Conversemos.', '', [('contactos.html#contacto-comercial', 'Equipo comercial', ''), ('contactos.html#contacto-operativo', 'Equipo operativo', ''), ('contactos.html#oficina-quito', 'Nuestra ubicación', ''), ('contactos.html#social-title', 'Redes sociales', ''), ('contactos.html#consult-title', 'Preparar una consulta', '')]),
-    'ayuda.html': ('Podemos ayudarte.', '', [('ayuda.html#faq-search', 'Preguntas frecuentes', ''), ('ayuda.html#faq-reembolso-documentos', 'Documentos para reembolso', ''), ('reportar-error.html', 'Reportar un error de la web', '')]),
+    'servicios.html': [('servicios.html#catalogo', 'Todos los seguros')] + [(f'servicios.html#seguro-{item["id"]}', item['name']) for item in SERVICES],
+    'asistencia.html': [('reportar-siniestro.html', 'Reportar siniestro'), ('consultas.html?tipo=reembolso', 'Consulta de reembolso'), ('consultas.html?tipo=vehicular', 'Consulta de siniestro'), ('coberturas-cooperativas.html', 'Coberturas de cooperativas'), ('lineas-asistencia.html', 'Líneas de asistencia')],
+    'socios.html': [('socios.html#partners-title', 'Nuestras aseguradoras'), ('socios.html#partner-search', 'Buscar aseguradora')],
+    'nosotros.html': [('nosotros.html#nuestra-historia', 'Nuestra trayectoria'), ('nosotros.html#evia-conocenos', 'Conoce a EVIA'), ('resenas.html', 'Reseñas')],
+    'contactos.html': [('contactos.html#contacto-comercial', 'Comercial'), ('contactos.html#contacto-operativo', 'Operativo'), ('contactos.html#contacto-correos', 'Correos'), ('contactos.html#social-title', 'Conecta con Efy')],
+    'ayuda.html': [('ayuda.html#faq-search', 'Centro de ayuda'), ('reportar-error.html', 'Reportar un error')],
 }
 
-# Grouped navigation keeps every published module reachable at its original URL.
-NAV_GROUPS = [
-    ('servicios.html', 'Seguros', {'Servicios', 'Cotización'}),
-    ('empresas.html', 'Empresas', {'Empresas'}),
-    ('asistencia.html', 'Asistencias', {'Asistencias'}),
-    ('nosotros.html', 'Nosotros', {'Conócenos', 'Socios estratégicos', 'Reseñas'}),
-    ('clientes.html', 'Clientes', {'Clientes', 'Contáctanos', 'Ayuda'}),
-]
-NAV_PREVIEWS['servicios.html'][2].insert(0, ('cotizar.html', 'Solicitar cotización', ''))
-NAV_PREVIEWS['empresas.html'] = ('Tu empresa.', '', [
-    ('empresas.html#business-title', 'Protección para empresas', ''),
-    ('servicios.html#seguro-pymes', 'Seguro para pymes', ''),
-    ('servicios.html#seguro-responsabilidad-civil', 'Responsabilidad civil', ''),
-    ('servicios.html#seguro-transporte-pesado', 'Transporte pesado', ''),
-    ('cotizar.html?ramo=pymes', 'Asesoría para mi empresa', ''),
-])
-NAV_PREVIEWS['nosotros.html'][2].extend([
-    ('socios.html', 'Socios estratégicos', ''), ('resenas.html', 'Reseñas', ''),
-    ('contactos.html', 'Contáctanos', ''),
-])
-NAV_PREVIEWS['clientes.html'] = ('Atención para clientes.', '', [
-    ('clientes.html', 'Accesos para clientes', ''),
-    ('coberturas-cooperativas.html', 'Cobertura de cooperativas', ''),
-    ('consultas.html', 'Siniestros y reembolsos', ''),
-    ('contactos.html#contacto-operativo', 'Hablar con el equipo', ''),
-    ('ayuda.html', 'Centro de ayuda', ''),
-    ('reportar-error.html', 'Reportar un error', ''),
-])
-
 def navigation_item(filename, name, current, active_page):
-    _, _, links = NAV_PREVIEWS[filename]
-    panel_id = 'nav-preview-' + filename.removesuffix('.html')
     current_attribute = ' aria-current="page"' if current else ''
-    active_page = 'reportar-siniestro.html' if active_page == 'siniestros.html' else active_page
-    destinations = ''
-    for url, label, _ in links:
-        target = urlsplit(url)
-        selected = ' aria-current="page"' if target.path == active_page and not target.fragment else ''
-        destinations += f'<li><a class="nav-preview-link" href="{escape(url, quote=True)}"{selected}><span class="nav-bullet" aria-hidden="true">•</span><span>{escape(label)}</span></a></li>'
-    return (f'<div class="nav-item"><a class="nav-link" href="{filename}"{current_attribute} aria-expanded="false" aria-controls="{panel_id}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></a><button class="nav-submenu-toggle" type="button" aria-expanded="false" aria-controls="{panel_id}" aria-label="Desplegar opciones de {escape(name, quote=True)}"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></button>'
-            f'<section class="nav-preview" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><ul class="nav-preview-links">{destinations}</ul></section></div>')
+    if filename == 'index.html':
+        return f'<div class="nav-item"><a class="nav-link" href="index.html"{current_attribute}>Inicio</a></div>'
+    panel_id = 'nav-preview-' + filename.removesuffix('.html')
+    destinations = ''.join(f'<li><a class="nav-preview-link" href="{escape(url, quote=True)}"><span class="nav-bullet" aria-hidden="true">•</span><span>{escape(label)}</span></a></li>' for url, label in NAV_PREVIEWS[filename])
+    extra_class = ' nav-products' if filename == 'servicios.html' else ''
+    return (f'<div class="nav-item"><button class="nav-link" type="button"{current_attribute} aria-expanded="false" aria-controls="{panel_id}" aria-label="Desplegar opciones de {escape(name, quote=True)}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></button>'
+            f'<section class="nav-preview{extra_class}" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><p class="nav-preview-title">{escape(name.upper())}</p><ul class="nav-preview-links">{destinations}</ul></section></div>')
 
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
@@ -488,7 +423,7 @@ for filename, label, title, content in pages + extras:
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-seguros-transparent.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
 <body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><picture><source type="image/webp" srcset="../assets/efy-brand-360.webp 360w, ../assets/efy-brand-720.webp 720w" sizes="(max-width:760px) 144px, 178px"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887" fetchpriority="high" decoding="async"></picture></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><a class="button primary header-quote" href="cotizar.html">Solicitar cotización {ARROW}</a></div></header>
+<header class="site-header premium-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><picture><source type="image/webp" srcset="../assets/efy-brand-360.webp 360w, ../assets/efy-brand-720.webp 720w" sizes="(max-width:760px) 150px, 184px"><img src="../assets/efy-seguros-transparent.png" alt="Efy Seguros · Tu mejor elección" width="1774" height="887" fetchpriority="high" decoding="async"></picture></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><a class="button primary header-quote" href="cotizar.html">Solicitar cotización {ARROW}</a></div></header>
 <main id="contenido">{content}</main>
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>© 2026 Efy Seguros.</p><span>Tu mejor elección.</span></div></div></footer>
 <button class="chat-fab" type="button" data-open-chat aria-controls="evia-dialog" aria-expanded="false"><img src="../assets/site/evia-portrait.jpg" alt="" width="40" height="40"><span>Habla con EVIA</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H5l-3 3V11.5a9 9 0 0 1 18 0Z"/></svg></button>
@@ -499,7 +434,7 @@ for filename, label, title, content in pages + extras:
     if filename in ('reportar-siniestro.html', 'siniestros.html'):
         document = document.replace('</head>', f'<script src="../assets/site/siniestros.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'index.html':
-        document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/scene.css?v={SITE_VERSION}"><script src="../assets/site/scene.js?v={SITE_VERSION}" defer></script></head>')
+        document = document.replace('</head>', f'<script src="../assets/site/premium.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'nosotros.html':
         document = document.replace('</head>', '<script src="../assets/site/evia-about.js?v=evia-20261010" defer></script></head>')
     if filename == 'consultas.html':
@@ -510,7 +445,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<meta name="referrer" content="same-origin"><script src="../assets/site/coberturas.js?v={COVERAGE_VERSION}" defer></script></head>')
     if filename == 'servicios.html':
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
-    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script></head>')
+    document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/premium.css?v={SITE_VERSION}"></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)
@@ -522,7 +457,8 @@ for filename, label, title, content in pages + extras:
                 'srcset="../assets/site/evia-avatar-180.webp 180w, ../assets/site/evia-avatar-360.webp 360w" '
                 'sizes="135px">' + image + '</picture></span>')
     document = re.sub(r'(<img src="../assets/site/evia-portrait.jpg" alt=""[^>]*>)', avatar_picture, document)
-    document = document.replace('</head>', '<noscript><style>button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#coverage-form,#coverage-status,#coverage-retry,#claim-form,.claim-progress,#claim-availability,#lookup-form,.service-filters,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
+    document = document.replace('</header>', '</header><noscript><nav class="noscript-nav" aria-label="Navegación sin JavaScript">' + ''.join(f'<a href="{file}">{name}</a>' for file,name,_ in NAV_GROUPS) + '</nav></noscript>')
+    document = document.replace('</head>', '<noscript><style>.premium-header #site-nav{display:none!important}button[data-open-chat],.suggestion,.faq-search,.faq-filters,#search-status,#consult-form,#error-form,#coverage-form,#coverage-status,#coverage-retry,#claim-form,.claim-progress,#claim-availability,#lookup-form,.service-filters,label[for="partner-search"],#partner-search,#partner-count,label[for="assistance-search"],#assistance-search,#assistance-count{display:none}</style></noscript></head>')
     (OUT / filename).write_text(document)
     # The root is the published product; /nueva/ remains available for old review links.
     published = document.replace('../assets/', '/assets/').replace('content="noindex,nofollow"', 'content="index,follow"')

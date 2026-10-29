@@ -13,7 +13,7 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Reseñas reales de clientes: `tooling/efy/resenas.json`; pendientes del propietario o de una fuente oficial. `resenas-demo.json` contiene diez ejemplos ficticios bajo el rótulo «Opiniones de demostración» mientras no haya reseñas reales.
 - Cotizaciones: las consultas actuales se preparan en el navegador y continúan por WhatsApp comercial. El CRM facilitado es `https://app.latamyanez.com/login`; su recepción de solicitudes depende del acceso a la API o repo.
 - Recorrido guiado: `cotizar.html` conserva el ramo seleccionado, valida tres pasos y prepara el saludo aprobado con el resumen para el asesor comercial elegido. No envía ni guarda datos automáticamente. `empresas.html` y `clientes.html` agrupan accesos reales; no simulan un portal autenticado.
-- Menú principal: Seguros, Empresas, Asistencias, Nosotros y Clientes. Los módulos originales conservan sus URL y se acceden desde los submenús. El logo vuelve a Inicio.
+- Menú principal: Inicio, Servicios, Asistencias, Aliados, Conócenos, Contacto y Ayuda. Los títulos abren sus opciones con clic; Inicio lleva a la portada. Servicios enumera los 16 productos y Asistencias separa consultas de reembolso y siniestro. Las URL originales se conservan.
 - Animación: tarjetas de protección con respuestas al puntero, aparición al desplazarse y transición entre pasos; compatible con movimiento reducido. La escena y los medios aprobados de EVIA se conservan.
 - Caché: el publicador incorpora un bloque de revalidación HTML en la configuración Apache existente, conservando las directivas de hosting. La verificación pública exige estas cabeceras en raíz y en `/nueva/`.
 - Preguntas de EVIA: base de Ayuda y `tooling/efy/preguntas-frecuentes.json`; preguntas investigadas en fuentes oficiales, con nueve guías de documentos de reembolso por compañía, con enlaces y variantes para el chat.
@@ -29,3 +29,11 @@ SFTP a HostGator. Los cambios del sitio incorporados a `main` se publican autom�
 - Habilidades y runtimes incluidos: [instalación EFY](tooling/efy/INSTALACION.md).
 
 Las credenciales permanecen en GitHub Secrets y no se incluyen en el repositorio.
+
+La portada premium aprobada usa `tooling/efy/templates/premium-home.html` con
+`scripts/premium_site.py`: contactos y logos se generan desde los datos oficiales.
+Su CSS está limitado a `.premium-home` y al encabezado, de modo que no altera los
+formularios operativos ni el chat. EVIA reproduce el bucle aprobado con apertura
+de escena, respaldo estático, movimiento reducido y pausa al salir de pantalla.
+Las tarjetas 3D usan las mismas ilustraciones que Servicios. No hay acciones
+de maqueta ni formularios ficticios en la versión publicada.

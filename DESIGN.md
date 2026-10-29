@@ -146,3 +146,19 @@ Las animaciones no bloquean controles ni mantienen el contenido oculto: sus
 estilos finales son los originales. El teclado finaliza la animación de un
 control enfocado y el movimiento reducido cancela las transiciones activas.
 Se sustituye el efecto de aparición anterior para evitar animaciones duplicadas.
+
+## Publicación de la propuesta premium, 29 de octubre de 2026
+
+El propietario aprobó aplicar la maqueta premium y pidió ayuda con el logo. Se
+conserva el logo blanco aprobado, con mayor tamaño y alineación en el encabezado,
+a la espera de una elección explícita de otra variante. La portada adopta la
+composición revisada: IBM Plex Sans 400/500/600, azul profundo, rosa, cristal,
+espacios claros y las ilustraciones 3D originales para Auto, Salud, Vida, Hogar
+y Empresa. El bucle aprobado de EVIA vuelve a reproducirse, con apertura suave
+de la escena y efectos luminosos. Movimiento reducido, ahorro de datos, error
+de video y salida de pantalla conservan una alternativa estática legible.
+
+La navegación contiene siete módulos y desplegables por clic, accesibles con
+teclado y en móvil. Los productos abren su ramo en Servicios; los enlaces a
+consultas preseleccionan siniestro o reembolso. El chat y los endpoints existentes
+se conservan. La plantilla pública no contiene controles ni mensajes de maqueta.

@@ -20,17 +20,20 @@
     const path = normalizePath(location.pathname);
     const links = [...nav.querySelectorAll('.nav-preview-link')];
     const category = document.querySelector('[data-service-category][aria-pressed="true"]');
-    const hash = category ? (category.id ? '#' + category.id : '') : location.hash;
+    const hash = location.hash.startsWith('#seguro-') ? location.hash : category ? (category.id ? '#' + category.id : '') : location.hash;
     const destinations = links.map(link => ({ link, url: new URL(link.href, location.href) }));
     const matchesSection = hash && destinations.some(({ url }) => normalizePath(url.pathname) === path && url.hash === hash);
     destinations.forEach(({ link, url }) => {
-      const selected = normalizePath(url.pathname) === path && (matchesSection ? url.hash === hash : !url.hash);
+      const requestedType = url.searchParams.get('tipo');
+      const currentType = document.querySelector('#lookup-type')?.value || new URLSearchParams(location.search).get('tipo');
+      const selected = normalizePath(url.pathname) === path && (!requestedType || requestedType === currentType) && (matchesSection ? url.hash === hash : !url.hash);
       if (selected) link.setAttribute('aria-current', matchesSection ? 'location' : 'page');
       else link.removeAttribute('aria-current');
     });
   }
   markCurrentSelection();
   window.addEventListener('hashchange', markCurrentSelection);
+  document.querySelector('#lookup-type')?.addEventListener('change', markCurrentSelection);
   document.addEventListener('click', event => {
     if (event.target.closest('[data-service-category]')) markCurrentSelection();
   });
@@ -72,6 +75,10 @@
       if (opened === entry) close();
       else open(entry, entry.toggle, true);
     });
+    if (entry.link.tagName === 'BUTTON') entry.link.addEventListener('click', () => {
+      if (opened === entry) close();
+      else open(entry, entry.link, true);
+    });
     entry.link.addEventListener('keydown', event => {
       if (event.key !== 'ArrowDown') return;
       event.preventDefault();
@@ -79,13 +86,17 @@
       entry.panel.querySelector('a')?.focus();
     });
     entry.panel.addEventListener('click', event => {
-      if (event.target.closest('a')) close();
+      if (event.target.closest('a')) {
+        close();
+        nav.classList.remove('is-open');
+        document.querySelector('.menu-toggle')?.setAttribute('aria-expanded', 'false');
+      }
     });
     entry.panel.hidden = true;
     entry.item.classList.remove('is-preview-open');
 
     entry.item.addEventListener('pointerenter', event => {
-      if (event.pointerType !== 'touch') open(entry);
+      if (entry.link.tagName !== 'BUTTON' && event.pointerType !== 'touch') open(entry);
     });
     entry.item.addEventListener('pointerleave', () => {
       if (opened !== entry) return;
@@ -95,7 +106,7 @@
       }, 100);
     });
     entry.item.addEventListener('focusin', event => {
-      if (event.target !== restoringFocus) open(entry);
+      if (entry.link.tagName !== 'BUTTON' && event.target !== restoringFocus) open(entry);
     });
     entry.item.addEventListener('focusout', event => {
       // relatedTarget identifies the next focus before the browser blurs the old link.

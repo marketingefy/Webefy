@@ -3,26 +3,22 @@ from html import escape
 
 
 NEEDS = [
-    ('vehiculos', 'Auto', 'Tu vehículo, en buenas manos.', 'M3 14l2-7h14l2 7M5 14h14v6H5zM7 10h10M7 17h1m8 0h1M7 20v2m10-2v2'),
-    ('asistencia-medica', 'Salud', 'Atención para ti y los tuyos.', 'M9 3h6v6h6v6h-6v6H9v-6H3V9h6z'),
-    ('vida', 'Vida', 'El futuro de quienes más quieres.', 'M12 21S2 15 2 8a5 5 0 0 1 10-2A5 5 0 0 1 22 8c0 7-10 13-10 13Z'),
-    ('hogar', 'Hogar', 'El lugar donde pasa tu vida.', 'M2 11 12 2l10 9M5 9v13h14V9M9 22v-8h6v8'),
-    ('pymes', 'Empresa', 'Lo que construyes, cada día.', 'M3 22V8h10v14M13 4h8v18M6 12h4m-4 4h4m6-8h2m-2 5h2m-2 5h2M1 22h22'),
+    ('vehiculos', 'Auto', 'Para cada nuevo camino.', 2),
+    ('asistencia-medica', 'Salud', 'Tu bienestar, más cerca.', 5),
+    ('vida', 'Vida', 'Por quienes más quieres.', 8),
+    ('hogar', 'Hogar', 'Donde empieza tu historia.', 11),
+    ('pymes', 'Empresa', 'Lo que estás construyendo.', 12),
 ]
 
 
 def need_selector(arrow):
     cards = ''.join(
-        f'<a class="protection-card" href="cotizar.html?ramo={key}">'
-        f'<svg class="protection-icon" viewBox="0 0 24 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{path}"/></svg>'
-        f'<h3>{title}</h3><p>{description}</p><span class="protection-link">Solicitar cotización {arrow}</span></a>'
-        for key, title, description, path in NEEDS
+        f'<a class="protect-card protection-card" href="cotizar.html?ramo={key}" style="--delay:-{i * 1.7}s;--col:{tile % 4};--row:{tile // 4}">'
+        '<span class="product-stage"><span class="floor-ring"></span><span class="model"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy"></span>'
+        f'<span class="product-symbol">{arrow}</span></span><div class="product-body"><h3 class="product-title">{title}</h3><p class="product-copy">{description}</p><span class="product-action">Solicitar cotización {arrow}</span></div></a>'
+        for i, (key, title, description, tile) in enumerate(NEEDS)
     )
-    return f'''<section class="section container protection-section" id="que-proteger" aria-labelledby="protection-title">
-      <div class="section-heading protection-heading"><div><p class="eyebrow">TU VIDA, TU ELECCIÓN</p><h2 id="protection-title">¿Qué quieres <span>proteger?</span></h2></div><p>Empieza por lo que te importa.<br>Te ayudamos a encontrar tu siguiente paso.</p></div>
-      <div class="protection-grid">{cards}</div>
-      <a class="text-link protection-all" href="servicios.html">Explorar todos los seguros {arrow}</a>
-    </section>'''
+    return f'''<div class="premium-home premium-selector"><section class="protection section shell protection-section" id="que-proteger" aria-labelledby="protection-title"><div class="section-top protection-heading"><div><p class="eyebrow">UNA ELECCIÓN MUY TUYA</p><h2 id="protection-title">¿Qué quieres <span>proteger?</span></h2></div><p>Tu vida tiene muchas dimensiones.<br>Tu seguro debería entenderlas.</p></div><div class="protection-grid">{cards}</div><div class="catalog-bottom"><p>Protección para personas, familias y empresas.</p><a class="text-action" href="servicios.html#catalogo">Explorar nuestros seguros {arrow}</a></div></section></div>'''
 
 
 def quote_page(services, arrow, whatsapp):

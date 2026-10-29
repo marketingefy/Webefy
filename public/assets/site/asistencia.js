@@ -93,6 +93,8 @@
       status.textContent = 'Seleccionamos el resumen para que puedas copiarlo.';
     }
   });
+  const initialType = new URLSearchParams(location.search).get('tipo');
+  if (Object.hasOwn(topics, initialType)) type.value = initialType;
   updateLookup();
   // Identifiers stay in this page. Preparing the draft makes no request, stores
   // nothing and sends no email; only the visitor can open and send their draft.

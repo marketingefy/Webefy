@@ -22,6 +22,9 @@
   const title = document.querySelector('h1');
   // Preserve the original inline wording and breaks, including screen-reader text.
   if (title && !reduced.matches) {
+    if (title.hasAttribute('data-premium-title')) {
+      title.querySelectorAll(':scope>span').forEach((element, i) => rise(element, 160 + i * 140, 55));
+    } else {
     const lines = [];
     let line = document.createElement('span');
     line.className = 'entrance-line';
@@ -35,6 +38,7 @@
     lines.push(line);
     title.replaceChildren(...lines);
     title.querySelectorAll('.entrance-line').forEach((element, i) => rise(element, 160 + i * 140, 55));
+    }
   }
   if (scrollY < 80 && !location.hash) {
     rise(document.querySelector('.header-inner'), 0, -16);
@@ -42,12 +46,16 @@
     rise(intro?.querySelector('.eyebrow'), 80, 18);
     rise(intro?.querySelector('.hero-lead,.large-copy,.intro-copy'), 470, 26);
     rise(intro?.querySelector('.actions'), 600, 24);
+    animate(document.querySelector('.premium-home .scene'), [
+      { clipPath: 'inset(0 48% 0 48% round 20px)', opacity: .15 },
+      { clipPath: 'inset(0% round 0px)', opacity: 1 }
+    ], { duration: 1800 });
     animate(document.querySelector('.workshop'), [
       { clipPath: 'inset(5% 0 20% 9% round 36px)', opacity: .15 },
       { clipPath: 'inset(0% round 0px)', opacity: 1 }
     ], { duration: 1400 });
   }
-  const targets = document.querySelectorAll('.section-heading,.protection-heading,.protection-card,.service-card,.business-card,.client-action,.editorial-link,.partner-card,.assistance-option,.review-demo-card,.contact-department,.guide-grid>div,.about-story>div');
+  const targets = document.querySelectorAll('.section-heading,.protection-heading,.protection-card,.service-card,.business-card,.client-action,.editorial-link,.partner-card,.assistance-option,.review-demo-card,.contact-department,.guide-grid>div,.about-story>div,.premium-home .section-top,.premium-home .assist-card');
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       const visible = entries.filter(entry => entry.isIntersecting);

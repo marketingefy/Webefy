@@ -19,7 +19,7 @@ const root = path.resolve(__dirname, '../../public');
       const filename = path.resolve(root, '.' + (pathname.endsWith('/') ? pathname + 'index.html' : pathname));
       if (!filename.startsWith(root + path.sep)) throw Error('outside root');
       const content = await fs.readFile(filename);
-      const type = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.woff2':'font/woff2','.webp':'image/webp','.mp4':'video/mp4'}[path.extname(filename)];
+      const type = {'.html':'text/html; charset=utf-8','.js':'text/javascript','.css':'text/css','.woff2':'font/woff2','.webp':'image/webp','.mp4':'video/mp4','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg'}[path.extname(filename)];
       response.writeHead(200, {'Content-Type':type || 'application/octet-stream'}); response.end(content);
     } catch { response.writeHead(404); response.end(); }
   });
@@ -81,10 +81,43 @@ const root = path.resolve(__dirname, '../../public');
       assert.equal(new URL(await quoteShortcut.getAttribute('href')).pathname, prefix + 'cotizar.html');
       await page.locator('#close-chat').click();
       await page.locator('.menu-toggle').click();
-      assert.deepEqual(await page.locator('.nav-link').allTextContents().then(a => a.map(t => t.trim())), ['Seguros','Empresas','Asistencias','Nosotros','Clientes']);
-      await page.locator('[aria-label="Desplegar opciones de Clientes"]').click();
-      await page.locator('#nav-preview-clientes a').filter({hasText:'Centro de ayuda'}).click();
+      assert.deepEqual(await page.locator('.nav-link').allTextContents().then(a => a.map(t => t.trim())), ['Inicio','Servicios','Asistencias','Aliados','Conócenos','Contacto','Ayuda']);
+      await page.locator('[aria-label="Desplegar opciones de Ayuda"]').click();
+      await page.locator('#nav-preview-ayuda a').filter({hasText:'Centro de ayuda'}).click();
       assert.equal(new URL(page.url()).pathname, prefix + 'ayuda.html');
+
+      await page.locator('.menu-toggle').click();
+      await page.locator('[aria-label="Desplegar opciones de Servicios"]').click();
+      assert.equal(await page.locator('#nav-preview-servicios a').count(), 17);
+      await page.locator('#nav-preview-servicios a').filter({hasText:'Seguro de hogar'}).click();
+      assert.equal(new URL(page.url()).pathname, prefix + 'servicios.html');
+      assert.equal(new URL(page.url()).hash, '#seguro-hogar');
+      await page.waitForFunction(() => document.querySelector('[data-service-category][aria-pressed=true]')?.dataset.serviceCategory === 'Patrimonio y actividad');
+      assert.equal(await page.locator('[data-service-category][aria-pressed=true]').getAttribute('data-service-category'), 'Patrimonio y actividad');
+
+      await page.locator('.menu-toggle').click();
+      await page.locator('[aria-label="Desplegar opciones de Asistencias"]').click();
+      await page.locator('#nav-preview-asistencia a').filter({hasText:'Consulta de reembolso'}).click();
+      await page.waitForLoadState('domcontentloaded');
+      assert.equal(await page.locator('#lookup-type').inputValue(), 'reembolso');
+      assert.equal(await page.locator('#lookup-cedula').isEnabled(), true);
+      assert.equal(await page.locator('#lookup-plate-option').isVisible(), false);
+
+      await page.locator('.menu-toggle').click();
+      await page.locator('[aria-label="Desplegar opciones de Asistencias"]').click();
+      await page.locator('#nav-preview-asistencia a').filter({hasText:'Consulta de siniestro'}).click();
+      await page.waitForLoadState('domcontentloaded');
+      assert.equal(await page.locator('#lookup-type').inputValue(), 'vehicular');
+      await page.locator('input[name=lookup-method][value=placa]').check();
+      assert.equal(await page.locator('#lookup-plate').isEnabled(), true);
+
+      await page.setViewportSize({width:1440,height:1000});
+      await page.goto(base + prefix + 'index.html');
+      await page.locator('[aria-label="Desplegar opciones de Conócenos"]').click();
+      assert.equal(await page.locator('#nav-preview-nosotros').isVisible(), true);
+      await page.keyboard.press('Escape');
+      assert.equal(await page.locator('#nav-preview-nosotros').isVisible(), false);
+      assert.equal(await page.locator('[aria-label="Desplegar opciones de Conócenos"]').evaluate(e => e === document.activeElement), true);
 
       for (const file of ['index.html','cotizar.html','empresas.html','clientes.html','servicios.html','nosotros.html','contactos.html','asistencia.html','coberturas-cooperativas.html','resenas.html','ayuda.html','consultas.html','reportar-siniestro.html']) {
         for (const width of [320,390,1440]) {
@@ -101,6 +134,23 @@ const root = path.resolve(__dirname, '../../public');
         }
       }
     }
+    const animated = await browser.newContext({viewport:{width:1440,height:1000}});
+    const animationPage = await animated.newPage();
+    await animationPage.goto(base + '/');
+    await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
+    assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
+    await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
+    await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
+    await animated.close();
+
+    const fallback = await browser.newContext({viewport:{width:390,height:844}});
+    await fallback.route('**/*.mp4', route => route.abort());
+    const fallbackPage = await fallback.newPage();
+    await fallbackPage.goto(base + '/');
+    await fallbackPage.waitForFunction(() => document.querySelector('.scene-video')?.error);
+    assert.equal(await fallbackPage.locator('.scene-poster').isVisible(), true);
+    assert.equal(await fallbackPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), false);
+    await fallback.close();
     await page.goto(base + '/cotizar.html');
     const cdp = await context.newCDPSession(page);
     await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
