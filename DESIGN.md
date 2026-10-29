@@ -162,3 +162,18 @@ La navegación contiene siete módulos y desplegables por clic, accesibles con
 teclado y en móvil. Los productos abren su ramo en Servicios; los enlaces a
 consultas preseleccionan siniestro o reembolso. El chat y los endpoints existentes
 se conservan. La plantilla pública no contiene controles ni mensajes de maqueta.
+
+## Logo blanco y nueva propuesta de EVIA, 29 de octubre de 2026
+
+El propietario aporta un JPG de marca blanca casi imperceptible sobre blanco y
+confirma mantenerla blanca. La versión con transparencia está en
+`public/assets/efy-logo-white-20261029.png`; conserva el conjunto de llama y
+wordmark sin añadir el lema que no aparece en la nueva referencia. Se utiliza
+en todos los encabezados, referencias de marca y favicon de las páginas actuales
+y de las vistas anteriores. El nombre nuevo evita la caché de los archivos viejos.
+El encuadre por CSS elimina el margen transparente de exportación en el encabezado.
+
+Se generó una toma nueva de EVIA con Kling 3.0 Pro, distinta del taller anterior:
+observatorio nocturno, mesa de cristal y hologramas de Auto, Hogar y Salud. Está
+en revisión; no sustituye todavía el video principal, respetando la petición de
+ver la propuesta antes de aplicarla. Ver `tooling/efy/EVIA-PREMIUM-20261029.md`.

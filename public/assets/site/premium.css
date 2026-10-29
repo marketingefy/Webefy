@@ -488,3 +488,13 @@ body:not([data-page="inicio"]) .assistance-option:nth-child(even) .option-number
 .premium-header .nav-item:focus-within .nav-preview{animation:efy-menu-slide 180ms var(--ease)}
 @media(hover:hover) and (pointer:fine){body:not([data-page="inicio"]) :is(.service-card,.partner-card,.assistance-option):hover{border-color:#f25c9d80;box-shadow:0 14px 38px #445ea512}}
 @media(prefers-reduced-motion:reduce){.premium-header .nav-item:focus-within .nav-preview{animation:none}}
+
+/* Latest owner-supplied white wordmark: no tagline, consistent breathing room. */
+.premium-header .brand{width:210px}
+@media(max-width:1250px){.premium-header .brand{width:180px}}
+@media(max-width:1180px),(hover:none),(pointer:coarse){.premium-header .brand{width:180px}}
+@media(max-width:760px){.premium-header .brand{width:175px}}
+@media(max-width:360px){.premium-header .brand{width:170px}}
+/* Crop transparent export padding in layout while preserving the owner's image. */
+.premium-header .brand{position:relative;aspect-ratio:1793/716;height:auto;overflow:hidden}
+.premium-header .brand img{position:absolute;left:-10.764%;top:-2.793%;width:115.951%;max-width:none;height:auto}

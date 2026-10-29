@@ -134,14 +134,17 @@ const root = path.resolve(__dirname, '../../public');
         }
       }
     }
-    const animated = await browser.newContext({viewport:{width:1440,height:1000}});
-    const animationPage = await animated.newPage();
-    await animationPage.goto(base + '/');
-    await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
-    assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
-    await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
-    await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
-    await animated.close();
+    for (const prefix of ['/', '/nueva/']) {
+      const animated = await browser.newContext({viewport:{width:1440,height:1000}});
+      const animationPage = await animated.newPage();
+      await animationPage.goto(base + prefix + 'index.html');
+      await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
+      assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname, '/assets/evia-workshop-loop.mp4');
+      assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
+      await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
+      await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
+      await animated.close();
+    }
 
     const fallback = await browser.newContext({viewport:{width:390,height:844}});
     await fallback.route('**/*.mp4', route => route.abort());
