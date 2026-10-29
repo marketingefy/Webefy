@@ -6,7 +6,6 @@
 .turner{position:absolute;left:6px;right:6px;top:4px;height:78px;transform-style:preserve-3d;transform:translateY(var(--icon-y,0px)) translateX(var(--icon-x,0px)) rotateZ(var(--tilt,0deg)) scale(var(--zoom,1))}
 .face{position:absolute;inset:0;display:flex;align-items:end;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(1.5px);filter:drop-shadow(0 3px 7px #4eb8ff66)}
 .face.back{transform:rotateY(180deg) translateZ(1.5px)}.crop{overflow:hidden;position:relative;flex-shrink:0;margin-bottom:4px}.crop img{position:absolute;max-width:none}
-.label{position:absolute;left:0;right:0;bottom:17px;text-align:center;letter-spacing:.02em;text-shadow:0 1px 4px #001b4b}
 .base{position:absolute;bottom:0;left:0;width:100%;height:15px;border:1px solid #9dd9ffbb;border-radius:50%;background:radial-gradient(ellipse,#62c5ff24,transparent 65%);box-shadow:0 0 12px #5ba9ff66,inset 0 0 9px #53c9ff55}
 .base::after{content:'';position:absolute;inset:3px 11px;border:1px solid #f9a0cc99;border-radius:50%;opacity:var(--glow)}
 .finger-light{position:absolute;z-index:5;width:7px;height:7px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 5px #fff,0 0 16px #9ceaff,0 0 28px #6db8ff,0 0 34px #f25c9d80;pointer-events:none}.signal{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}.signal path{fill:none;stroke:#a2ddff;stroke-width:1.2;filter:drop-shadow(0 0 3px #8bdfff)}
@@ -21,7 +20,7 @@ for(const spec of SPECS){
  const node=document.createElement('div');node.className='hologram';node.style.left=(spec.x*1280-56)+'px';node.style.top=(spec.y*720)+'px';node.dataset.name=spec.name;
  const [x,y,w,h]=spec.bbox,scale=Math.min(97/w,72/h);
  const icon='<span class="crop" style="width:'+(w*scale)+'px;height:'+(h*scale)+'px"><img src="/iconos.png" style="width:'+(2172*scale)+'px;height:'+(724*scale)+'px;left:'+(-x*scale)+'px;top:'+(-y*scale)+'px"></span>';
- node.innerHTML='<div class="glass"></div><div class="turner"><div class="face">'+icon+'</div><div class="face back">'+icon+'</div></div><span class="label">'+spec.name+'</span><div class="base"></div><div class="activation-ring"></div>';
+ node.innerHTML='<div class="glass"></div><div class="turner"><div class="face">'+icon+'</div><div class="face back">'+icon+'</div></div><div class="base"></div><div class="activation-ring"></div>';
  document.getElementById('cards').append(node);spec.node=node;
 }
 const video=document.querySelector('video');

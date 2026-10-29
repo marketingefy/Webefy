@@ -1,5 +1,6 @@
 """Build a self-contained visual preview, without hosting or publishing the site."""
 import base64
+import os
 import json
 import mimetypes
 from pathlib import Path
@@ -7,7 +8,7 @@ import re
 from urllib.parse import unquote, urlsplit
 
 root = Path(__file__).resolve().parents[2] / 'public'
-output = Path('/workspace/output/efy-evia-dedo-luz-20261029')
+output = Path(os.environ.get('EFY_PREVIEW_OUTPUT','/workspace/output/efy-evia-dedo-luz-20261029'))
 assets, identifiers = {}, {}
 
 
