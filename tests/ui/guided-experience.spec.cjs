@@ -126,24 +126,38 @@ const root = path.resolve(__dirname, '../../public');
           const typography = await page.evaluate(() => ({
             body: getComputedStyle(document.body).fontFamily,
             heading: getComputedStyle(document.querySelector('h1')).fontWeight,
+            label: (() => {
+              const style = getComputedStyle(document.querySelector('.eyebrow'));
+              return {family:style.fontFamily,weight:style.fontWeight,size:parseFloat(style.fontSize),spacing:style.letterSpacing};
+            })(),
             overflow: document.documentElement.scrollWidth > innerWidth + 1,
           }));
           assert.match(typography.body, /IBM Plex Sans/); assert.equal(typography.heading,'600');
+          assert.match(typography.label.family, /IBM Plex Sans/);
+          assert.equal(typography.label.weight, '600');
+          assert.ok(typography.label.size >= 13, `Section label too small: ${prefix}${file}`);
+          assert.match(typography.label.spacing, /^(normal|0px)$/);
           assert.equal(typography.overflow, false, `${prefix}${file} ${width}px overflows`);
           tested++;
         }
       }
     }
     for (const prefix of ['/', '/nueva/']) {
-      const animated = await browser.newContext({viewport:{width:1440,height:1000}});
+     for (const width of [390,1440]) {
+      const animated = await browser.newContext({viewport:{width,height:1000}});
       const animationPage = await animated.newPage();
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
-      assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname, '/assets/evia-workshop-loop.mp4');
+      assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname,
+        width <= 760 ? '/assets/evia-premium-gestures-mobile-20261029.mp4' : '/assets/evia-premium-gestures-20261029.mp4');
+      const media = await animationPage.locator('.scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
+      assert.equal(media.width, width <= 760 ? 720 : 1280);
+      assert.ok(media.duration > 10 && media.duration < 13);
       assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
       await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
       await animated.close();
+     }
     }
 
     const fallback = await browser.newContext({viewport:{width:390,height:844}});
@@ -159,7 +173,7 @@ const root = path.resolve(__dirname, '../../public');
     await cdp.send('DOM.enable'); await cdp.send('CSS.enable');
     const document = await cdp.send('DOM.getDocument');
     const fonts = [];
-    for (const selector of ['h1','.quote-guide>p:not(.eyebrow)','#quote-next']) {
+    for (const selector of ['h1','.quote-guide>p:not(.eyebrow)','#quote-next','.quote-intro .eyebrow']) {
       const {nodeId} = await cdp.send('DOM.querySelector',{nodeId:document.root.nodeId,selector});
       const rendered = await cdp.send('CSS.getPlatformFontsForNode',{nodeId});
       assert.ok(rendered.fonts.some(f => f.isCustomFont && /IBM Plex Sans/.test(f.familyName)), `Actual IBM font missing for ${selector}`);

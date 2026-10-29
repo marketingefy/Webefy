@@ -1,4 +1,25 @@
-# Nueva propuesta cinematográfica de EVIA — en revisión
+# Escena cinematográfica de EVIA — publicación autorizada
+
+## Versión final con gestos y giros
+
+El propietario pidió girar cada opción con la mano, dar movimiento al astronauta
+y publicar las peticiones. Esta solicitud sustituye el estado de vista previa de
+la primera propuesta que se conserva documentada más abajo.
+
+- Modelo: Kling 3.0 Pro; 12 segundos, 16:9, sin sonido; coste estimado 18 créditos.
+- Job completado: `fad32d27-f022-4fca-be80-07bd55efd512`.
+- Referencia confirmada: `7e6b583a-95fa-4f77-ad13-a34774941249`.
+- Fuente: https://d8j0ntlcm91z4.cloudfront.net/user_33FNxc26zK65f40FTg5mKBmYy1R/hf_20261029_181922_fad32d27-f022-4fca-be80-07bd55efd512.mp4
+- Acciones: EVIA mueve brazo, muñeca, casco y torso, operando sucesivamente los
+  hologramas de auto, hogar y salud, con giros verticales y luz de respuesta.
+- Preparación: `scripts/prepare_premium_evia_loop.py`; H.264, 24 fps, sin audio,
+  faststart, 1280×720 y 720×800. Ciclo de 11,5 s con disolución de medio segundo
+  al regresar al inicio, sin invertir las acciones. Posters del primer fotograma.
+- Destino: portada raíz y `/nueva/`, con archivos fechados `evia-premium-gestures`.
+- El original se conserva fuera de `public/`, en
+  `/workspace/output/efy-evia-gestos-20261029/evia-gestos-original.mp4`.
+
+## Primera propuesta, conservada como antecedente
 
 El propietario pidió una toma realmente nueva, con estética premium, y había
 pedido ver las propuestas antes de aplicarlas. Se publica el nuevo logo ahora;

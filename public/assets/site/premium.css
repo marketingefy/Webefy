@@ -67,6 +67,8 @@
 .premium-home .scene{position:absolute;width:87%;height:100%;right:-64px;top:0;z-index:0;overflow:hidden;isolation:isolate;mask-image:linear-gradient(90deg,transparent,#000 18%,#000 98%,transparent)}
 .premium-home .scene-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center}
 .premium-home .scene-video{opacity:0;transition:opacity .8s}
+.premium-home .scene>picture{position:absolute;inset:0}
+.premium-home .scene-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% center}
 .premium-home .scene.is-playing .scene-video{opacity:1}
 .premium-home .scene-shade{position:absolute;inset:0;background:linear-gradient(90deg,#080e1d 0%,#080e1dbf 23%,#080e1d30 47%,transparent 72%),linear-gradient(0deg,#080e1d 0%,#080e1d00 28%,#080e1d20)}
 .premium-home .ambient-light{position:absolute;inset:0;background:radial-gradient(ellipse 27% 35% at 84% 40%,#445ea52e,transparent 90%);animation:premium-ambient 9s ease-in-out infinite}
@@ -275,6 +277,7 @@
 .premium-home .hero{min-height:0;padding-top:380px;padding-bottom:95px}
 .premium-home .scene{top:0;right:-20px;width:calc(100% + 40px);height:425px;mask-image:linear-gradient(0deg,transparent,#000 24%);overflow:hidden}
 .premium-home .scene-video{object-fit:cover;object-position:center 35%}
+.premium-home .scene-poster{object-position:center 35%}
 .premium-home .scene-shade{background:linear-gradient(0deg,#080e1d 0%,transparent 38%),linear-gradient(90deg,#080e1d50,transparent 50%)}
 .premium-home .hero-copy{max-width:none}
 .premium-home .hero h1{font-size:66px;letter-spacing:-.055em;line-height:1.02}
@@ -498,3 +501,24 @@ body:not([data-page="inicio"]) .assistance-option:nth-child(even) .option-number
 /* Crop transparent export padding in layout while preserving the owner's image. */
 .premium-header .brand{position:relative;aspect-ratio:1793/716;height:auto;overflow:hidden}
 .premium-header .brand img{position:absolute;left:-10.764%;top:-2.793%;width:115.951%;max-width:none;height:auto}
+
+/* Section labels follow the same readable IBM Plex hierarchy as the headings. */
+body .eyebrow,body .small-label,body .small-title,
+.premium-home .eyebrow,.premium-home .hero .eyebrow,
+.premium-home .small-title,.premium-header .nav-preview-title,
+.urgent-note .small-label{
+ font-family:"IBM Plex Sans",Arial,sans-serif;
+ font-size:.875rem;font-weight:600;line-height:1.5;
+ letter-spacing:0;text-transform:none;
+}
+.premium-home .brand-note span,.premium-home .art-caption{
+ font-family:"IBM Plex Sans",Arial,sans-serif;
+ font-size:.8125rem;font-weight:500;letter-spacing:0;text-transform:none;
+}
+.premium-home .hero-bottom{font-size:.6875rem;letter-spacing:0}
+.premium-home .hero-bottom>span{font-size:inherit}
+@media(max-width:760px){
+ .premium-home .hero .eyebrow{font-size:.8125rem}
+ .premium-home .brand-note span,.premium-home .art-caption{font-size:.75rem}
+ .premium-home .hero-bottom{font-size:.625rem}
+}

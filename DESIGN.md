@@ -1,5 +1,25 @@
 # Efy Seguros: el próximo capítulo
 
+## Portada cinematográfica publicada, 29 de octubre de 2026
+
+El propietario pidió publicar la nueva escena premium y añadir gestos reales:
+EVIA mueve brazo, mano y casco mientras hace girar las opciones holográficas de
+auto, hogar y salud sobre una mesa de cristal en un observatorio nocturno.
+La película de doce segundos se prepara como un ciclo continuo de 11,5 segundos,
+con una disolución de medio segundo entre el final y el inicio. Los gestos siempre
+avanzan; la reproducción no se invierte. Hay video y poster propios para móvil.
+Se conservan el logo blanco, azul, rosa, magenta e IBM Plex Sans locales.
+La preferencia de movimiento reducido, ahorro de datos, pausa fuera de pantalla
+y alternativa estática siguen activas. Se retiran las antiguas tarjetas HTML
+superpuestas: los hologramas ya forman parte de la película.
+
+Los rótulos como «Una elección muy tuya», los encabezados de desplegables y las
+etiquetas equivalentes de todos los módulos usan IBM Plex Sans SemiBold 600,
+14 px (13 px para la bienvenida móvil), sin espaciado artificial ni mayúsculas
+sostenidas. Los títulos mantienen SemiBold, el cuerpo Regular y las acciones
+Medium. Los cinco accesos a seguros conservan sus ilustraciones 3D.
+Ver procedencia en [EVIA-PREMIUM-20261029.md](tooling/efy/EVIA-PREMIUM-20261029.md).
+
 ## Recorrido de protección, 28 de octubre de 2026
 
 La portada conserva el taller cinematográfico y al astronauta aprobado. Sus dos
