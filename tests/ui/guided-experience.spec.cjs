@@ -157,10 +157,10 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname,
-        width <= 760 ? '/assets/evia-premium-consistent-preview-mobile.mp4' : '/assets/evia-premium-consistent-preview.mp4');
+        width <= 760 ? '/assets/evia-traje-fiel-mobile-20261029.mp4' : '/assets/evia-traje-fiel-20261029.mp4');
       const media = await animationPage.locator('.scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, width <= 760 ? 720 : 1280);
-      assert.equal(media.duration, 9.5);
+      assert.equal(media.duration, 11.5);
       assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
       await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
