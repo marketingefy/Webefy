@@ -109,7 +109,7 @@ async function choose(page) {
         assert.equal(await page.locator('a[href="tel:+59323827331"]').count(), 2);
         assert.equal(await page.evaluate(() => window.__injected), undefined);
         assert.match(await page.locator('#coverage-query-date').textContent(), /26.*octubre.*2026/);
-        assert.match(await page.locator('body').textContent(), /Privilegio.*pendiente/s);
+        assert.doesNotMatch(await page.locator('body').textContent(), /Información de Privilegio pendiente/);
         assert.match(await page.locator('body').textContent(), /no acredita pagos ni cancelaciones posteriores/);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
         if (pathname === '/coberturas-cooperativas.html' && [390, 1440].includes(width)) {
@@ -117,13 +117,26 @@ async function choose(page) {
           await page.screenshot({ path: path.resolve('output/coverage/coverage-result-' + width + '.png'), fullPage: true });
         }
 
-        response = { status: 200, data: { ...match, fuentes_pendientes: [], registros: [{ ...match.registros[0], aseguradora: 'PRIVILEGIO', contrato: 'PRUEBA-PRIVILEGIO' }] } };
+        response = { status: 200, data: { ...match, fuentes_pendientes: [], registros: [{ ...match.registros[0], aseguradora: 'PRIVILEGIO', contrato: null, plan: 'TITULAR_FAMILIA', meses_contratados: 12 }] } };
         await page.locator('#coverage-submit').click();
         await page.locator('.coverage-record h3').filter({ hasText: 'Privilegio' }).waitFor();
         assert.equal(await page.locator('a[href="tel:+59326000700"]').count(), 1);
         assert.equal(await page.locator('a[href^="https://wa.me/593968524251"]').count(), 1);
         assert.equal(await page.locator('.coverage-insurer-logo').getAttribute('src'), '/assets/site/partners/privilegio.png');
         assert.equal(await page.locator('#coverage-pending').isHidden(), true);
+        assert.match(await page.locator('#coverage-records').textContent(), /PlanTitular \+ familiaMeses contratados12 meses/);
+        assert.doesNotMatch(await page.locator('#coverage-records').textContent(), /Contrato/);
+        for (const [plan, label] of [['TITULAR', 'Titular'], ['TITULAR_MAS_UNO', 'Titular + 1'], [null, 'No informado']]) {
+          response.data.registros[0].plan = plan;
+          response.data.registros[0].meses_contratados = null;
+          await page.locator('#coverage-submit').click();
+          await page.waitForFunction(expected => document.querySelector('#coverage-records dl')?.textContent.includes('Plan' + expected + 'Meses contratadosNo informados'), label);
+        }
+        response.data.registros.push(match.registros[0]);
+        await page.locator('#coverage-submit').click();
+        await page.waitForFunction(() => document.querySelectorAll('.coverage-record').length === 2);
+        assert.equal(await page.locator('a[href="tel:+59326000700"]').count(), 1);
+        assert.equal(await page.locator('a[href="tel:+59323827331"]').count(), 1);
         await page.locator('#coverage-cedula').fill('0000000002');
         assert.equal(await page.locator('#coverage-results').isHidden(), true);
         response = { status: 200, data: { ...match, encontrado: false, registros: [] } };
