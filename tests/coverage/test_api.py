@@ -111,7 +111,7 @@ class CoverageApi(unittest.TestCase):
         self.assertEqual({item['estado'] for item in data['registros']}, {'VIGENTE', 'VENCIDA'})
         self.assertIsNone(data['registros'][1]['vigencia_fin'])
         self.assertEqual(set(data), {'ok', 'encontrado', 'fecha_consulta', 'fuentes_pendientes', 'registros', 'advertencias'})
-        self.assertEqual(set(data['registros'][0]), {'aseguradora', 'contrato', 'vigencia_inicio', 'vigencia_fin', 'estado'})
+        self.assertEqual(set(data['registros'][0]), {'aseguradora', 'contrato', 'plan', 'meses_contratados', 'vigencia_inicio', 'vigencia_fin', 'estado'})
         response = json.dumps(data)
         for private in ['NOMBRE PRIVADO', '0000000001', '1980-01-01', 'archivo-privado', 'private-internal-id', KEY]:
             self.assertNotIn(private, response)
@@ -128,6 +128,20 @@ class CoverageApi(unittest.TestCase):
         self.assertTrue(modes and all(mode == '600' for mode in modes))
         saved = docker('exec', self.container, 'sh', '-c', 'cat /fixtures/state/*')
         self.assertNotIn('0000000001', saved)
+
+    def test_privilegio_and_mixed_portfolios(self):
+        for scenario in ['privilegio', 'privilegio-null', 'mixed']:
+            with self.subTest(scenario=scenario):
+                status, data, _ = self.call(self.valid(), scenario=scenario)
+                self.assertEqual(status, 200)
+                self.assertEqual(len(data['registros']), 2 if scenario == 'mixed' else 1)
+                record = data['registros'][-1]
+                self.assertEqual(record['aseguradora'], 'PRIVILEGIO')
+                self.assertIsNone(record['contrato'])
+                self.assertEqual(record['plan'], None if scenario == 'privilegio-null' else 'TITULAR_FAMILIA')
+                self.assertEqual(record['meses_contratados'], None if scenario == 'privilegio-null' else 12)
+                self.assertEqual(data['fuentes_pendientes'], [])
+                self.assertFalse(any('pendiente' in warning for warning in data['advertencias']))
 
     def test_no_matches_preserves_pending_privilegio(self):
         status, data, _ = self.call(self.valid(), scenario='no-match')

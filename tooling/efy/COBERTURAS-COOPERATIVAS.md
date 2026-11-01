@@ -46,12 +46,14 @@ y la conexión de HostGator a EfyAnalyzer sin extraer el secreto.
 
 Se conservan todas las coincidencias, incluidas vigencias futuras o vencidas.
 El estado lo determina EfyAnalyzer. La web muestra aseguradora, contrato, inicio,
-fin y estado. `fecha_consulta` es una fecha `YYYY-MM-DD`, calculada en Ecuador.
+fin y estado. Desde EfyAnalyzer 1.240.0 acepta contrato nulo y conserva plan y
+meses_contratados: muestra Titular, Titular + 1 o Titular + familia y la duración;
+si faltan, indica que no están informados. `fecha_consulta` es una fecha `YYYY-MM-DD`, calculada en Ecuador.
 Los datos de nombre, cédula, nacimiento, género y procedencia se descartan en el
 PHP y no se devuelven al navegador.
 
-Proassislife tiene la cartera disponible. Privilegio está pendiente de carga;
-se mantiene ese aviso visible. Cero coincidencias no confirma ausencia de seguro.
+Proassislife y Privilegio tienen carteras disponibles. Si fuentes_pendientes está
+vacío no se muestra aviso de información pendiente. Cero coincidencias no confirma ausencia de seguro.
 Un fallo, una clave incorrecta, un límite o una respuesta inválida muestran
 indisponibilidad y permiten contactar al equipo operativo de Efy.
 

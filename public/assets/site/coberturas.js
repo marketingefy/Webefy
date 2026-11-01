@@ -110,10 +110,9 @@
 
   function render(data) {
     clearResult();
-    const pendingNames = data.fuentes_pendientes.map(source => ({ PRIVILEGIO: 'Privilegio', PROASSISLIFE: 'Proassislife' })[source]);
     pendingNote.hidden = true;
     summary.textContent = data.encontrado
-      ? 'Estos son los registros encontrados en la cartera consultada. Revisa la aseguradora y el estado de cada contrato.'
+      ? 'Estos son los registros encontrados en la cartera consultada. Revisa la aseguradora y el estado de cada afiliación.'
       : 'No encontramos coincidencias en las carteras consultadas. Esto no confirma que no tengas seguro.' + ' Contacta a Efy para verificar tu registro.';
     data.registros.forEach(record => {
       const card = document.createElement('article');
@@ -133,8 +132,15 @@
         card.append(logo);
       }
       const details = document.createElement('dl');
+      const affiliation = record.contrato === null
+        ? [
+            ['Plan', ({ TITULAR: 'Titular', TITULAR_MAS_UNO: 'Titular + 1', TITULAR_FAMILIA: 'Titular + familia' })[record.plan] || 'No informado'],
+            ['Meses contratados', Number.isInteger(record.meses_contratados) && record.meses_contratados > 0
+              ? record.meses_contratados + (record.meses_contratados === 1 ? ' mes' : ' meses') : 'No informados']
+          ]
+        : [['Contrato', text(record.contrato) || 'No informado']];
       const rows = [
-        ['Contrato', text(record.contrato) || 'No informado'],
+        ...affiliation,
         ['Estado', ({ VIGENTE: 'Vigente', POR_INICIAR: 'Por iniciar', VENCIDA: 'Vencida', NO_DETERMINADA: 'No determinada' })[record.estado] || text(record.estado)],
         ['Desde', displayDate(record.vigencia_inicio)],
         ['Hasta', displayDate(record.vigencia_fin)]

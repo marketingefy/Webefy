@@ -52,6 +52,13 @@ coverageHandleRequest(static function (array $config, string $cedula, string $vi
         $record['vigencia_fin'] = null;
         $data['registros'][] = $record;
     }
+    if (in_array($scenario, ['privilegio', 'privilegio-null', 'mixed'], true)) {
+        $privilegio = array_merge($record, ['aseguradora' => 'PRIVILEGIO', 'contrato' => null,
+            'plan' => $scenario === 'privilegio-null' ? null : 'TITULAR_FAMILIA',
+            'meses_contratados' => $scenario === 'privilegio-null' ? null : 12]);
+        $data['registros'] = $scenario === 'mixed' ? [$record, $privilegio] : [$privilegio];
+        $data['fuentes_pendientes'] = [];
+    }
     if ($scenario === 'malformed') unset($data['registros'][0]['aseguradora']);
     if ($scenario === 'inconsistent') $data['encontrado'] = false;
     return ['status' => 200, 'data' => $data];

@@ -58,7 +58,7 @@ for path in sorted(site.rglob("*")):
         elif relative == "nueva/api/coberturas.php":
             data = json.loads(content)
             if not (data.get("ok") is True and data.get("ready") is True
-                    and data.get("version") == "coverage-20261026"
+                    and data.get("version") == "coverage-20261101"
                     and len(data.get("csrf", "")) == 64):
                 reason = data.get("unavailable_reason")
                 allowed_reasons = {"CONFIG_FILE_UNAVAILABLE", "CONFIG_INVALID", "API_KEY_FORMAT_INVALID",
