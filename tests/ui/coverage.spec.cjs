@@ -169,10 +169,16 @@ async function choose(page) {
 
         response = { status: 419, data: { ok: false } };
         await page.locator('#coverage-submit').click();
-        await page.locator('#coverage-retry').waitFor({ state: 'visible' });
+        await page.waitForFunction(() => document.querySelector('#coverage-status').textContent.includes('Recarga la página'));
+        assert.equal(await page.locator('#coverage-retry').isHidden(), true);
+        const buttonBox = await page.locator('#coverage-submit').boundingBox();
+        const messageBox = await page.locator('#coverage-status').boundingBox();
+        assert.ok(messageBox.y >= buttonBox.y + buttonBox.height);
+        assert.doesNotMatch(await page.locator('#coverage-status').textContent(), /Reintentar conexión/);
         assert.equal(await page.locator('#coverage-submit').isDisabled(), true);
         csrf = 'test-session-2';
-        await page.locator('#coverage-retry').click();
+        await page.reload({ waitUntil: 'networkidle' });
+        await choose(page);
         await page.waitForFunction(() => document.querySelector('#coverage-submit').disabled === false);
         response = { status: 200, data: match };
         await page.locator('#coverage-submit').click();

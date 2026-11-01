@@ -26,6 +26,8 @@
   let csrf = '';
   let ready = false;
   let busy = false;
+  let sessionExpired = false;
+  const expiredMessage = 'Tu sesión de consulta venció por inactividad. Recarga la página para iniciar una nueva consulta.';
   let selectionVersion = 0;
 
   function message(text, error = false) {
@@ -73,6 +75,7 @@
     busy = true;
     ready = false;
     csrf = '';
+    sessionExpired = false;
     message('Comprobando disponibilidad de la consulta…');
     update();
     try {
@@ -225,7 +228,7 @@
     form.reset();
     clearResult();
     cedula.setCustomValidity('');
-    message(ready ? 'Consulta disponible. Selecciona tu cooperativa para continuar.' : 'La consulta no está disponible en este momento.', !ready);
+    message(sessionExpired ? expiredMessage : (ready ? 'Consulta disponible. Selecciona tu cooperativa para continuar.' : 'La consulta no está disponible en este momento.'), !ready);
     update();
     consent.focus();
   });
@@ -247,8 +250,10 @@
       if (response.status === 419) {
         ready = false;
         csrf = '';
-        retry.hidden = false;
-        message('La sesión de consulta venció. Pulsa «Reintentar conexión» y vuelve a consultar.', true);
+        sessionExpired = true;
+        retry.hidden = true;
+        message(expiredMessage, true);
+        status.scrollIntoView({ block: 'nearest' });
       } else if (response.status === 429) {
         message('Se alcanzó el límite de consultas. Espera unos minutos antes de intentarlo de nuevo o contacta al equipo operativo de Efy.', true);
       } else if (response.status === 422) {
