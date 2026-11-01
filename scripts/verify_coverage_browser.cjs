@@ -95,6 +95,7 @@ async function verify() {
     }
 
     stage = 'form';
+    await page.locator('#coverage-consent').check();
     await page.locator('#coverage-cooperative').selectOption('coopartamos');
     stage = 'branding';
     const logosLoaded = await page.evaluate(async () => {

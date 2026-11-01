@@ -42,6 +42,8 @@ const match = {
 };
 
 async function choose(page) {
+  assert.equal(await page.locator('#coverage-cooperative').isDisabled(), true);
+  await page.locator('#coverage-consent').check();
   await page.locator('#coverage-cooperative').selectOption('coopartamos');
   assert.equal(await page.locator('#coverage-cooperative-card').isVisible(), true);
   assert.equal(await page.locator('#coverage-cedula').isDisabled(), true);
@@ -95,7 +97,8 @@ async function choose(page) {
         assert.equal(await page.locator('#coverage-cedula').evaluate(el => el.validity.valid), false);
         await page.locator('#coverage-cedula').fill(synthetic);
         await page.locator('#coverage-consent').uncheck();
-        await page.locator('#coverage-submit').click();
+        assert.equal(await page.locator('#coverage-submit').isDisabled(), true);
+        assert.equal(await page.locator('#coverage-cedula').isDisabled(), true);
         assert.equal(submissions.length, 0);
         await page.locator('#coverage-consent').check();
         await page.locator('#coverage-submit').click();

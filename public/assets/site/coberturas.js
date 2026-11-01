@@ -34,12 +34,13 @@
   }
 
   function update() {
-    const confirmed = cooperative.value === 'coopartamos' && confirmation.checked;
+    const confirmed = consent.checked && cooperative.value === 'coopartamos' && confirmation.checked;
     cooperativeCard.hidden = cooperative.value !== 'coopartamos';
-    confirmation.disabled = cooperative.value !== 'coopartamos' || busy;
+    confirmation.disabled = !consent.checked || cooperative.value !== 'coopartamos' || busy;
     queryFields.disabled = !confirmed || !ready || busy;
     submit.disabled = !confirmed || !ready || busy;
-    cooperative.disabled = busy;
+    cooperative.disabled = !consent.checked || busy;
+    consent.disabled = busy;
     retry.disabled = busy;
     clear.disabled = busy;
     workspace.setAttribute('aria-busy', String(busy));
@@ -202,7 +203,11 @@
     selectionVersion++;
     confirmation.checked = false;
     cedula.value = '';
-    consent.checked = false;
+    clearResult();
+    update();
+  });
+  consent.addEventListener('change', () => {
+    selectionVersion++;
     clearResult();
     update();
   });
@@ -222,7 +227,7 @@
     cedula.setCustomValidity('');
     message(ready ? 'Consulta disponible. Selecciona tu cooperativa para continuar.' : 'La consulta no está disponible en este momento.', !ready);
     update();
-    cooperative.focus();
+    consent.focus();
   });
 
   form.addEventListener('submit', async event => {
