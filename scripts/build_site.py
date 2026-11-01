@@ -12,7 +12,7 @@ from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE_VERSION = 'efy-mobile-evia-20261029'
-COVERAGE_VERSION = 'coverage-logos-hd-20261101'
+COVERAGE_VERSION = 'coverage-transparent-20261101'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
 ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>'

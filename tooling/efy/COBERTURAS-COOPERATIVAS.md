@@ -64,11 +64,13 @@ Proassislife: 02 382 7331, opción 1, para citas (sitio oficial). Privilegio:
 (página oficial de contactos). Se muestran según la aseguradora devuelta por
 la API, incluida Privilegio cuando tenga registros. La atención depende de la
 vigencia y las condiciones del contrato. Las fuentes y la fecha de verificación
-se conservan en el JSON. Los logos de esta consulta usan SVG locales, reconstruidos y trazados a partir
+se conservan en el JSON. Los logos de esta consulta usan PNG transparentes locales de 1600 píxeles de
+ancho, exportados de los SVG reconstruidos y trazados a partir
 de referencias de los sitios oficiales (1 de noviembre de 2026). Proassislife usa
 la marca naranja completa; su antiguo icono blanco desaparecía sobre la tarjeta
 blanca. Coopartamos usa el colibrí de su sitio oficial. Privilegio conserva su
-marca y globo. Los SVG contienen curvas, sin imágenes raster incrustadas, y
+marca y globo. Las tarjetas no añaden fondo, borde ni relleno al logo. Los SVG maestros se
+conservan y contienen curvas, sin imágenes raster incrustadas, y
 conservan el nombre de la entidad como respaldo. Los originales oficiales se
 conservan sin modificar en el catálogo general de socios. Se conserva una indicación condicional
 para titular más familia: registro de dependientes en la primera llamada.

@@ -1,13 +1,13 @@
 {
   "cooperativa": {
     "nombre": "Coopartamos",
-    "logo": "/assets/site/partners/coopartamos-hd-20261101.svg",
+    "logo": "/assets/site/partners/coopartamos-transparent-20261101.png",
     "fuente": "https://coopartamos.fin.ec/"
   },
   "aseguradoras": {
     "PROASSISLIFE": {
       "nombre": "Proassislife",
-      "logo": "/assets/site/partners/proassislife-hd-20261101.svg",
+      "logo": "/assets/site/partners/proassislife-transparent-20261101.png",
       "fuente": "https://proassislife.com/",
       "horario": "Lunes a viernes, de 08:30 a 17:30.",
       "contactos": [
@@ -21,7 +21,7 @@
     },
     "PRIVILEGIO": {
       "nombre": "Privilegio",
-      "logo": "/assets/site/partners/privilegio-hd-20261101.svg",
+      "logo": "/assets/site/partners/privilegio-transparent-20261101.png",
       "fuente": "https://www.privilegioseguros.com.ec/contactanos/",
       "contactos": [
         {
