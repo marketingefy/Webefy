@@ -1,13 +1,13 @@
 {
   "cooperativa": {
     "nombre": "Coopartamos",
-    "logo": "https://cdn.sanity.io/images/q0vsroiq/production/adcd519b2a54d4e5f939c6eb09bf3525de80cdee-100x83.webp?auto=format&fit=max&w=420",
-    "fuente": "https://agenciacreativaec.com/"
+    "logo": "/assets/site/partners/coopartamos-hd-20261101.svg",
+    "fuente": "https://coopartamos.fin.ec/"
   },
   "aseguradoras": {
     "PROASSISLIFE": {
       "nombre": "Proassislife",
-      "logo": "https://proassislife.com/wp-content/uploads/2024/07/Proassislife-Medicina-Prepagada-icon.png",
+      "logo": "/assets/site/partners/proassislife-hd-20261101.svg",
       "fuente": "https://proassislife.com/",
       "horario": "Lunes a viernes, de 08:30 a 17:30.",
       "contactos": [
@@ -21,7 +21,7 @@
     },
     "PRIVILEGIO": {
       "nombre": "Privilegio",
-      "logo": "/assets/site/partners/privilegio.png",
+      "logo": "/assets/site/partners/privilegio-hd-20261101.svg",
       "fuente": "https://www.privilegioseguros.com.ec/contactanos/",
       "contactos": [
         {
@@ -39,5 +39,5 @@
       ]
     }
   },
-  "verificado": "2026-10-27"
+  "verificado": "2026-11-01"
 }

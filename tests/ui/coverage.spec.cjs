@@ -109,6 +109,8 @@ async function choose(page) {
         assert.match(await page.locator('#coverage-records').textContent(), /No informada/);
         assert.equal(await page.locator('#coverage-records img[src="x"]').count(), 0);
         assert.equal(await page.locator('.coverage-insurer-logo').count(), 2);
+        await page.waitForFunction(() => [...document.querySelectorAll('.coverage-insurer-logo, .coverage-cooperative-logo')].every(img => img.complete && img.naturalWidth > 0 && !img.hidden));
+        assert.equal(await page.locator('.coverage-insurer-logo').first().getAttribute('src'), '/assets/site/partners/proassislife-hd-20261101.svg');
         assert.equal(await page.locator('a[href="tel:+59323827331"]').count(), 2);
         assert.equal(await page.evaluate(() => window.__injected), undefined);
         assert.match(await page.locator('#coverage-query-date').textContent(), /26.*octubre.*2026/);
@@ -125,7 +127,7 @@ async function choose(page) {
         await page.locator('.coverage-record h3').filter({ hasText: 'Privilegio' }).waitFor();
         assert.equal(await page.locator('a[href="tel:+59326000700"]').count(), 1);
         assert.equal(await page.locator('a[href^="https://wa.me/593968524251"]').count(), 1);
-        assert.equal(await page.locator('.coverage-insurer-logo').getAttribute('src'), '/assets/site/partners/privilegio.png');
+        assert.equal(await page.locator('.coverage-insurer-logo').getAttribute('src'), '/assets/site/partners/privilegio-hd-20261101.svg');
         assert.equal(await page.locator('#coverage-pending').isHidden(), true);
         assert.match(await page.locator('#coverage-records').textContent(), /PlanTitular \+ familiaMeses contratados12 meses/);
         assert.doesNotMatch(await page.locator('#coverage-records').textContent(), /Contrato/);

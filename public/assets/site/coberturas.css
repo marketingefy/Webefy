@@ -18,7 +18,7 @@
 @media(prefers-reduced-motion:reduce){.coverage-workspace *{scroll-behavior:auto}}
 
 .coverage-cooperative-logo{display:block;object-fit:contain;max-width:100%;margin-bottom:12px;background:white;border-radius:10px;padding:8px}
-.coverage-insurer-logo{display:block;width:160px;height:76px;object-fit:contain;object-position:left center;background:white;padding:10px;border-radius:10px;margin-bottom:16px;max-width:100%}
+.coverage-insurer-logo{display:block;width:220px;height:110px;object-fit:contain;object-position:left center;background:white;padding:10px;border-radius:10px;margin-bottom:16px;max-width:100%}
 .coverage-insurer-logo[hidden],.coverage-cooperative-logo[hidden]{display:none}
 .coverage-contacts{border-top:1px solid var(--line);margin-top:22px;padding-top:18px}.coverage-contacts h4{font-size:.9375rem;margin:0 0 14px}.coverage-contact-link{display:flex;flex-direction:column;gap:5px;border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#ffffffd9;margin:9px 0;color:var(--ink);text-decoration:none;overflow-wrap:anywhere}.coverage-contact-link span{font-size:.8125rem;color:var(--muted)}.coverage-contact-link strong{font-size:1rem;color:var(--blue)}.coverage-contact-link:hover{border-color:var(--blue);background:white}.coverage-contacts p{font-size:.8125rem;color:var(--muted);line-height:1.6}.coverage-contact-source{font-size:.8125rem;color:var(--blue);text-underline-offset:4px}
 
