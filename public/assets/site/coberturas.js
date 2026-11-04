@@ -26,6 +26,8 @@
   let csrf = '';
   let ready = false;
   let busy = false;
+  let sessionExpired = false;
+  const expiredMessage = 'Tu sesión de consulta venció por inactividad. Recarga la página para iniciar una nueva consulta.';
   let selectionVersion = 0;
 
   function message(text, error = false) {
@@ -34,12 +36,13 @@
   }
 
   function update() {
-    const confirmed = cooperative.value === 'coopartamos' && confirmation.checked;
+    const confirmed = consent.checked && cooperative.value === 'coopartamos' && confirmation.checked;
     cooperativeCard.hidden = cooperative.value !== 'coopartamos';
-    confirmation.disabled = cooperative.value !== 'coopartamos' || busy;
+    confirmation.disabled = !consent.checked || cooperative.value !== 'coopartamos' || busy;
     queryFields.disabled = !confirmed || !ready || busy;
     submit.disabled = !confirmed || !ready || busy;
-    cooperative.disabled = busy;
+    cooperative.disabled = !consent.checked || busy;
+    consent.disabled = busy;
     retry.disabled = busy;
     clear.disabled = busy;
     workspace.setAttribute('aria-busy', String(busy));
@@ -72,6 +75,7 @@
     busy = true;
     ready = false;
     csrf = '';
+    sessionExpired = false;
     message('Comprobando disponibilidad de la consulta…');
     update();
     try {
@@ -110,10 +114,9 @@
 
   function render(data) {
     clearResult();
-    const pendingNames = data.fuentes_pendientes.map(source => ({ PRIVILEGIO: 'Privilegio', PROASSISLIFE: 'Proassislife' })[source]);
     pendingNote.hidden = true;
     summary.textContent = data.encontrado
-      ? 'Estos son los registros encontrados en la cartera consultada. Revisa la aseguradora y el estado de cada contrato.'
+      ? 'Estos son los registros encontrados en la cartera consultada. Revisa la aseguradora y el estado de cada afiliación.'
       : 'No encontramos coincidencias en las carteras consultadas. Esto no confirma que no tengas seguro.' + ' Contacta a Efy para verificar tu registro.';
     data.registros.forEach(record => {
       const card = document.createElement('article');
@@ -133,8 +136,15 @@
         card.append(logo);
       }
       const details = document.createElement('dl');
+      const affiliation = record.contrato === null
+        ? [
+            ['Plan', ({ TITULAR: 'Titular', TITULAR_MAS_UNO: 'Titular + 1', TITULAR_FAMILIA: 'Titular + familia' })[record.plan] || 'No informado'],
+            ['Meses contratados', Number.isInteger(record.meses_contratados) && record.meses_contratados > 0
+              ? record.meses_contratados + (record.meses_contratados === 1 ? ' mes' : ' meses') : 'No informados']
+          ]
+        : [['Contrato', text(record.contrato) || 'No informado']];
       const rows = [
-        ['Contrato', text(record.contrato) || 'No informado'],
+        ...affiliation,
         ['Estado', ({ VIGENTE: 'Vigente', POR_INICIAR: 'Por iniciar', VENCIDA: 'Vencida', NO_DETERMINADA: 'No determinada' })[record.estado] || text(record.estado)],
         ['Desde', displayDate(record.vigencia_inicio)],
         ['Hasta', displayDate(record.vigencia_fin)]
@@ -196,7 +206,11 @@
     selectionVersion++;
     confirmation.checked = false;
     cedula.value = '';
-    consent.checked = false;
+    clearResult();
+    update();
+  });
+  consent.addEventListener('change', () => {
+    selectionVersion++;
     clearResult();
     update();
   });
@@ -214,9 +228,9 @@
     form.reset();
     clearResult();
     cedula.setCustomValidity('');
-    message(ready ? 'Consulta disponible. Selecciona tu cooperativa para continuar.' : 'La consulta no está disponible en este momento.', !ready);
+    message(sessionExpired ? expiredMessage : (ready ? 'Consulta disponible. Selecciona tu cooperativa para continuar.' : 'La consulta no está disponible en este momento.'), !ready);
     update();
-    cooperative.focus();
+    consent.focus();
   });
 
   form.addEventListener('submit', async event => {
@@ -236,8 +250,10 @@
       if (response.status === 419) {
         ready = false;
         csrf = '';
-        retry.hidden = false;
-        message('La sesión de consulta venció. Pulsa «Reintentar conexión» y vuelve a consultar.', true);
+        sessionExpired = true;
+        retry.hidden = true;
+        message(expiredMessage, true);
+        status.scrollIntoView({ block: 'nearest' });
       } else if (response.status === 429) {
         message('Se alcanzó el límite de consultas. Espera unos minutos antes de intentarlo de nuevo o contacta al equipo operativo de Efy.', true);
       } else if (response.status === 422) {

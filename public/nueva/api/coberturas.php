@@ -4,7 +4,7 @@ declare(strict_types=1);
 ini_set('display_errors', '0');
 
 const COVERAGE_API_URL = 'https://app.latamyanez.com/api/integraciones/masivos/coopartamos/consulta';
-const COVERAGE_VERSION = 'coverage-20261026';
+const COVERAGE_VERSION = 'coverage-20261101';
 const COVERAGE_UNAVAILABLE = 'No pudimos consultar la cobertura en este momento. Inténtalo de nuevo o contacta al equipo de Efy.';
 
 function coverageRespond(int $status, array $data): void {
@@ -144,9 +144,15 @@ function coveragePublicResult(array $data): array {
         $insurer = $record['aseguradora'] ?? null;
         $state = $record['estado'] ?? null;
         if (!in_array($insurer, ['PROASSISLIFE', 'PRIVILEGIO'], true) || !in_array($state, ['VIGENTE', 'POR_INICIAR', 'VENCIDA', 'NO_DETERMINADA'], true)) throw new RuntimeException('invalid upstream record');
+        $plan = $record['plan'] ?? null;
+        $months = $record['meses_contratados'] ?? null;
+        if ($plan !== null && !in_array($plan, ['TITULAR', 'TITULAR_MAS_UNO', 'TITULAR_FAMILIA'], true)) throw new RuntimeException('invalid upstream plan');
+        if ($months !== null && (!is_int($months) || $months < 1)) throw new RuntimeException('invalid upstream months');
         $records[] = [
             'aseguradora' => $insurer,
-            'contrato' => coverageText($record['contrato'] ?? null, 160),
+            'contrato' => ($record['contrato'] ?? null) === null ? null : coverageText($record['contrato'], 160),
+            'plan' => $plan,
+            'meses_contratados' => $months,
             'vigencia_inicio' => coverageDate($record['vigencia_inicio'] ?? null),
             'vigencia_fin' => coverageDate($record['vigencia_fin'] ?? null),
             'estado' => $state,

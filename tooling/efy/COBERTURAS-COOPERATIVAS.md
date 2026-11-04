@@ -46,12 +46,14 @@ y la conexión de HostGator a EfyAnalyzer sin extraer el secreto.
 
 Se conservan todas las coincidencias, incluidas vigencias futuras o vencidas.
 El estado lo determina EfyAnalyzer. La web muestra aseguradora, contrato, inicio,
-fin y estado. `fecha_consulta` es una fecha `YYYY-MM-DD`, calculada en Ecuador.
+fin y estado. Desde EfyAnalyzer 1.240.0 acepta contrato nulo y conserva plan y
+meses_contratados: muestra Titular, Titular + 1 o Titular + familia y la duración;
+si faltan, indica que no están informados. `fecha_consulta` es una fecha `YYYY-MM-DD`, calculada en Ecuador.
 Los datos de nombre, cédula, nacimiento, género y procedencia se descartan en el
 PHP y no se devuelven al navegador.
 
-Proassislife tiene la cartera disponible. Privilegio está pendiente de carga;
-se mantiene ese aviso visible. Cero coincidencias no confirma ausencia de seguro.
+Proassislife y Privilegio tienen carteras disponibles. Si fuentes_pendientes está
+vacío no se muestra aviso de información pendiente. Cero coincidencias no confirma ausencia de seguro.
 Un fallo, una clave incorrecta, un límite o una respuesta inválida muestran
 indisponibilidad y permiten contactar al equipo operativo de Efy.
 
@@ -62,9 +64,15 @@ Proassislife: 02 382 7331, opción 1, para citas (sitio oficial). Privilegio:
 (página oficial de contactos). Se muestran según la aseguradora devuelta por
 la API, incluida Privilegio cuando tenga registros. La atención depende de la
 vigencia y las condiciones del contrato. Las fuentes y la fecha de verificación
-se conservan en el JSON. El logo de Coopartamos procede del portafolio de su
-agencia; Proassislife del sitio propio y Privilegio del recurso local existente.
-Las imágenes externas usan `no-referrer` y conservan el nombre como respaldo. Se conserva una indicación condicional
+se conservan en el JSON. Los logos de esta consulta usan PNG transparentes locales de 1600 píxeles de
+ancho, exportados de los SVG reconstruidos y trazados a partir
+de referencias de los sitios oficiales (1 de noviembre de 2026). Proassislife usa
+la marca naranja completa; su antiguo icono blanco desaparecía sobre la tarjeta
+blanca. Coopartamos usa el colibrí de su sitio oficial. Privilegio conserva su
+marca y globo. Las tarjetas no añaden fondo, borde ni relleno al logo. Los SVG maestros se
+conservan y contienen curvas, sin imágenes raster incrustadas, y
+conservan el nombre de la entidad como respaldo. Los originales oficiales se
+conservan sin modificar en el catálogo general de socios. Se conserva una indicación condicional
 para titular más familia: registro de dependientes en la primera llamada.
 
 ## Protección y comprobación
