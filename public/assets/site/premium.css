@@ -524,3 +524,32 @@ body .eyebrow,body .small-label,body .small-title,
  .premium-home .brand-note span,.premium-home .art-caption{font-size:.75rem}
  .premium-home .hero-bottom{font-size:.625rem}
 }
+/* Homepage services: direct coverage access, touch scroll and keyboard controls. */
+.premium-home .home-services-rail{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:calc((100% - 32px)/3);gap:16px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;padding:10px 2px 22px;scroll-padding-inline:2px}
+.premium-home .home-services-rail::-webkit-scrollbar{display:none}
+.premium-home .home-services-rail>.protect-card{scroll-snap-align:start;scroll-margin-inline:2px;display:flex;flex-direction:column;grid-column:auto;min-height:0;translate:none}
+.premium-home .home-services-rail>.protect-card:last-child{display:flex;grid-column:auto;min-height:0}
+.premium-home .home-services-rail .product-stage,.premium-home .home-services-rail>.protect-card:last-child .product-stage{height:190px;width:100%;flex-shrink:0}
+.premium-home .home-services-rail .product-body,.premium-home .home-services-rail>.protect-card:last-child .product-body{padding:24px;flex:1;display:flex;flex-direction:column}
+.premium-home .home-services-rail .product-title{font-size:28px}
+.premium-home .home-services-rail .product-copy{font-size:14px;min-height:46px;margin-bottom:16px}
+.premium-home .home-services-rail .product-action{margin-top:auto;font-size:13px;padding-top:18px}
+.premium-home .home-services-rail .product-symbol{display:grid!important}
+.premium-home .home-services-rail:focus-visible{outline:2px solid var(--blue);outline-offset:5px;border-radius:20px}
+.premium-home .carousel-intro{font-size:15px;color:var(--muted);margin-top:18px}
+.premium-home .coverage-direct{display:inline-flex;align-items:center;gap:18px;max-width:320px;padding:15px 20px;border:1px solid #445ea533;border-radius:14px;font-size:14px;font-weight:500;color:var(--blue);background:#fff9}
+.premium-home .coverage-direct svg{width:20px;flex-shrink:0}
+.premium-home .coverage-shortcut{border-color:#798fc077;background:linear-gradient(145deg,#fff,#eaf0ff);box-shadow:inset 0 3px 0 #f25c9d88,0 10px 35px #445ea512}
+.premium-home .coverage-stage{background:radial-gradient(ellipse at 65% 65%,#f25c9d22,transparent 60%),radial-gradient(ellipse at 35% 60%,#c2d5ff88,transparent 65%)}
+.premium-home .coverage-emblem{position:absolute;left:50%;top:50%;width:170px;height:160px;transform:translate(-50%,-50%);filter:drop-shadow(0 12px 12px #283b7133)}
+.premium-home .coverage-orbit{position:absolute;left:20%;bottom:18px;width:60%;height:26px;border:1px solid #445ea533;border-radius:50%;box-shadow:0 0 22px #f25c9d18}
+.premium-home .coverage-tag{position:absolute;left:18px;top:18px;padding:5px 10px;font-size:11px;font-weight:500;color:#445ea5;border:1px solid #445ea522;border-radius:20px;background:#ffffffb8}
+.premium-home .coverage-kicker{color:#a02260;font-size:14px;font-weight:500;margin:0 0 8px}
+.premium-home .home-carousel-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:4px;color:var(--muted);font-size:13px}
+.premium-home .home-carousel-controls>div{display:flex;align-items:center;gap:10px}
+.premium-home .home-carousel-controls [role=status]{min-width:46px;text-align:center}
+.premium-home .home-carousel-controls button{display:grid;place-items:center;width:44px;height:44px;border:1px solid #445ea533;border-radius:50%;color:var(--blue);background:#fff;font:500 21px 'IBM Plex Sans',sans-serif;cursor:pointer}
+.premium-home .home-carousel-controls button:disabled{opacity:.35;cursor:default}
+.premium-home .home-carousel-controls button:focus-visible,.premium-home .coverage-direct:focus-visible{outline:2px solid var(--magenta);outline-offset:3px}
+@media(max-width:1000px){.premium-home .home-services-rail{grid-auto-columns:calc((100% - 16px)/2)}}
+@media(max-width:760px){.premium-home .home-services-carousel .section-top{align-items:start;flex-direction:column;gap:22px;margin-bottom:24px}.premium-home .home-services-rail{grid-auto-columns:86%;gap:14px}.premium-home .home-services-rail .product-stage,.premium-home .home-services-rail>.protect-card:last-child .product-stage{height:180px}.premium-home .home-services-rail .product-title{font-size:27px}.premium-home .coverage-direct{font-size:13px;padding:13px 15px;max-width:100%}.premium-home .home-carousel-controls{font-size:11px}.premium-home .home-carousel-controls>div{gap:7px}}

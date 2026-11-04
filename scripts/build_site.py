@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-mobile-evia-20261029'
+SITE_VERSION = 'efy-carrusel-cooperativas-20261104'
 COVERAGE_VERSION = 'coverage-branding-contacts-20261027'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -356,7 +356,7 @@ error_page = subpage_intro('Ayuda', 'Ayúdanos a mejorar.<br><span>Cuéntanos el
 '''
 
 
-home = premium_home(PARTNERS, ABOUT, CONTACTS, ARROW, need_selector(ARROW), phone_whatsapp_url, premium_contact(CONTACTS, ARROW, phone_whatsapp_url, social_section, office_address), experience_stats)
+home = premium_home(PARTNERS, ABOUT, CONTACTS, ARROW, need_selector(ARROW, carousel=True), phone_whatsapp_url, premium_contact(CONTACTS, ARROW, phone_whatsapp_url, social_section, office_address), experience_stats)
 
 pages = [
     ('index.html','Inicio','Efy Seguros · Tu mejor elección',home),

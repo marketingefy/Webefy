@@ -39,6 +39,16 @@ const root = path.resolve(__dirname, '../../public');
       await page.setViewportSize({width:390,height:844});
       await page.goto(base + prefix + 'index.html');
       assert.deepEqual(await page.locator('.hero-copy .actions a').allTextContents().then(a => a.map(t => t.trim())), ['Solicitar cotización', 'Necesito asistencia']);
+      const homeRail = page.locator('#home-services-rail');
+      assert.equal(await homeRail.locator(':scope > a').count(), 6);
+      assert.equal(new URL(await page.locator('.coverage-shortcut').getAttribute('href'), page.url()).pathname, prefix + 'coberturas-cooperativas.html');
+      await page.locator('#home-services-next').click();
+      await page.waitForFunction(() => document.getElementById('home-services-rail').scrollLeft > 10);
+      await homeRail.focus();
+      await page.keyboard.press('End');
+      await page.waitForFunction(() => document.getElementById('home-services-next').disabled);
+      await page.keyboard.press('Home');
+      await page.waitForFunction(() => document.getElementById('home-services-prev').disabled);
       const needs = await page.locator('.protection-card').evaluateAll(nodes => nodes.map(n => ({url:n.href, title:n.querySelector('h3').textContent})));
       assert.deepEqual(needs.map(n => n.title), ['Auto','Salud','Vida','Hogar','Empresa']);
       // Each need has its own in-frame image: Safari must not lazy-load an
