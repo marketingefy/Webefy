@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-fullhd-png-contacto-20261109'
+SITE_VERSION = 'efy-fondo-unificado-20261109'
 COVERAGE_VERSION = 'coverage-transparent-20261101'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -442,8 +442,9 @@ for filename, label, title, content in pages + extras:
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/premium.css?v={SITE_VERSION}"></head>')
     document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/refinement-preview.css?v={SITE_VERSION}"></head>')
     document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/cinema.css?v={SITE_VERSION}">' + (f'<script type="module" src="../assets/site/cinema-scene.js?v={SITE_VERSION}"></script><script src="../assets/site/cinema-stars.js?v={SITE_VERSION}" defer></script>' if filename == 'index.html' else '') + '</head>')
+    document = document.replace('<a class="skip-link"', '<div class="site-ambient" id="site-ambient" aria-hidden="true"></div><div class="site-sky" aria-hidden="true"><canvas data-cinema-stars></canvas></div><a class="skip-link"', 1)
+    document = document.replace('</head>', f'<script type="module" src="../assets/site/cinema-background.js?v={SITE_VERSION}"></script></head>')
     if filename != 'index.html':
-        document = document.replace('<a class="skip-link"', '<div class="site-sky" aria-hidden="true"><canvas data-cinema-stars></canvas></div><a class="skip-link"', 1)
         document = document.replace('</head>', f'<script src="../assets/site/cinema-stars.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'contactos.html':
         document = document.replace('</head>', f'<script src="../assets/site/transparent-film.js?v={SITE_VERSION}" defer></script></head>')

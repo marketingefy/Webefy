@@ -10,3 +10,9 @@ El propietario pidió mejorar el video de la portada, una animación transparent
 - Todas las páginas tienen destellos y estrellas fugaces, en azul y rosa. Fuera de la portada, una capa fija evita los textos, controles y paneles. Los efectos se detienen con movimiento reducido, pestaña oculta, chat abierto o ahorro de datos. Conócenos y Reseñas conservan sus videos propios.
 
 Comprobaciones: sintaxis, caché, 78 vistas del recorrido guiado, fuentes IBM Plex Sans reales, PNG nativos con canal alfa, selector/ramo y reproducción de medios en 390/1440 px, estrellas en páginas internas y movimiento reducido. Las capturas y los intermedios de segmentación se guardan fuera de `public/`. No se envían datos de clientes ni correos reales durante las pruebas.
+
+## Autorización y fondo compartido
+
+Después de revisar las vistas previas, el propietario indicó: «Autorizo en todas las páginas pon el mismo fondo y destellos, estrella fugaz como en la primera». La publicación de la versión preparada queda autorizada con ese fondo en todo el sitio.
+
+`cinema-background.js` reutiliza el material, iluminación y las ecuaciones del paisaje reflectante de la portada. El fondo se mantiene detrás de los contenidos de las páginas. En Inicio se activa al salir de la escena principal, para evitar dos motores simultáneos. Las estrellas globales siguen la misma regla; el cielo propio de la portada permanece activo dentro de esa escena. Los formularios conservan sus superficies y contraste, y los logos de aseguradoras no se recolorean. Con movimiento reducido o ahorro de datos se conserva el fondo azul estático y se detienen los efectos.

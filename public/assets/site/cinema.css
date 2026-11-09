@@ -870,3 +870,16 @@ body[data-cinema-page] .site-header.premium-header{z-index:30}
 @media(max-width:360px){.cinema-stage .sculpture-title h1{font-size:31px}.needs-controls button{padding:9px 10px;font-size:11px}.evia-social-chip span{display:none}.evia-instagram{right:3%}}
 @media(prefers-reduced-motion:reduce){.site-sky{display:none}.contact-evia-film>canvas{display:none}.contact-evia-film>img{opacity:1!important}.evia-phone-panel,.evia-social-chip,body[data-cinema-page] main #home-services-rail .coverage-emblem.png-icon{animation:none}.needs-controls button{transition:none}}
 body[data-cinema-page] main #home-services-rail .model-single{mix-blend-mode:normal}
+/* One continuous, shared landscape: the same blue and magenta environment as Inicio. */
+.site-ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(ellipse at 45% 55%,#4a6dbb21,transparent 50%),radial-gradient(ellipse at 78% 73%,#ce005e24,transparent 43%),#080e1d}
+.site-ambient>canvas{display:block;width:100%;height:100%}
+.site-ambient::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#080e1d12 75%,#080e1d38);pointer-events:none}
+body[data-cinema-page] main{position:relative;z-index:1;background:transparent}
+body[data-cinema-page] .site-footer{position:relative;z-index:1;background:#070e19dc}
+body[data-cinema-page] .site-header.premium-header{background:transparent}
+body[data-cinema-page] main>:is(.page-intro,.services-hero,.assistance-hero,.about-hero,.reviews-hero,.help-intro,.soft-section,.section),body[data-cinema-page] main :is(.contact-premium,.contact-premium-hero,.contact-premium-directory,.contact-premium-location,.about-story-section){background:transparent}
+body[data-cinema-page] .cinema-home,body[data-cinema-page] .cinema-home .protection-section,body[data-cinema-page] .home-services-carousel{background:transparent}
+body[data-page="inicio"] .site-ambient,body[data-page="inicio"] .site-sky{opacity:0}
+body[data-page="inicio"].has-passed-hero .site-ambient{opacity:1}
+body[data-page="inicio"].has-passed-hero .site-sky{opacity:.8}
+@media(prefers-reduced-motion:reduce){.site-ambient{background:radial-gradient(ellipse at 50% 85%,#445ea52b,transparent 54%),radial-gradient(ellipse at 80% 65%,#ce005e17,transparent 40%),#080e1d}}
