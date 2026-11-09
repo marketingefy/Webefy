@@ -27,7 +27,7 @@ const root = path.resolve(__dirname, '../../public');
   try {
     server.listen(0, '127.0.0.1'); await once(server, 'listening');
     const base = `http://127.0.0.1:${server.address().port}`;
-    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless:true, args:['--no-sandbox'] });
+    browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium', headless:true, args:['--no-sandbox','--enable-unsafe-swiftshader'] });
     const context = await browser.newContext({viewport:{width:390,height:844}, reducedMotion:'reduce'});
     context.setDefaultTimeout(5000);
     const errors = [];
@@ -38,7 +38,7 @@ const root = path.resolve(__dirname, '../../public');
     for (const prefix of ['/', '/nueva/']) {
       await page.setViewportSize({width:390,height:844});
       await page.goto(base + prefix + 'index.html');
-      assert.deepEqual(await page.locator('.hero-copy .actions a').allTextContents().then(a => a.map(t => t.trim())), ['Solicitar cotización', 'Necesito asistencia']);
+      assert.deepEqual(await page.locator('.hero-copy .actions a').allTextContents().then(a => a.map(t => t.trim())), ['Solicitar cotización', 'Explorar seguros →']);
       const homeRail = page.locator('#home-services-rail');
       assert.equal(await homeRail.locator(':scope > a').count(), 6);
       assert.equal(new URL(await page.locator('.coverage-shortcut').getAttribute('href'), page.url()).pathname, prefix + 'coberturas-cooperativas.html');
@@ -136,7 +136,7 @@ const root = path.resolve(__dirname, '../../public');
 
       await page.setViewportSize({width:1440,height:1000});
       await page.goto(base + prefix + 'index.html');
-      assert.equal(await page.locator('#page-title').innerText(), 'Tu confianza.\nNuestro\ncompromiso.');
+      assert.equal(await page.locator('#page-title').innerText(), 'Tu futuro,\nprotegido.');
       for (const name of ['Servicios','Asistencias','Aliados','Conócenos','Contacto','Ayuda']) {
         const trigger = page.locator(`[aria-label="Desplegar opciones de ${name}"]`);
         await trigger.hover();
@@ -179,12 +179,12 @@ const root = path.resolve(__dirname, '../../public');
       const animationPage = await animated.newPage();
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
-      assert.equal(new URL(await animationPage.locator('.scene-video').getAttribute('src')).pathname,
-        width <= 760 ? '/assets/evia-bucle-suave-mobile-20261030.mp4' : '/assets/evia-bucle-suave-20261030.mp4');
-      const media = await animationPage.locator('.scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
-      assert.equal(media.width, width <= 760 ? 720 : 1280);
+      assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
+        '/assets/evia-cinema-alpha-20261109.mp4');
+      const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
+      assert.equal(media.width, 2560);
       assert.equal(media.duration, 25);
-      assert.equal(await animationPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), true);
+      assert.equal(await animationPage.locator('.sculpture-host').evaluate(e => e.classList.contains('has-video')), true);
       await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
       await animated.close();
@@ -196,8 +196,8 @@ const root = path.resolve(__dirname, '../../public');
     const fallbackPage = await fallback.newPage();
     await fallbackPage.goto(base + '/');
     await fallbackPage.waitForFunction(() => document.querySelector('.scene-video')?.error);
-    assert.equal(await fallbackPage.locator('.scene-poster').isVisible(), true);
-    assert.equal(await fallbackPage.locator('.scene').evaluate(e => e.classList.contains('is-playing')), false);
+    assert.equal(await fallbackPage.locator('.cinema-stage .cinema-fallback').isVisible(), true);
+    assert.equal(await fallbackPage.locator('.sculpture-host').evaluate(e => e.classList.contains('has-video')), false);
     await fallback.close();
     await page.goto(base + '/cotizar.html');
     const cdp = await context.newCDPSession(page);

@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-carrusel-cooperativas-20261104'
+SITE_VERSION = 'efy-cinema-estrellas-20261109'
 COVERAGE_VERSION = 'coverage-transparent-20261101'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -410,12 +410,39 @@ def navigation_item(filename, name, current, active_page):
     return (f'<div class="nav-item"><button class="nav-link" type="button"{current_attribute} aria-expanded="false" aria-controls="{panel_id}" aria-label="Desplegar opciones de {escape(name, quote=True)}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></button>'
             f'<section class="nav-preview{extra_class}" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><p class="nav-preview-title">{escape(name)}</p><ul class="nav-preview-links">{destinations}</ul></section></div>')
 
+def cinema_module(content, filename):
+    """Frame the existing module introduction; preserve forms and production destinations."""
+    start = content.find('<section')
+    if start < 0:
+        return content
+    depth = 0
+    end = None
+    for tag in re.finditer(r'</?section\b[^>]*>', content[start:]):
+        depth += -1 if tag.group().startswith('</') else 1
+        if depth == 0:
+            end = start + tag.end()
+            break
+    if end is None:
+        raise ValueError('Module intro section is not balanced')
+    intro = content[start:end]
+    intro = intro.replace('class="', 'class="cinema-module-hero ', 1)
+    existing = re.search(r'<figure class="cinema-inline[^>]*>.*?</figure>', intro, re.S)
+    if existing:
+        art = existing.group()
+        intro = intro[:existing.start()] + intro[existing.end():]
+    else:
+        art = evia_film(filename.removesuffix('.html'), 'EVIA presenta las opciones y la información de Efy')
+    intro = intro[:-10] + art + '</section>'
+    return content[:start] + intro + content[end:]
+
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
+    if filename != 'index.html':
+        content = cinema_module(content, filename)
     nav = ''.join(navigation_item(file, name, label in owners, filename) for file,name,owners in NAV_GROUPS)
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-logo-white-20261029.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
-<body data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
+<body data-cinema-page data-page="{("asistencia" if label == "Asistencias" else label.lower())}"><a class="skip-link" href="#contenido">Ir al contenido</a>
 <header class="site-header premium-header"><div class="container header-inner"><a class="brand" href="index.html" aria-label="Efy Seguros, Inicio"><img src="../assets/efy-logo-white-20261029.png" alt="Efy Seguros" width="2079" height="756" fetchpriority="high" decoding="async"></a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span>Menú</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><nav id="site-nav" class="site-nav" aria-label="Navegación principal">{nav}</nav><a class="button primary header-quote" href="cotizar.html">Solicitar cotización {ARROW}</a></div></header>
 <main id="contenido">{content}</main>
 <footer class="site-footer"><div class="container"><div class="footer-bottom"><p>© 2026 Efy Seguros.</p></div></div></footer>
@@ -441,6 +468,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/premium.css?v={SITE_VERSION}"></head>')
     document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/refinement-preview.css?v={SITE_VERSION}"></head>')
+    document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/cinema.css?v={SITE_VERSION}"><script type="module" src="../assets/site/cinema-scene.js?v={SITE_VERSION}"></script><script src="../assets/site/cinema-stars.js?v={SITE_VERSION}" defer></script></head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)

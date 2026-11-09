@@ -8,6 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def premium_home(partners, about, contacts, arrow, selector, phone_url, contact_module, experience_stats):
     template = (ROOT / 'tooling/efy/templates/premium-home.html').read_text()
+    cinema = (ROOT / 'tooling/efy/templates/cinema-hero.html').read_text()
+    template = '<div class="premium-home cinema-home">' + cinema + template[template.index('{{PROTECTION_SELECTOR}}'):]
     logos = ''.join(
         f'<a class="ally-logo" href="socios.html#socio-{item["id"]}"><span class="ally-mark{" on-dark" if item.get("logo_dark") else ""}"><img src="../{item["logo"]}" alt="{escape(item["name"], quote=True)}" width="180" height="80" loading="eager"></span><span class="ally-name">{escape(item["name"])}</span></a>'
         for item in partners if item.get('logo')
