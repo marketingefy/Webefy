@@ -829,3 +829,44 @@ body[data-cinema-page] main .service-visual img{z-index:1}
 body[data-cinema-page] main .service-visual::after,body[data-cinema-page] main .product-stage:not(.coverage-stage)::after{bottom:7%;z-index:0}
 body[data-cinema-page] main .service-visual::after,body[data-cinema-page] main .product-stage:not(.coverage-stage)::after{left:11%;right:11%;bottom:1%;height:8%;border-width:2px;box-shadow:0 0 9px #799df5aa,0 0 25px #445ea555,inset 0 0 9px #b5cafa88}
 body[data-cinema-page] main .service-visual::before,body[data-cinema-page] main .product-stage:not(.coverage-stage)::before{left:12%;right:12%;bottom:1%}
+/* High resolution PNG objects, and the category chooser beside the service cards. */
+.cinema-stage .sculpture-title h1{font-size:clamp(52px,6vw,86px);line-height:1.05;letter-spacing:-.045em}
+.needs-controls{display:flex;flex-wrap:wrap;gap:7px;margin-top:22px;padding:7px;width:fit-content;border:1px solid #b3c8ed38;border-radius:30px;background:#13233b99;box-shadow:inset 0 1px 0 #ffffff12;backdrop-filter:blur(20px)}
+.needs-controls button{padding:11px 20px;min-height:44px;border-radius:24px;border:1px solid transparent;color:#b6c9e8;background:transparent;font-size:13px;font-weight:500;transition:background .3s,color .3s,border-color .3s}
+.needs-controls button:hover{background:#f25c9d18;color:#fff}
+.needs-controls button[aria-pressed="true"]{background:linear-gradient(120deg,#445ea54a,#ce005e40);border-color:#e987b777;color:#ffe7f3;box-shadow:0 0 18px #ce005e16}
+.needs-quote{margin-top:16px;color:#efacd0!important;font-size:13px}
+body[data-cinema-page] main #home-services-rail .product-stage:not(.coverage-stage){background:radial-gradient(ellipse at 50% 90%,#445ea55c,transparent 65%),linear-gradient(145deg,#172840,#0b1525)!important}
+body[data-cinema-page] main #home-services-rail .model-single{mask-image:none;-webkit-mask-image:none;width:90%;left:5%;height:90%;top:47%}
+body[data-cinema-page] main #home-services-rail .model-single img{mix-blend-mode:normal;filter:drop-shadow(0 8px 12px #080e1d40)}
+body[data-cinema-page] main #home-services-rail .coverage-stage{background:radial-gradient(ellipse at 50% 90%,#ce005e28,transparent 65%),linear-gradient(145deg,#172840,#0b1525)}
+body[data-cinema-page] main #home-services-rail .coverage-emblem.png-icon{object-fit:contain;width:170px;height:170px;mix-blend-mode:normal;animation:efy-led-float 7s ease-in-out infinite;filter:drop-shadow(0 0 15px #708fe644)}
+.site-sky{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden;opacity:.8}
+.site-sky canvas{display:block;width:100%;height:100%;pointer-events:none}
+body[data-cinema-page] .site-header.premium-header{z-index:30}
+/* Contact uses the same EVIA identity with native gestures and transparent edges. */
+.contact-evia-figure{position:relative;isolation:isolate;width:100%;max-width:480px;aspect-ratio:3/4;margin:0;justify-self:center;overflow:visible}
+.contact-evia-film{position:absolute;inset:0;aspect-ratio:3/4;pointer-events:none}
+.contact-evia-film>img,.contact-evia-film>canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.contact-evia-film>canvas{opacity:0}
+.contact-evia-film.has-video>canvas{opacity:1}
+.contact-evia-film.has-video>img{opacity:0}
+.contact-evia-film>video{display:none}
+.evia-phone-panel{position:absolute;right:1%;top:14%;width:100px;height:170px;padding:13px 7px 8px;border:2px solid #cbdcff99;border-radius:23px;background:linear-gradient(135deg,#7186ab88,#162740e0);color:#fff;text-decoration:none;box-shadow:inset 0 1px 0 #ffffff55,0 0 24px #445ea540;transform:rotateY(-12deg) rotateZ(8deg);animation:contact-phone-float 8s ease-in-out infinite;backdrop-filter:blur(16px)}
+.phone-camera{position:absolute;width:30px;height:5px;background:#080e1d;top:6px;left:50%;transform:translateX(-50%);border-radius:6px}
+.phone-screen{height:100%;display:flex;flex-direction:column;gap:7px;justify-content:center;align-items:center;border-radius:15px;background:linear-gradient(155deg,#445ea5a8,#ce005e55);font-size:12px;font-weight:500}
+.phone-screen svg{width:40px;height:40px;filter:drop-shadow(0 0 7px #f25c9d99)}
+.phone-screen small{font-size:9px;opacity:.8}
+.evia-social-chip{position:absolute;display:flex;align-items:center;gap:8px;padding:11px 13px;border:1px solid #c3d7f36b;border-radius:16px;text-decoration:none;color:#eef5ff;background:linear-gradient(135deg,#294262b8,#15263ee8);backdrop-filter:blur(18px);box-shadow:inset 0 1px 0 #fff2,0 8px 24px #0002;font-size:11px;animation:efy-led-float 7s ease-in-out infinite}
+.evia-social-chip svg{width:27px;height:27px}
+.evia-instagram{right:-3%;top:45%;border-color:#f298c280;box-shadow:0 0 18px #ce005e20;animation-delay:-2s}
+.evia-instagram svg{color:#f6a2cc}
+.evia-facebook{right:2%;top:59%;animation-delay:-4s}
+.evia-facebook svg{color:#aacbff}
+.evia-social-chip:hover,.evia-phone-panel:hover{border-color:#f5b2d4;box-shadow:0 0 25px #f25c9d44}
+.evia-contact-orbit{position:absolute;left:15%;right:10%;bottom:13%;height:6%;border:1px solid #8faaf35c;border-radius:50%;box-shadow:0 0 20px #445ea535;z-index:-1}
+@keyframes contact-phone-float{0%,100%{translate:0 0;rotate:1deg}50%{translate:0 -10px;rotate:-2deg}}
+@media(max-width:760px){.cinema-stage .sculpture-title h1{font-size:38px;line-height:1.07}.needs-controls{gap:2px;padding:5px;border-radius:25px}.needs-controls button{padding:10px 13px;font-size:12px}.contact-evia-figure{max-width:360px;margin:22px auto 0}.evia-phone-panel{width:82px;height:143px;right:3%;top:14%}.evia-social-chip{font-size:10px;padding:9px 11px}.evia-instagram{right:0}.evia-facebook{right:3%}.phone-screen{font-size:11px}.phone-screen small{font-size:8px}}
+@media(max-width:360px){.cinema-stage .sculpture-title h1{font-size:31px}.needs-controls button{padding:9px 10px;font-size:11px}.evia-social-chip span{display:none}.evia-instagram{right:3%}}
+@media(prefers-reduced-motion:reduce){.site-sky{display:none}.contact-evia-film>canvas{display:none}.contact-evia-film>img{opacity:1!important}.evia-phone-panel,.evia-social-chip,body[data-cinema-page] main #home-services-rail .coverage-emblem.png-icon{animation:none}.needs-controls button{transition:none}}
+body[data-cinema-page] main #home-services-rail .model-single{mix-blend-mode:normal}

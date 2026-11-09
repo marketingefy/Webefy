@@ -1,0 +1,22 @@
+/* Contact EVIA: native video gestures, transparent alpha, no 3D scene dependency. */
+(() => {
+ for(const host of document.querySelectorAll('[data-transparent-film]')){
+  const canvas=host.querySelector('canvas'),video=host.querySelector('video'),motion=matchMedia('(prefers-reduced-motion:reduce)');
+  let gl,program,texture,raf=0,last=0,visible=false,failed=false,ready=false,lastTime=-1;
+  const debug={ready:false,playing:false,failed:false};window.EFY_CONTACT_DEBUG=()=>({...debug});
+  const allowed=()=>visible&&!document.hidden&&!motion.matches&&!navigator.connection?.saveData&&!document.querySelector('dialog[open]')&&!failed;
+  function fallback(){failed=true;debug.failed=true;host.classList.remove('has-video');cancelAnimationFrame(raf);raf=0;video.pause();}
+  function setup(){try{
+   gl=canvas.getContext('webgl',{alpha:true,premultipliedAlpha:false,antialias:true});if(!gl)throw Error('WebGL unavailable');
+   const compile=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error('Shader unavailable');return s;};
+   program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,'attribute vec2 p;varying vec2 uv;void main(){uv=(p+1.0)*.5;gl_Position=vec4(p,0.,1.);}'));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,'precision mediump float;uniform sampler2D film;varying vec2 uv;void main(){vec3 c=texture2D(film,vec2(uv.x*.5,uv.y)).rgb;float a=texture2D(film,vec2(.5+uv.x*.5,uv.y)).r;gl_FragColor=vec4(c,a);}'));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error('Program unavailable');gl.useProgram(program);
+   const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);const p=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(p);gl.vertexAttribPointer(p,2,gl.FLOAT,false,0,0);texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);resize();
+  }catch{fallback();}}
+  function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(host.clientWidth*d);canvas.height=Math.round(host.clientHeight*d);if(gl)gl.viewport(0,0,canvas.width,canvas.height);lastTime=-1;}
+  function draw(){if(!gl||video.readyState<2||video.currentTime===lastTime)return;try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video);gl.drawArrays(gl.TRIANGLES,0,6);lastTime=video.currentTime;host.classList.add('has-video');ready=debug.ready=true;}catch{fallback();}}
+  function frame(now){raf=0;if(!allowed())return;if(now-last>=40){last=now;draw();}raf=requestAnimationFrame(frame);}
+  function sync(){if(!allowed()){cancelAnimationFrame(raf);raf=0;video.pause();debug.playing=false;if(motion.matches||navigator.connection?.saveData)host.classList.remove('has-video');return;}if(!gl)setup();if(failed)return;if(!video.src)video.src=video.dataset.source;video.play().then(()=>{debug.playing=true;}).catch(()=>{});if(!raf)raf=requestAnimationFrame(frame);}
+  video.addEventListener('error',fallback);canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fallback();});video.addEventListener('loadeddata',()=>{if(allowed())draw();});
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting&&es[0].intersectionRatio>=.05;sync();},{threshold:.05}).observe(host);window.addEventListener('resize',resize);document.addEventListener('visibilitychange',sync);motion.addEventListener('change',sync);navigator.connection?.addEventListener('change',sync);new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
+ }
+})();
