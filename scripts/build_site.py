@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-cinema-estrellas-20261109'
+SITE_VERSION = 'efy-inicio-esencial-led-20261109'
 COVERAGE_VERSION = 'coverage-transparent-20261101'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)
@@ -192,7 +192,7 @@ service_cards = []
 for service in SERVICES:
     illustration_index = service_illustrations[service['id']]
     details = ''.join(f'<li>{escape(item)}</li>' for item in service['details'])
-    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}" data-service-group="{escape(service['group'], quote=True)}"><div class="service-visual" style="--tile-col:{illustration_index % 4};--tile-row:{illustration_index // 4}"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="lazy" decoding="async"></div><div class="service-card-body"><p class="service-category">{escape(service['group'])}</p><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="cotizar.html?ramo={service['id']}">Solicitar cotización {ARROW}</a></div></article>''')
+    service_cards.append(f'''<article class="service-card" id="seguro-{service['id']}" data-service-group="{escape(service['group'], quote=True)}"><div class="service-visual" style="--tile-col:{illustration_index % 4};--tile-row:{illustration_index // 4}"><img src="../assets/site/service-illustrations.webp" alt="" width="1200" height="1200" loading="eager" decoding="async"></div><div class="service-card-body"><p class="service-category">{escape(service['group'])}</p><h3>{escape(service['name'])}</h3><p>{escape(service['description'])}</p>{f'<details><summary>Conoce el detalle <span aria-hidden="true">+</span></summary><ul>{details}</ul></details>' if details else ''}<a class="text-link" href="cotizar.html?ramo={service['id']}">Solicitar cotización {ARROW}</a></div></article>''')
 service_groups = [('movilidad', 'Movilidad'), ('salud', 'Salud'), ('vida-bienestar', 'Vida y bienestar'), ('patrimonio-actividad', 'Patrimonio y actividad')]
 catalog = '<div class="catalog-nav service-filters" role="group" aria-label="Filtrar seguros por categoría"><button type="button" data-service-category="Todas" aria-pressed="true">Todos los seguros</button>' + ''.join(f'<button type="button" id="{key}" data-service-category="{escape(name, quote=True)}" aria-pressed="false">{name}</button>' for key, name in service_groups) + '</div>'
 catalog += '<div class="catalog-heading"><p>Desliza para descubrir cada opción.</p><div class="catalog-controls"><span id="service-position" role="status" aria-live="polite" aria-atomic="true"></span><div><button type="button" id="service-prev" aria-label="Ver seguro anterior" aria-controls="service-rail">' + ARROW + '</button><button type="button" id="service-next" aria-label="Ver siguiente seguro" aria-controls="service-rail">' + ARROW + '</button></div></div></div>'
@@ -410,35 +410,8 @@ def navigation_item(filename, name, current, active_page):
     return (f'<div class="nav-item"><button class="nav-link" type="button"{current_attribute} aria-expanded="false" aria-controls="{panel_id}" aria-label="Desplegar opciones de {escape(name, quote=True)}">{escape(name)}<svg class="nav-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m3 4.5 3 3 3-3"/></svg></button>'
             f'<section class="nav-preview{extra_class}" id="{panel_id}" aria-label="Explorar {escape(name, quote=True)}" hidden><p class="nav-preview-title">{escape(name)}</p><ul class="nav-preview-links">{destinations}</ul></section></div>')
 
-def cinema_module(content, filename):
-    """Frame the existing module introduction; preserve forms and production destinations."""
-    start = content.find('<section')
-    if start < 0:
-        return content
-    depth = 0
-    end = None
-    for tag in re.finditer(r'</?section\b[^>]*>', content[start:]):
-        depth += -1 if tag.group().startswith('</') else 1
-        if depth == 0:
-            end = start + tag.end()
-            break
-    if end is None:
-        raise ValueError('Module intro section is not balanced')
-    intro = content[start:end]
-    intro = intro.replace('class="', 'class="cinema-module-hero ', 1)
-    existing = re.search(r'<figure class="cinema-inline[^>]*>.*?</figure>', intro, re.S)
-    if existing:
-        art = existing.group()
-        intro = intro[:existing.start()] + intro[existing.end():]
-    else:
-        art = evia_film(filename.removesuffix('.html'), 'EVIA presenta las opciones y la información de Efy')
-    intro = intro[:-10] + art + '</section>'
-    return content[:start] + intro + content[end:]
-
 for filename, label, title, content in pages + extras:
     content = content.replace('asistencia.html#reportar', 'reportar-siniestro.html').replace('asistencia.html#consultar-estado', 'consultas.html').replace('asistencia.html#lineas-asistencia', 'lineas-asistencia.html').replace('Ir a Contactos', 'Ir a Contáctanos').replace('>CONTACTOS<', '>CONTÁCTANOS<')
-    if filename != 'index.html':
-        content = cinema_module(content, filename)
     nav = ''.join(navigation_item(file, name, label in owners, filename) for file,name,owners in NAV_GROUPS)
     document = f'''<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#080e1d"><meta name="description" content="Conoce Efy Seguros, encuentra información útil y conversa con EVIA, nuestra guía de preguntas frecuentes."><title>{title}</title><link rel="icon" href="../assets/efy-logo-white-20261029.png" type="image/png"><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="../assets/fonts/ibm-plex-sans-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/site/efy-site.css?v=claims-20261009"><script src="../assets/site/efy-site.js?v=claims-20261009" defer></script></head>
@@ -468,7 +441,7 @@ for filename, label, title, content in pages + extras:
         document = document.replace('</head>', f'<script src="../assets/site/services.js?v={SITE_VERSION}" defer></script></head>')
     document = document.replace('</head>', f'<script src="../assets/site/navigation.js?v={SITE_VERSION}" defer></script><script src="../assets/site/experience.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/experience.css?v={SITE_VERSION}"><link rel="stylesheet" href="../assets/site/motion.css?v={SITE_VERSION}"><script src="../assets/site/motion.js?v={SITE_VERSION}" defer></script><link rel="stylesheet" href="../assets/site/premium.css?v={SITE_VERSION}"></head>')
     document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/refinement-preview.css?v={SITE_VERSION}"></head>')
-    document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/cinema.css?v={SITE_VERSION}"><script type="module" src="../assets/site/cinema-scene.js?v={SITE_VERSION}"></script><script src="../assets/site/cinema-stars.js?v={SITE_VERSION}" defer></script></head>')
+    document = document.replace('</head>', f'<link rel="stylesheet" href="../assets/site/cinema.css?v={SITE_VERSION}">' + (f'<script type="module" src="../assets/site/cinema-scene.js?v={SITE_VERSION}"></script><script src="../assets/site/cinema-stars.js?v={SITE_VERSION}" defer></script>' if filename == 'index.html' else '') + '</head>')
     if filename == 'reportar-error.html':
         document = document.replace('</head>', '<script src="../assets/site/errores.js?v=info-20261010" defer></script></head>')
     document = document.replace('efy-site.css?v=claims-20261009', 'efy-site.css?v=' + SITE_VERSION).replace('efy-site.js?v=claims-20261009', 'efy-site.js?v=' + SITE_VERSION)

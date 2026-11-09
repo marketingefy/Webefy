@@ -1,19 +1,17 @@
-"""Render the approved premium homepage with production destinations and owner data."""
-from html import escape
+"""The cinematic homepage is deliberately short; complete journeys live in their modules."""
 from pathlib import Path
-from evia_media import evia_film
+import re
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def premium_home(partners, about, contacts, arrow, selector, phone_url, contact_module, experience_stats):
-    template = (ROOT / 'tooling/efy/templates/premium-home.html').read_text()
     cinema = (ROOT / 'tooling/efy/templates/cinema-hero.html').read_text()
-    template = '<div class="premium-home cinema-home">' + cinema + template[template.index('{{PROTECTION_SELECTOR}}'):]
-    logos = ''.join(
-        f'<a class="ally-logo" href="socios.html#socio-{item["id"]}"><span class="ally-mark{" on-dark" if item.get("logo_dark") else ""}"><img src="../{item["logo"]}" alt="{escape(item["name"], quote=True)}" width="180" height="80" loading="eager"></span><span class="ally-name">{escape(item["name"])}</span></a>'
-        for item in partners if item.get('logo')
-    )
-    for key, value in {'PROTECTION_SELECTOR': selector, 'PARTNER_LOGOS': logos, 'CONTACT_MODULE': contact_module.replace('<h1 id="page-title">','<h2 id="home-contact-title">').replace('</h1>','</h2>'), 'EXPERIENCE_STATS': '<div class="experience-stats home-experience">' + experience_stats + '</div>', 'ABOUT_PARAGRAPH': escape(about['paragraphs'][0]), 'ABOUT_FILM': evia_film('conocenos', 'EVIA presenta la trayectoria de Efy'), 'REVIEWS_FILM': evia_film('resenas', 'EVIA escucha y agradece tus comentarios')}.items():
-        template = template.replace('{{' + key + '}}', value)
-    return template
+    # Coverage remains in the carousel; avoid repeating a full module above it.
+    selector = re.sub(r'<aside class="coverage-concierge".*?</aside>', '', selector, flags=re.S)
+    return ('<div class="premium-home cinema-home cinema-home-compact">' + cinema + selector +
+            '<section class="home-essentials shell" aria-labelledby="home-essentials-title">'
+            '<div><p class="eyebrow">Cerca de ti</p><h2 id="home-essentials-title">¿Necesitas ayuda?</h2>'
+            '<p>Encuentra el canal que necesitas para dar el siguiente paso.</p></div>'
+            '<div class="actions"><a class="button primary" href="asistencia.html">Necesito asistencia ' + arrow + '</a>'
+            '<a class="text-action" href="contactos.html">Contactar a Efy ' + arrow + '</a></div></section></div>')

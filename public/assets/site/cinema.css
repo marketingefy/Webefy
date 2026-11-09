@@ -792,3 +792,40 @@ body[data-cinema-page] main .contact-shortcuts{background:#17283f;border-color:#
 body[data-cinema-page] main .contact-shortcuts a{color:#bad2f4}
 body[data-cinema-page] main .contact-shortcuts a:hover{background:#253d5d}
 body[data-cinema-page] main .contact-social-premium .contact-department{background:#14253c}
+/* Scope correction: only the homepage has the cinematic EVIA table. */
+body[data-cinema-page]:not([data-page="inicio"]) .site-header.premium-header{position:relative;inset:auto;background:#080e1d}
+body[data-cinema-page]:not([data-page="inicio"]) .about-hero,body[data-cinema-page]:not([data-page="inicio"]) .reviews-hero{background:#080e1d}
+.home-essentials{display:flex;align-items:center;justify-content:space-between;gap:35px;padding-block:55px 75px;border-top:1px solid #a9c1e226}
+.home-essentials p:not(.eyebrow){color:#9aaecb;max-width:440px}
+.home-essentials .actions{flex-shrink:0}
+/* Crystal podiums: product icons float above soft LED ellipses. Partner marks are untouched. */
+body[data-cinema-page] main .service-visual,
+body[data-cinema-page] main .product-stage:not(.coverage-stage){isolation:isolate;background:radial-gradient(ellipse at 50% 96%,#9daee033,transparent 60%),linear-gradient(145deg,#eef2fb,#dce5f5)!important}
+body[data-cinema-page] main .service-visual img,
+body[data-cinema-page] main .product-stage .model-single img{mix-blend-mode:multiply;animation:efy-led-float 7s ease-in-out infinite;will-change:translate}
+body[data-cinema-page] main .service-card:nth-child(even) .service-visual img,
+body[data-cinema-page] main .protect-card:nth-child(even) .model-single img{animation-delay:-3.5s}
+body[data-cinema-page] main .service-visual::before,
+body[data-cinema-page] main .product-stage:not(.coverage-stage)::before{content:"";position:absolute;left:19%;right:19%;bottom:10%;height:13%;border-radius:50%;background:radial-gradient(ellipse,#445ea545,transparent 68%);filter:blur(9px);z-index:0;pointer-events:none;animation:efy-led-breathe 7s ease-in-out infinite}
+body[data-cinema-page] main .service-visual::after,
+body[data-cinema-page] main .product-stage:not(.coverage-stage)::after{content:"";position:absolute;left:20%;right:20%;bottom:10%;height:11%;border:1.5px solid #708fe6cc;border-right-color:#ce005e99;border-bottom-color:#f25c9dbb;border-radius:50%;box-shadow:0 0 7px #7b9aee7a,0 0 22px #445ea53b,inset 0 0 9px #b5cafa88;z-index:2;pointer-events:none;animation:efy-led-breathe 7s ease-in-out infinite}
+body[data-cinema-page] main .service-card:nth-child(even) .service-visual::after,
+body[data-cinema-page] main .protect-card:nth-child(even) .product-stage::after{border-color:#e882b1aa;border-top-color:#718fdfbb;box-shadow:0 0 8px #f25c9d55,0 0 24px #ce005e26,inset 0 0 8px #f9c3df66}
+body[data-cinema-page] main .service-card:hover .service-visual::after,
+body[data-cinema-page] main .protect-card:hover .product-stage::after{box-shadow:0 0 10px #99b4ff99,0 0 30px #ce005e40,inset 0 0 10px #e5eaff99}
+body[data-cinema-page] main .product-stage .floor-ring{opacity:0}
+body[data-cinema-page] main .product-stage .model-single{z-index:1;height:96%;top:47%;width:92%;left:4%}
+@keyframes efy-led-float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes efy-led-breathe{0%,100%{opacity:.62;scale:.96}50%{opacity:1;scale:1.035}}
+@media(max-width:760px){.home-essentials{display:block;padding-block:40px 55px}.home-essentials .actions{margin-top:24px}body[data-cinema-page] main .service-visual img,body[data-cinema-page] main .product-stage .model-single img{animation-name:efy-led-float-mobile}}
+@keyframes efy-led-float-mobile{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@media(prefers-reduced-motion:reduce){body[data-cinema-page] main .service-visual img,body[data-cinema-page] main .product-stage .model-single img,body[data-cinema-page] main .service-visual::before,body[data-cinema-page] main .service-visual::after,body[data-cinema-page] main .product-stage::before,body[data-cinema-page] main .product-stage::after{animation:none;will-change:auto}}
+body[data-cinema-page] main #home-services-rail .product-title{color:#e7effc}
+body[data-cinema-page] main #home-services-rail .product-copy{color:#b2c5df}
+body[data-cinema-page] main #home-services-rail .product-action{color:#f1a2c9;border-color:#a9c1e233}
+body[data-cinema-page] main .catalog-bottom>p{color:#9aaecb}
+body[data-cinema-page] main .service-card details summary{color:#bdd3f4}
+body[data-cinema-page] main .service-visual img{z-index:1}
+body[data-cinema-page] main .service-visual::after,body[data-cinema-page] main .product-stage:not(.coverage-stage)::after{bottom:7%;z-index:0}
+body[data-cinema-page] main .service-visual::after,body[data-cinema-page] main .product-stage:not(.coverage-stage)::after{left:11%;right:11%;bottom:1%;height:8%;border-width:2px;box-shadow:0 0 9px #799df5aa,0 0 25px #445ea555,inset 0 0 9px #b5cafa88}
+body[data-cinema-page] main .service-visual::before,body[data-cinema-page] main .product-stage:not(.coverage-stage)::before{left:12%;right:12%;bottom:1%}

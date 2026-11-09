@@ -185,7 +185,7 @@ const root = path.resolve(__dirname, '../../public');
       assert.equal(media.width, 2560);
       assert.equal(media.duration, 25);
       assert.equal(await animationPage.locator('.sculpture-host').evaluate(e => e.classList.contains('has-video')), true);
-      await animationPage.locator('.premium-home .about-section').scrollIntoViewIfNeeded();
+      await animationPage.locator('.home-services-carousel').evaluate(e=>e.scrollIntoView({block:'start',behavior:'instant'}));
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
       await animated.close();
      }

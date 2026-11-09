@@ -1,13 +1,13 @@
-# Efy Cinema · publicación aprobada
+# Efy Cinema · alcance corregido
 
-El propietario aprobó la vista previa con EVIA recortada, mesa y hologramas sobre el fondo azul reflectante, el título «Tu futuro, protegido.» y los acentos magenta. Autorizó publicar y añadió destellos y estrellas fugaces. Después pidió extender la misma presentación a cada página y módulo.
+La escena cinematográfica aprobada de EVIA con la mesa, los hologramas y las estrellas fugaces se mantiene exclusivamente en la portada. El propietario corrigió la extensión a todos los módulos y pidió una página de inicio breve.
 
-La portada y las introducciones de los módulos usan la película original de EVIA, segmentada localmente, con transparencia por RGB + máscara alfa en un MP4 H.264 de 25 segundos. El recorrido de ida y vuelta conserva las mismas poses en los extremos. La mesa, el traje y los tres hologramas se mantienen. No se generaron nuevos personajes ni se enviaron medios a otro servicio.
+El inicio contiene la portada, el carrusel de seguros y consulta de cobertura de cooperativas, y dos accesos a asistencia y contacto. Las secciones completas de Conócenos, Aliados, Reseñas, Contacto y Ayuda permanecen en sus páginas, accesibles desde el menú; no se reproducen dentro del inicio.
 
-`cinema-scene.js` dibuja el fondo reflectante y el recorte con Three.js r180, distribuido localmente con su licencia MIT. `cinema-stars.js` añade destellos lentos y estrellas fugaces azules y rosas. La escena se detiene fuera de pantalla, en pestañas ocultas, al abrir el chat, con ahorro de datos o movimiento reducido. Cada componente se carga sólo cuando se aproxima al área visible. El WebP con alfa conserva a EVIA si el navegador no reproduce el video o no admite WebGL.
+Conócenos y Reseñas vuelven a sus películas originales, con su composición propia y los bordes disueltos en el azul del módulo mediante `evia_media.py` y `evia-clips.js`. Se eliminaron las inserciones de la película de la mesa en las demás páginas. Three.js y el motor de estrellas sólo se cargan en `index.html`.
 
-`cinema-hero.html` contiene la portada aprobada; `cinema_module()` en el generador enmarca las introducciones existentes. `evia_film()` comparte el recorte en los módulos y los resúmenes del inicio. Los formularios, endpoints, navegación, socios y datos de contacto existentes se conservan. Ninguna consulta real ni correo fue enviado para verificar el diseño.
+Los iconos de seguros del catálogo y el carrusel flotan sobre aros de luz azul y magenta. Se preservan las imágenes originales, los nombres y los destinos. Los logos de aseguradoras no se alteran. La hoja de ilustraciones del catálogo se carga sin demora: los 16 recortes comparten un único archivo de 86 KB. La animación LED dura siete segundos, se reduce en móvil y se desactiva con movimiento reducido.
 
-La publicación se genera con `python3 scripts/build_site.py`. Los módulos publicados y `/nueva/` mantienen la misma versión de recursos para revalidar las páginas al navegar.
+La portada conserva el video original recortado mediante RGB + alfa, en un MP4 H.264 de 25 segundos con recorrido de ida y vuelta. El WebP transparente queda disponible como alternativa. Los efectos se detienen al salir de pantalla, ocultar la pestaña, abrir el chat o activar movimiento reducido/ahorro de datos. Los formularios, endpoints, socios y datos de contacto se conservan.
 
-Validación: sintaxis JS/Python, pruebas de caché, recorrido guiado del navegador, revisión de portadas en 390/1440 px, reproducción del recorte, aparición de estrellas fugaces, navegación, parámetros de cotización y movimiento reducido. Las capturas se guardan fuera de `public/`.
+Generación: `python3 scripts/build_site.py`. Validación: pruebas de caché, navegación y cotización guiada, fuentes reales IBM Plex Sans, diseños móviles/de escritorio, restauración de las películas, carga de ilustraciones y pausa de la portada al bajar al carrusel. No se envían mensajes ni formularios reales durante las pruebas.
