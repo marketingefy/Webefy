@@ -218,7 +218,7 @@ const root = path.resolve(__dirname, '../../public');
       await phone.waitForFunction(()=>window.EFY_CONTACT_DEBUG?.().ready);
       const state=await phone.locator('.contact-evia-film').evaluate(e=>{const i=e.querySelector('img'),c=document.createElement('canvas');c.width=i.naturalWidth;c.height=i.naturalHeight;const x=c.getContext('2d');x.drawImage(i,0,0);return{source:i.currentSrc,video:e.querySelector('video').getAttribute('src'),alpha:x.getImageData(0,0,1,1).data[3]};});
       assert.match(state.source,/movil-alpha.*webp$/);assert.equal(state.video,null);assert.equal(state.alpha,0);
-      await phone.emulateMedia({reducedMotion:'reduce'});await phone.locator('.contact-evia-film img').evaluate(i=>i.decode());
+      await phone.emulateMedia({reducedMotion:'reduce'});await phone.waitForFunction(()=>/completo-20261110\.png$/.test(document.querySelector('.contact-evia-film img').currentSrc));await phone.locator('.contact-evia-film img').evaluate(i=>i.decode());
       assert.match(await phone.locator('.contact-evia-film img').evaluate(i=>i.currentSrc),/completo-20261110\.png$/);
       await phone.goto(base+prefix+'socios.html');
       for(const [id,color] of [['bmi','rgb(0, 61, 122)'],['aig','rgb(0, 24, 113)']]){
