@@ -984,3 +984,12 @@ body[data-cinema-page] main .quote-workspace .quote-step textarea,
 body[data-cinema-page] main .quote-workspace .quote-step textarea[readonly]{background:#0b1426;color:#f1f5ff;-webkit-text-fill-color:#f1f5ff;caret-color:#f1f5ff;opacity:1;border-color:#a9bedb;color-scheme:dark}
 body[data-cinema-page] main .quote-workspace .quote-step textarea::placeholder{color:#b4c4dd;-webkit-text-fill-color:#b4c4dd;opacity:1}
 body[data-cinema-page] main .quote-workspace .quote-step textarea:focus-visible{outline:2px solid #f28cbd;outline-offset:3px;border-color:#f28cbd}
+
+/* The homepage carousel floats directly over the shared cinematic landscape. */
+body[data-cinema-page] main #home-services-rail .protect-card,
+body[data-cinema-page] main #home-services-rail .protect-card:hover{background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body[data-cinema-page] main #home-services-rail .product-stage,
+body[data-cinema-page] main #home-services-rail .product-stage:not(.coverage-stage),
+body[data-cinema-page] main #home-services-rail .product-body{background:transparent!important;border:0;box-shadow:none}
+body[data-cinema-page] main #home-services-rail .product-action{border-top-color:transparent}
+body[data-cinema-page] main #home-services-rail .protect-card:focus-visible{outline:2px solid #f28cbd;outline-offset:-2px}
