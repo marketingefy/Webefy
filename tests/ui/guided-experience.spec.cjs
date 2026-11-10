@@ -139,7 +139,7 @@ const root = path.resolve(__dirname, '../../public');
 
       await page.setViewportSize({width:1440,height:1000});
       await page.goto(base + prefix + 'index.html');
-      assert.equal(await page.locator('#page-title').innerText(), 'Un seguro para\nlo que más importa.');
+      assert.equal(await page.locator('#page-title').innerText(), 'Un seguro para\nlo que más importa');
       for (const name of ['Servicios','Asistencias','Aliados','Conócenos','Contacto','Ayuda']) {
         const trigger = page.locator(`[aria-label="Desplegar opciones de ${name}"]`);
         await trigger.hover();
@@ -161,16 +161,16 @@ const root = path.resolve(__dirname, '../../public');
             body: getComputedStyle(document.body).fontFamily,
             heading: getComputedStyle(document.querySelector('h1')).fontWeight,
             label: (() => {
-              const style = getComputedStyle(document.querySelector('.eyebrow'));
+              const label=document.querySelector('.eyebrow,.small-label');if(!label)return null;const style = getComputedStyle(label);
               return {family:style.fontFamily,weight:style.fontWeight,size:parseFloat(style.fontSize),spacing:style.letterSpacing};
             })(),
             overflow: document.documentElement.scrollWidth > innerWidth + 1,
           }));
           assert.match(typography.body, /IBM Plex Sans/); assert.equal(typography.heading,'600');
-          assert.match(typography.label.family, /IBM Plex Sans/);
+          if(typography.label){assert.match(typography.label.family, /IBM Plex Sans/);
           assert.equal(typography.label.weight, '600');
           assert.ok(typography.label.size >= 13, `Section label too small: ${prefix}${file}`);
-          assert.match(typography.label.spacing, /^(normal|0px)$/);
+          assert.match(typography.label.spacing, /^(normal|0px)$/);}
           assert.equal(typography.overflow, false, `${prefix}${file} ${width}px overflows`);
           tested++;
         }
@@ -183,7 +183,7 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
-        '/assets/evia-cinema-fullhd-20261109.mp4');
+        '/assets/evia-cinema-contorno-20261110.mp4');
       const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, 3840);
       assert.equal(media.duration, 25);

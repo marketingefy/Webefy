@@ -31,15 +31,15 @@ def premium_contact(contacts, arrow, phone_url, social_section, office_address):
     facebook = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.8 22v-9.1h3.1l.5-3.5h-3.6V7.1c0-1 .3-1.7 1.8-1.7h1.9V2.3c-.3 0-1.5-.1-2.8-.1-2.8 0-4.6 1.7-4.6 4.8v2.4H7v3.5h3.1V22Z"/></svg>'
     contact_art = ('<figure class="contact-evia-figure" aria-label="EVIA te conecta con los canales de Efy">'
         '<div class="contact-evia-film" data-transparent-film>'
-        '<img src="../assets/evia-contacto-transparente-20261109.png" alt="EVIA con su mano abierta presenta los canales de contacto" width="720" height="960" decoding="async">'
-        '<canvas aria-hidden="true"></canvas><video muted loop playsinline preload="none" data-source="../assets/evia-contacto-alpha-20261109.mp4" aria-hidden="true" tabindex="-1"></video></div>'
+        '<img src="../assets/evia-contacto-completo-20261110.png" alt="EVIA con su mano abierta presenta los canales de contacto" width="720" height="960" decoding="async">'
+        '<canvas aria-hidden="true"></canvas><video muted loop playsinline preload="none" data-source="../assets/evia-contacto-completo-20261110.mp4" aria-hidden="true" tabindex="-1"></video></div>'
         f'<a class="evia-phone-panel" href="{escape(phone_url(contacts["departments"][0]["phones"][0]), quote=True)}" aria-label="Conversar por WhatsApp con Efy"><span class="phone-camera"></span><span class="phone-screen">{PHONE}<span>Hablemos.</span><small>Efy Seguros</small></span></a>'
         f'<a class="evia-social-chip evia-instagram" href="{escape(social["instagram"]["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Efy Seguros">{instagram}<span>@efyseguros</span></a>'
         f'<a class="evia-social-chip evia-facebook" href="{escape(social["facebook"]["url"], quote=True)}" target="_blank" rel="noopener noreferrer" aria-label="Facebook de Efy Seguros">{facebook}<span>Efy Seguros</span></a>'
         '<span class="evia-contact-orbit" aria-hidden="true"></span></figure>')
     return f'''<div class="contact-premium">
 <section class="contact-premium-hero"><div class="container contact-premium-grid">
- <div><p class="eyebrow light">Contáctanos</p><h1 id="page-title">Conversemos.<br><span>Estamos cerca de ti.</span></h1><p class="large-copy">Elige el equipo que necesitas o visítanos en Quito.</p><div class="actions"><a class="button primary" href="#contacto-comercial">Hablar con Comercial {arrow}</a><a class="contact-operating-link" href="#contacto-operativo">Ya soy cliente {arrow}</a></div></div>
+ <div><p class="eyebrow light">Contáctanos</p><h1 id="page-title">Conversemos.<br><span>Estamos cerca de ti.</span></h1><p class="large-copy">Elige el equipo que necesitas o visítanos en Quito.</p><div class="actions"><a class="button primary" href="#contacto-comercial">Hablar con Comercial {arrow}</a></div></div>
  {contact_art}
 </div></section>
 <nav class="container contact-shortcuts" aria-label="Canales de contacto"><a href="#contacto-comercial">Comercial {arrow}</a><a href="#contacto-operativo">Operativo {arrow}</a><a href="#contacto-correos">Correos {arrow}</a><a href="#social-title">Conecta con Efy {arrow}</a></nav>
