@@ -88,6 +88,7 @@ const root = path.resolve(__dirname, '../../public');
       await page.locator('#quote-next').click();
       assert.equal(await page.locator('#quote-progress').getAttribute('value'), '3');
       assert.match(await page.locator('#quote-summary').inputValue(), /Ramo: Seguro de hogar/);
+      for(const field of ['#quote-notes','#quote-summary']){const paint=await page.locator(field).evaluate(e=>{const s=getComputedStyle(e);return{color:s.color,fill:s.webkitTextFillColor,background:s.backgroundColor,opacity:s.opacity};});assert.equal(paint.color,'rgb(241, 245, 255)');assert.equal(paint.fill,paint.color);assert.equal(paint.background,'rgb(11, 20, 38)');assert.equal(paint.opacity,'1');}
       assert.equal(await page.locator('.quote-workspace img').count(), 0);
       for (const [index, number] of ['593967146828','593983538633'].entries()) {
         await page.locator('#quote-advisor').selectOption(String(index));

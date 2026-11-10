@@ -978,3 +978,9 @@ body[data-cinema-page] main .ally-mark:has(img[src*="/vaz."]),
 .cinema-stage .partner:has(img[src*="/vaz."]){background:#14253c}
 body[data-cinema-page]:not([data-page="inicio"]) .site-sky,
 body[data-page="inicio"].has-passed-hero .site-sky{opacity:1}
+
+/* Quote text stays readable on the dark glass, including readonly summaries. */
+body[data-cinema-page] main .quote-workspace .quote-step textarea,
+body[data-cinema-page] main .quote-workspace .quote-step textarea[readonly]{background:#0b1426;color:#f1f5ff;-webkit-text-fill-color:#f1f5ff;caret-color:#f1f5ff;opacity:1;border-color:#a9bedb;color-scheme:dark}
+body[data-cinema-page] main .quote-workspace .quote-step textarea::placeholder{color:#b4c4dd;-webkit-text-fill-color:#b4c4dd;opacity:1}
+body[data-cinema-page] main .quote-workspace .quote-step textarea:focus-visible{outline:2px solid #f28cbd;outline-offset:3px;border-color:#f28cbd}
