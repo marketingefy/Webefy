@@ -1,0 +1,48 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><style>
+@font-face{font-family:Plex;src:url('/font.woff2');font-weight:500}*{box-sizing:border-box}html,body{margin:0;width:1280px;height:720px;overflow:hidden;background:transparent}.stage{position:relative;width:1280px;height:720px;overflow:hidden}.background{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.background.video{opacity:0}.ready .background.video{opacity:1}
+.hologram{position:absolute;width:112px;height:104px;perspective:650px;isolation:isolate;color:#dceaff;font:500 10px Plex,sans-serif;--glow:0;--angle:0deg;transform:translateY(var(--lift,0px))}
+.glass{position:absolute;inset:0 0 11px;border:1px solid #b6d8ff80;border-radius:10px;background:linear-gradient(135deg,#d4e6ff13,#4a86bd0c);box-shadow:inset 0 1px 0 #fff3,0 0 9px #57b7ff38;backdrop-filter:blur(1px)}
+.glass::after{content:'';position:absolute;inset:-1px;border:1px solid #ff8fc3;border-radius:10px;opacity:var(--glow);box-shadow:0 0 16px #f25c9d77,inset 0 0 16px #f25c9d18}
+.turner{position:absolute;left:6px;right:6px;top:4px;height:78px;transform-style:preserve-3d;transform:translateY(var(--icon-y,0px)) translateX(var(--icon-x,0px)) rotateZ(var(--tilt,0deg)) scale(var(--zoom,1))}
+.face{position:absolute;inset:0;display:flex;align-items:end;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(1.5px);filter:drop-shadow(0 3px 7px #4eb8ff66)}
+.face.back{transform:rotateY(180deg) translateZ(1.5px)}.crop{overflow:hidden;position:relative;flex-shrink:0;margin-bottom:4px}.crop img{position:absolute;max-width:none}
+.base{position:absolute;bottom:0;left:0;width:100%;height:15px;border:1px solid #9dd9ffbb;border-radius:50%;background:radial-gradient(ellipse,#62c5ff24,transparent 65%);box-shadow:0 0 12px #5ba9ff66,inset 0 0 9px #53c9ff55}
+.base::after{content:'';position:absolute;inset:3px 11px;border:1px solid #f9a0cc99;border-radius:50%;opacity:var(--glow)}
+.finger-light{position:absolute;z-index:5;width:7px;height:7px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 5px #fff,0 0 16px #9ceaff,0 0 28px #6db8ff,0 0 34px #f25c9d80;pointer-events:none}.signal{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;overflow:visible}.signal path{fill:none;stroke:#a2ddff;stroke-width:1.2;filter:drop-shadow(0 0 3px #8bdfff)}
+.activation-ring{position:absolute;left:-5%;bottom:0;width:110%;height:18px;border:1px solid #b7ecff;border-radius:50%;box-shadow:0 0 12px #6ccaff99,0 0 24px #f25c9d44;opacity:var(--ring-opacity,0);transform:scale(var(--ring-scale,1));pointer-events:none}
+html,body{width:1920px;height:1080px}.stage{transform:scale(1.5);transform-origin:0 0}</style></head><body><div class="stage"><canvas id="png-scene" class="background" width="1280" height="720"></canvas><svg class="signal" viewBox="0 0 1280 720"><path id="signal-path"/></svg><div id="cards"></div><div class="finger-light"></div></div><script src="/gesture.js"></script><script>
+const SPECS=[
+ {name:'Vehículo',x:.580,y:.440,start:1,bbox:[43,231,744,390]},
+ {name:'Hogar',x:.665,y:.480,start:4,bbox:[819,64,656,571]},
+ {name:'Salud',x:.750,y:.520,start:7,bbox:[1595,92,474,555]}
+];
+for(const spec of SPECS){
+ const node=document.createElement('div');node.className='hologram';node.style.left=(spec.x*1280-56)+'px';node.style.top=(spec.y*720)+'px';node.dataset.name=spec.name;
+ const [x,y,w,h]=spec.bbox,scale=Math.min(97/w,72/h);
+ const icon='<span class="crop" style="width:'+(w*scale)+'px;height:'+(h*scale)+'px"><img src="/iconos.png" style="width:'+(2172*scale)+'px;height:'+(724*scale)+'px;left:'+(-x*scale)+'px;top:'+(-y*scale)+'px"></span>';
+ node.innerHTML='<div class="glass"></div><div class="turner"><div class="face">'+icon+'</div><div class="face back">'+icon+'</div></div><div class="base"></div><div class="activation-ring"></div>';
+ document.getElementById('cards').append(node);spec.node=node;
+}
+const png=new Image();png.src='/evia-png.png';
+const sourceReady=png.decode();const tracking=Promise.resolve();let fingerPoints=Array.from({length:600},()=>[790,304]);
+const canvas=document.querySelector('#png-scene'),gl=canvas.getContext('webgl',{alpha:true,premultipliedAlpha:false,preserveDrawingBuffer:true});
+function compile(type,source){const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s;}
+const program=gl.createProgram();gl.attachShader(program,compile(gl.VERTEX_SHADER,'attribute vec2 p;varying vec2 uv;void main(){uv=(p+1.)*.5;gl_Position=vec4(p,0.,1.);}'));gl.attachShader(program,compile(gl.FRAGMENT_SHADER,`precision highp float;uniform sampler2D picture;uniform vec4 arm;uniform vec2 gaze;varying vec2 uv;
+vec2 rotatePoint(vec2 p,vec2 pivot,float angle){float c=cos(angle),s=sin(angle);vec2 d=p-pivot;return pivot+vec2(c*d.x-s*d.y,s*d.x+c*d.y);}
+void main(){vec2 p=vec2(uv.x*1280.,(1.-uv.y)*720.);
+// Smooth inverse skinning: rigid glove/forearm, blended elbow; console stays fixed.
+float w=(1.-smoothstep(885.,985.,p.x))*smoothstep(205.,250.,p.y)*(1.-smoothstep(370.,402.,p.y))*smoothstep(700.,755.,p.x);
+p=rotatePoint(p-arm.xy*w,vec2(930.,285.),-arm.z*w);
+float h=smoothstep(935.,970.,p.x)*(1.-smoothstep(1195.,1230.,p.x))*(1.-smoothstep(220.,253.,p.y))*smoothstep(10.,35.,p.y);
+p=rotatePoint(p-vec2(0.,gaze.y*h),vec2(1090.,145.),-gaze.x*h);
+vec2 st=vec2((p.x-400.)/880.,1.-p.y/720.);if(st.x<0.||st.x>1.||st.y<0.||st.y>1.){gl_FragColor=vec4(0.);return;}gl_FragColor=texture2D(picture,st);}
+`));gl.linkProgram(program);gl.useProgram(program);const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);const pos=gl.getAttribLocation(program,'p');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);const texture=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,texture);for(const [k,v]of[[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,k,v);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);const armUniform=gl.getUniformLocation(program,'arm'),gazeUniform=gl.getUniformLocation(program,'gaze');let uploaded=false;
+async function drawPng(t){await sourceReady;if(!uploaded){gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,png);uploaded=true;}const g=EFY_HERO_GESTURE.at(t);gl.uniform4f(armUniform,g.dx,g.dy,g.angle,0);gl.uniform2f(gazeUniform,g.gaze,g.nod);gl.viewport(0,0,1280,720);gl.drawArrays(gl.TRIANGLES,0,6);fingerPoints[Math.round(t*24)]=g.finger;window.renderedGesture=g;}
+window.setHologramTime=t=>{
+ let best=null,energy=0;
+ for(const s of SPECS){const p=Math.max(0,Math.min(1,(t-s.start)/2.5)),pulse=Math.sin(Math.PI*p),response=Math.pow(pulse,.7);s.node.style.setProperty('--ring-scale',String(1+.6*p));s.node.style.setProperty('--ring-opacity',String(Math.sin(Math.PI*p)*.65));s.node.style.setProperty('--lift','0px');s.node.style.setProperty('--icon-y',(-29*response+3*Math.sin(4*Math.PI*p)*response)+'px');s.node.style.setProperty('--icon-x',(6*Math.sin(2*Math.PI*p)*response)+'px');s.node.style.setProperty('--tilt',(-8*Math.sin(2*Math.PI*p)*response)+'deg');s.node.style.setProperty('--zoom',String(1+.32*response));s.node.style.setProperty('--glow',String(response*.9));if(response>energy){energy=response;best=s;}}
+ if(fingerPoints.length){const index=Math.min(fingerPoints.length-1,Math.round(t*24)),pt=fingerPoints[index];const fade=Math.max(0,Math.min(1,(t-.3)/.5,(11.8-t)/.7));const light=document.querySelector('.finger-light');light.style.left=pt[0]+'px';light.style.top=pt[1]+'px';light.style.opacity=String(fade*(.55+.45*energy));const line=document.getElementById('signal-path');line.style.opacity=String(energy*.28*fade);if(best){const tx=best.x*1280,ty=best.y*720+32-15*energy;line.setAttribute('d','M '+pt[0]+' '+pt[1]+' Q '+((pt[0]+tx)/2)+' '+(Math.min(pt[1],ty)-8)+' '+tx+' '+ty);}}
+};
+window.drawFrame=async t=>{await drawPng(t);window.setHologramTime(t);await new Promise(requestAnimationFrame);await new Promise(requestAnimationFrame);};
+window.setHologramTime(0);
+</script></body></html>

@@ -949,3 +949,10 @@ body[data-page="ayuda"] main .search-status{background:#82a9d219;border-color:#b
 @media(max-width:760px){.services-evia-film{max-width:300px;width:90%;margin-top:4px}body[data-page="ayuda"] main .faq-list{padding:4px 18px;border-radius:20px}}
 
 body[data-page="ayuda"] main .faq-item .faq-category{color:#f2a4ce}
+/* Efy milestones: translucent magenta glass with readable white figures. */
+body[data-cinema-page] main .experience-stat{position:relative;isolation:isolate;overflow:hidden;background:linear-gradient(132deg,#ce005e40,#b52c7430 48%,#f25c9d1c);border:1px solid #f2a4ce66;box-shadow:inset 0 1px 0 #ffffff29,0 16px 46px #080e1d24,0 0 32px #ce005e0a;backdrop-filter:blur(22px) saturate(130%);-webkit-backdrop-filter:blur(22px) saturate(130%);transition:transform .3s,border-color .3s}
+body[data-cinema-page] main .experience-stat::before{content:"";position:absolute;inset:0 12% auto;height:1px;background:linear-gradient(90deg,transparent,#ffd2e899,transparent);pointer-events:none}
+body[data-cinema-page] main .experience-stat .experience-number,body[data-cinema-page] main .experience-stat .experience-number span{color:#fff1f8;text-shadow:0 0 26px #f25c9d26}
+body[data-cinema-page] main .experience-stat>p:last-child{color:#f1dce9}
+@media(hover:hover) and (pointer:fine){body[data-cinema-page] main .experience-stat:hover{transform:translateY(-3px);border-color:#f6bbdaaa}}
+@media(prefers-reduced-motion:reduce){body[data-cinema-page] main .experience-stat{transition:none}body[data-cinema-page] main .experience-stat:hover{transform:none}}

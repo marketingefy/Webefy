@@ -185,7 +185,7 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
-        '/assets/evia-cinema-png-20261110.mp4');
+        '/assets/evia-cinema-gestos-20261110.mp4');
       const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, 3840);
       assert.equal(media.duration, 25);
