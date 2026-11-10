@@ -1,9 +1,9 @@
 /* EVIA films: native gestures, transparent alpha, no 3D scene dependency. */
 (() => {
  for(const host of document.querySelectorAll('[data-transparent-film]')){
-  const canvas=host.querySelector('canvas'),video=host.querySelector('video'),motion=matchMedia('(prefers-reduced-motion:reduce)');
+  const canvas=host.querySelector('canvas'),video=host.querySelector('video'),motion=matchMedia('(prefers-reduced-motion:reduce)'),compact=matchMedia('(max-width:760px)'),nativeMobile=host.hasAttribute('data-native-mobile');
   let gl,program,texture,raf=0,last=0,visible=false,failed=false,ready=false,lastTime=-1;
-  const debug={ready:false,playing:false,failed:false};window[host.classList.contains('services-evia-film')?'EFY_SERVICES_DEBUG':'EFY_CONTACT_DEBUG']=()=>({...debug});
+  const debug={ready:false,playing:false,failed:false,native:false};window[host.classList.contains('services-evia-film')?'EFY_SERVICES_DEBUG':'EFY_CONTACT_DEBUG']=()=>({...debug});
   const allowed=()=>visible&&!document.hidden&&!motion.matches&&!navigator.connection?.saveData&&!document.querySelector('dialog[open]')&&!failed;
   function fallback(){failed=true;debug.failed=true;host.classList.remove('has-video');cancelAnimationFrame(raf);raf=0;video.pause();}
   function setup(){try{
@@ -15,8 +15,8 @@
   function resize(){const d=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(host.clientWidth*d);canvas.height=Math.round(host.clientHeight*d);if(gl)gl.viewport(0,0,canvas.width,canvas.height);lastTime=-1;}
   function draw(){if(!gl||video.readyState<2||video.currentTime===lastTime)return;try{gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,video);gl.drawArrays(gl.TRIANGLES,0,6);lastTime=video.currentTime;host.classList.add('has-video');ready=debug.ready=true;}catch{fallback();}}
   function frame(now){raf=0;if(!allowed())return;if(now-last>=40){last=now;draw();}raf=requestAnimationFrame(frame);}
-  function sync(){if(!allowed()){cancelAnimationFrame(raf);raf=0;video.pause();debug.playing=false;if(motion.matches||navigator.connection?.saveData)host.classList.remove('has-video');return;}if(!gl)setup();if(failed)return;if(!video.src)video.src=video.dataset.source;video.play().then(()=>{debug.playing=true;}).catch(()=>{});if(!raf)raf=requestAnimationFrame(frame);}
+  function sync(){if(nativeMobile&&compact.matches){cancelAnimationFrame(raf);raf=0;video.pause();debug.playing=false;debug.native=true;host.classList.remove('has-video');host.classList.add('has-native-animation');const img=host.querySelector('img');img.decode().then(()=>{debug.ready=true;}).catch(()=>{});return;}host.classList.remove('has-native-animation');debug.native=false;if(!allowed()){cancelAnimationFrame(raf);raf=0;video.pause();debug.playing=false;if(motion.matches||navigator.connection?.saveData)host.classList.remove('has-video');return;}if(!gl)setup();if(failed)return;if(!video.src)video.src=video.dataset.source;video.play().then(()=>{debug.playing=true;}).catch(()=>{});if(!raf)raf=requestAnimationFrame(frame);}
   video.addEventListener('error',fallback);canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fallback();});video.addEventListener('loadeddata',()=>{if(allowed())draw();});
-  new IntersectionObserver(es=>{visible=es[0].isIntersecting&&es[0].intersectionRatio>=.05;sync();},{threshold:.05}).observe(host);window.addEventListener('resize',resize);document.addEventListener('visibilitychange',sync);motion.addEventListener('change',sync);navigator.connection?.addEventListener('change',sync);new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
+  new IntersectionObserver(es=>{visible=es[0].isIntersecting&&es[0].intersectionRatio>=.05;sync();},{threshold:.05}).observe(host);window.addEventListener('resize',resize);document.addEventListener('visibilitychange',sync);motion.addEventListener('change',sync);compact.addEventListener('change',sync);navigator.connection?.addEventListener('change',sync);new MutationObserver(sync).observe(document.body,{subtree:true,attributes:true,attributeFilter:['open']});
  }
 })();

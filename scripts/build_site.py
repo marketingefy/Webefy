@@ -11,7 +11,7 @@ from premium_contact import premium_contact
 from evia_media import evia_film
 
 ROOT = Path(__file__).resolve().parents[1]
-SITE_VERSION = 'efy-gestos-magenta-20261110'
+SITE_VERSION = 'efy-evia-magica-movil-20261110'
 COVERAGE_VERSION = 'coverage-transparent-20261101'
 OUT = ROOT / 'public' / 'nueva'
 OUT.mkdir(exist_ok=True)

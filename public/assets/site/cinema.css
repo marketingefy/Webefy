@@ -956,3 +956,15 @@ body[data-cinema-page] main .experience-stat .experience-number,body[data-cinema
 body[data-cinema-page] main .experience-stat>p:last-child{color:#f1dce9}
 @media(hover:hover) and (pointer:fine){body[data-cinema-page] main .experience-stat:hover{transform:translateY(-3px);border-color:#f6bbdaaa}}
 @media(prefers-reduced-motion:reduce){body[data-cinema-page] main .experience-stat{transition:none}body[data-cinema-page] main .experience-stat:hover{transform:none}}
+/* Official white marks need their corporate blue background at every breakpoint. */
+body[data-cinema-page] main #socio-bmi .partner-logo{background:#003d7a}
+body[data-cinema-page] main #socio-aig .partner-logo{background:#001871}
+/* Contact uses native animated alpha on phones, avoiding mobile video/WebGL differences. */
+.contact-evia-film>picture{position:absolute;inset:0;width:100%;height:100%;display:block;transition:opacity .3s}
+.contact-evia-film>picture img{width:100%;height:100%;object-fit:contain;display:block}
+.contact-evia-film.has-video>picture{opacity:0}
+.contact-evia-film.has-native-animation>picture{opacity:1}
+.contact-evia-film.has-native-animation>canvas{display:none}
+@media(prefers-reduced-motion:reduce){.contact-evia-film>picture{opacity:1!important}}
+body[data-cinema-page] main .partner-card summary{color:#c2d9f7}
+body[data-cinema-page] main .partner-card summary:hover,body[data-cinema-page] main .partner-card summary:focus-visible{color:#f3bfdc}

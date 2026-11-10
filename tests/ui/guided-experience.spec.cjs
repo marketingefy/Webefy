@@ -185,10 +185,10 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
-        '/assets/evia-cinema-gestos-20261110.mp4');
+        '/assets/evia-cinema-magica-20261110.mp4');
       const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, 3840);
-      assert.equal(media.duration, 25);
+      assert.equal(media.duration, 16);
       assert.equal(await animationPage.locator('.sculpture-host').evaluate(e => e.classList.contains('has-video')), true);
       await animationPage.locator('.home-services-carousel').evaluate(e=>e.scrollIntoView({block:'start',behavior:'instant'}));
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
@@ -208,6 +208,24 @@ const root = path.resolve(__dirname, '../../public');
       await servicePage.locator('#catalogo').scrollIntoViewIfNeeded();
       await servicePage.waitForFunction(()=>document.querySelector('.services-evia-film video').paused);
       await serviceMotion.close();
+    }
+
+    for(const prefix of ['/', '/nueva/']) {
+      const native = await browser.newContext({viewport:{width:390,height:844}});
+      const phone = await native.newPage();
+      await phone.goto(base+prefix+'contactos.html');
+      await phone.locator('.contact-evia-figure').scrollIntoViewIfNeeded();
+      await phone.waitForFunction(()=>window.EFY_CONTACT_DEBUG?.().ready);
+      const state=await phone.locator('.contact-evia-film').evaluate(e=>{const i=e.querySelector('img'),c=document.createElement('canvas');c.width=i.naturalWidth;c.height=i.naturalHeight;const x=c.getContext('2d');x.drawImage(i,0,0);return{source:i.currentSrc,video:e.querySelector('video').getAttribute('src'),alpha:x.getImageData(0,0,1,1).data[3]};});
+      assert.match(state.source,/movil-alpha.*webp$/);assert.equal(state.video,null);assert.equal(state.alpha,0);
+      await phone.emulateMedia({reducedMotion:'reduce'});await phone.locator('.contact-evia-film img').evaluate(i=>i.decode());
+      assert.match(await phone.locator('.contact-evia-film img').evaluate(i=>i.currentSrc),/completo-20261110\.png$/);
+      await phone.goto(base+prefix+'socios.html');
+      for(const [id,color] of [['bmi','rgb(0, 61, 122)'],['aig','rgb(0, 24, 113)']]){
+        await phone.locator('#socio-'+id+' img').evaluate(i=>i.decode());
+        assert.equal(await phone.locator('#socio-'+id+' .partner-logo').evaluate(e=>getComputedStyle(e).backgroundColor),color);
+      }
+      await native.close();
     }
 
     const fallback = await browser.newContext({viewport:{width:390,height:844}});
