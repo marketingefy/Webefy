@@ -968,3 +968,13 @@ body[data-cinema-page] main #socio-aig .partner-logo{background:#001871}
 @media(prefers-reduced-motion:reduce){.contact-evia-film>picture{opacity:1!important}}
 body[data-cinema-page] main .partner-card summary{color:#c2d9f7}
 body[data-cinema-page] main .partner-card summary:hover,body[data-cinema-page] main .partner-card summary:focus-visible{color:#f3bfdc}
+
+/* Preserve contrast for official white Zurich and white/orange VAZ marks. */
+body[data-cinema-page] main #socio-zurich .partner-logo,
+body[data-cinema-page] main .ally-mark:has(img[src*="/zurich."]),
+.cinema-stage .partner:has(img[src*="/zurich."]){background:#003399}
+body[data-cinema-page] main #socio-vaz .partner-logo,
+body[data-cinema-page] main .ally-mark:has(img[src*="/vaz."]),
+.cinema-stage .partner:has(img[src*="/vaz."]){background:#14253c}
+body[data-cinema-page]:not([data-page="inicio"]) .site-sky,
+body[data-page="inicio"].has-passed-hero .site-sky{opacity:1}
