@@ -9,8 +9,9 @@ from scipy import ndimage
 ROOT = Path(__file__).resolve().parents[2]
 parser=argparse.ArgumentParser()
 parser.add_argument('--old',action='store_true',help='Reproduce the missing backpack/suit contours in the previous exports')
+parser.add_argument('--previous',action='store_true',help='Reproduce missing table surfaces in the first contour correction')
 args=parser.parse_args()
-hero=ROOT/'public/assets'/('evia-cinema-fullhd-20261109.mp4' if args.old else 'evia-cinema-contorno-20261110.mp4')
+hero=ROOT/'public/assets'/('evia-cinema-fullhd-20261109.mp4' if args.old else 'evia-cinema-contorno-20261110.mp4' if args.previous else 'evia-cinema-integro-20261110.mp4')
 contact=ROOT/'public/assets'/('evia-contacto-alpha-20261109.mp4' if args.old else 'evia-contacto-completo-20261110.mp4')
 
 def metadata(path):
@@ -44,3 +45,31 @@ for f in read_frames(contact,1440,960):
 print('Contact poses checked:',count,'worst lost warm suit area:',round(worst*100,3),'%')
 assert worst<.0035,'Moving suit/helmet edges were removed by alpha'
 print('PASS: preserved suit contours and complete forward/reverse loops')
+
+# A visible point alone did not catch missing glass/rim patches or partial CSS-mask
+# rasterization. Inspect interior areas of all surfaces in every encoded frame.
+regions={
+ 'helmet/visor':(1000,90,70,105), 'torso':(1030,260,80,115),
+ 'left-leg':(985,555,30,80), 'right-leg':(1100,555,30,80),
+ 'table-glass':(700,412,400,60), 'table-rim':(480,470,700,25),
+ 'table-pedestal':(665,550,270,90),
+}
+process=subprocess.Popen(['ffmpeg','-v','error','-threads','2','-i',str(hero),
+ '-vf','crop=1920:1080:1920:0,scale=1280:720','-f','rawvideo','-pix_fmt','gray','pipe:1'],stdout=subprocess.PIPE)
+worst={name:0 for name in regions};frames=0
+try:
+ while True:
+  data=process.stdout.read(1280*720)
+  if not data:break
+  assert len(data)==1280*720,'Incomplete alpha frame'
+  a=np.frombuffer(data,dtype='uint8').reshape(720,1280)
+  for name,(x,y,w,h) in regions.items():
+   loss=float(np.mean(a[y:y+h,x:x+w]<235));worst[name]=max(worst[name],loss)
+  assert np.mean(a[:,:350])<1,'The room must remain transparent'
+  frames+=1
+finally:
+ process.stdout.close();process.wait()
+print('Hero full-loop frames:',frames,'worst lost interior areas:',worst)
+assert frames==600
+assert max(worst.values())<.002,'Helmet, suit or continuous table surface disappeared during the loop'
+print('PASS: every frame preserves all seven opaque surface regions')

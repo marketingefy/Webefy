@@ -38,6 +38,7 @@ const root = path.resolve(__dirname, '../../public');
     for (const prefix of ['/', '/nueva/']) {
       await page.setViewportSize({width:390,height:844});
       await page.goto(base + prefix + 'index.html');
+      assert.equal(await page.locator('.hero-brand-slogan').innerText(),'Un universo de confianza');
       assert.deepEqual(await page.locator('.hero-copy .actions a').allTextContents().then(a => a.map(t => t.trim())), ['Solicitar cotización', 'Explorar seguros →']);
       assert.equal(await page.locator('.cinema-stage [data-scene]').count(),0);
       assert.equal(await page.locator('#que-proteger .needs-controls button').count(),5);
@@ -183,7 +184,7 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
-        '/assets/evia-cinema-contorno-20261110.mp4');
+        '/assets/evia-cinema-integro-20261110.mp4');
       const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, 3840);
       assert.equal(media.duration, 25);
