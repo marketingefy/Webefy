@@ -1,9 +1,9 @@
-/* Contact EVIA: native video gestures, transparent alpha, no 3D scene dependency. */
+/* EVIA films: native gestures, transparent alpha, no 3D scene dependency. */
 (() => {
  for(const host of document.querySelectorAll('[data-transparent-film]')){
   const canvas=host.querySelector('canvas'),video=host.querySelector('video'),motion=matchMedia('(prefers-reduced-motion:reduce)');
   let gl,program,texture,raf=0,last=0,visible=false,failed=false,ready=false,lastTime=-1;
-  const debug={ready:false,playing:false,failed:false};window.EFY_CONTACT_DEBUG=()=>({...debug});
+  const debug={ready:false,playing:false,failed:false};window[host.classList.contains('services-evia-film')?'EFY_SERVICES_DEBUG':'EFY_CONTACT_DEBUG']=()=>({...debug});
   const allowed=()=>visible&&!document.hidden&&!motion.matches&&!navigator.connection?.saveData&&!document.querySelector('dialog[open]')&&!failed;
   function fallback(){failed=true;debug.failed=true;host.classList.remove('has-video');cancelAnimationFrame(raf);raf=0;video.pause();}
   function setup(){try{

@@ -928,3 +928,24 @@ body[data-cinema-page] .contact-evia-film{inset:2%;width:96%;height:96%;overflow
 @media(max-width:360px){.home-coop-shortcut{grid-template-columns:1fr}.home-coop-shortcut img{display:none}.brief-grid{grid-template-columns:1fr}}
 .cinema-stage .hero-brand-slogan{position:absolute;left:0;right:0;bottom:calc(100% + 18px);margin:0;color:#e8b7d3;font-size:13px;letter-spacing:.035em;font-weight:500;line-height:1.4;text-align:center}
 @media(max-width:760px){.cinema-stage .hero-brand-slogan{font-size:11px;bottom:calc(100% + 16px)}}
+/* Protection film and help panels share the same clear blue glass. */
+.services-evia-film{position:relative;width:100%;max-width:440px;aspect-ratio:3/4;margin:0 auto;isolation:isolate;overflow:visible}
+.services-evia-film img,.services-evia-film canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.services-evia-film img{z-index:1;transition:opacity .3s}
+.services-evia-film canvas{z-index:2;opacity:0;transition:opacity .3s}
+.services-evia-film.has-video canvas{opacity:1}
+.services-evia-film.has-video img{opacity:0}
+.services-evia-film video{display:none}
+body[data-page="ayuda"] main .faq-list{background:linear-gradient(135deg,#779bc51a,#25476a29 55%,#ce005e0b);border:1px solid #b1cff13d;border-radius:24px;padding:8px 26px;box-shadow:inset 0 1px 0 #ffffff1c,0 16px 60px #080e1d26;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+body[data-page="ayuda"] main .faq-item{background:transparent;border-color:#bad4f033;color:#f1f5ff;box-shadow:none}
+body[data-page="ayuda"] main .faq-item summary{color:#f3f6ff}
+body[data-page="ayuda"] main .faq-item summary :is(span,svg),body[data-page="ayuda"] main .faq-item[open] summary{color:#f4a3ce}
+body[data-page="ayuda"] main .faq-item p{color:#e1e9f8}
+body[data-page="ayuda"] main .faq-item :is(a,.small-label){color:#f2a4ce}
+body[data-page="ayuda"] main .faq-search{background:linear-gradient(120deg,#7cafd326,#416b941f,#ce005e0e);border-color:#c0dcf055;box-shadow:inset 0 1px 0 #ffffff24;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+body[data-page="ayuda"] main .faq-search input{color:#f7f9ff}
+body[data-page="ayuda"] main .faq-search input::placeholder{color:#edb4d1}
+body[data-page="ayuda"] main .search-status{background:#82a9d219;border-color:#bad8ed3d;color:#f2b3d5;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+@media(max-width:760px){.services-evia-film{max-width:300px;width:90%;margin-top:4px}body[data-page="ayuda"] main .faq-list{padding:4px 18px;border-radius:20px}}
+
+body[data-page="ayuda"] main .faq-item .faq-category{color:#f2a4ce}

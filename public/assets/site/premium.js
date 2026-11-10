@@ -45,7 +45,7 @@
   playback();
 })();
 
-/* Deliberately manual: the coverage shortcut never rotates away by itself. */
+/* The services carousel moves only when the visitor chooses. */
 (() => {
   const rail = document.getElementById('home-services-rail');
   if (!rail) return;

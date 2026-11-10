@@ -43,8 +43,9 @@ const root = path.resolve(__dirname, '../../public');
       assert.equal(await page.locator('.cinema-stage [data-scene]').count(),0);
       assert.equal(await page.locator('#que-proteger .needs-controls button').count(),5);
       const homeRail = page.locator('#home-services-rail');
-      assert.equal(await homeRail.locator(':scope > a').count(), 6);
-      assert.equal(new URL(await page.locator('.coverage-shortcut').getAttribute('href'), page.url()).pathname, prefix + 'coberturas-cooperativas.html');
+      assert.equal(await homeRail.locator(':scope > a').count(), 5);
+      assert.equal(await page.locator('.coverage-shortcut').count(),0);
+      assert.equal(new URL(await page.locator('.home-coop-shortcut a').getAttribute('href'),page.url()).pathname,prefix+'coberturas-cooperativas.html');
       await page.locator('#home-services-next').click();
       await page.waitForFunction(() => document.getElementById('home-services-rail').scrollLeft > 10);
       await homeRail.focus();
@@ -184,7 +185,7 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.goto(base + prefix + 'index.html');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video')?.currentTime > 0);
       assert.equal(new URL(await animationPage.locator('.cinema-stage .scene-video').getAttribute('src')).pathname,
-        '/assets/evia-cinema-integro-20261110.mp4');
+        '/assets/evia-cinema-png-20261110.mp4');
       const media = await animationPage.locator('.cinema-stage .scene-video').evaluate(e => ({width:e.videoWidth,duration:e.duration}));
       assert.equal(media.width, 3840);
       assert.equal(media.duration, 25);
@@ -193,6 +194,20 @@ const root = path.resolve(__dirname, '../../public');
       await animationPage.waitForFunction(() => document.querySelector('.scene-video').paused);
       await animated.close();
      }
+    }
+
+    for(const prefix of ['/', '/nueva/']) {
+      const serviceMotion = await browser.newContext({viewport:{width:390,height:844}});
+      const servicePage = await serviceMotion.newPage();
+      await servicePage.goto(base+prefix+'servicios.html');
+      await servicePage.locator('.services-evia-film').scrollIntoViewIfNeeded();
+      await servicePage.waitForFunction(()=>window.EFY_SERVICES_DEBUG?.().ready);
+      const film=await servicePage.locator('.services-evia-film video').evaluate(v=>({width:v.videoWidth,height:v.videoHeight,duration:v.duration,loop:v.loop,src:v.currentSrc}));
+      assert.equal(film.width,1620);assert.equal(film.height,1080);assert.equal(film.duration,10);assert.ok(film.loop);
+      assert.match(film.src,/evia-servicios-escudo-20261110\.mp4$/);
+      await servicePage.locator('#catalogo').scrollIntoViewIfNeeded();
+      await servicePage.waitForFunction(()=>document.querySelector('.services-evia-film video').paused);
+      await serviceMotion.close();
     }
 
     const fallback = await browser.newContext({viewport:{width:390,height:844}});

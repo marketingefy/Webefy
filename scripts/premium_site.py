@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def premium_home(partners, about, contacts, arrow, selector, phone_url, contact_module, experience_stats):
     cinema = (ROOT / 'tooling/efy/templates/cinema-hero.html').read_text()
-    # Coverage remains in the carousel; avoid repeating a full module above it.
+    # Keep a single prominent coverage shortcut above the services carousel.
     selector = re.sub(r'<aside class="coverage-concierge".*?</aside>', '', selector, flags=re.S)
     coop = ('<section class="home-coop-shortcut shell" aria-labelledby="home-coop-title">'
             '<div><p class="eyebrow">Para socios de cooperativas</p><h2 id="home-coop-title">Tu cooperativa<br><span>Tu cobertura</span></h2>'
